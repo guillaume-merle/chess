@@ -1,12 +1,14 @@
 #pragma once
 
+#include <vector>
+
 #include "chessboard-interface.hh"
 #include "move.hh"
 #include "bitboard.hh"
 
 namespace board
 {
-    enum class BitboardPiece
+    enum BitboardPiece
     {
         ALLWHITE = 0,
         ALLBLACK,
@@ -45,7 +47,9 @@ namespace board
 
         Bitboard get_bitboard(BitboardPiece piece);
 
-        //TODO operator[]
+        bool is_white_turn();
+
+        virtual opt_piece_t operator[](const Position& position) const;
 
     private:
         //TODO chessboard representation
