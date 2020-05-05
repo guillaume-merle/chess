@@ -2,6 +2,7 @@
 
 #include "chessboard-interface.hh"
 #include "move.hh"
+#include "bitboard.hh"
 
 namespace board
 {
@@ -22,8 +23,6 @@ namespace board
         WHITEKNIGHT,
         BLACKKNIGHT
     };
-
-    using Bitboard = uint64_t;
 
     /*
     ** \brief class of the chessboard.
