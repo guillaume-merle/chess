@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "pgn-move.hh"
-#include "report-type.hh"
+#include "perft-object.hh"
+#include "fen-object.hh"
 
 namespace perft_parser
 {
@@ -14,8 +14,8 @@ namespace perft_parser
         // Constructor of the functor
         PerftParser() = default;
 
-        PerfObject parse_perft(std::string input);
+        PerftObject parse_perft(std::string input);
 
-        FenObject parse_fen(std::vector<string> splited_input);
+        FenObject parse_fen(std::vector<std::string> splited_input);
     };
 } // namespace perft_parser

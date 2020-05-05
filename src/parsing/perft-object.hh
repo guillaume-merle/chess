@@ -17,7 +17,7 @@ namespace perft_parser
 
         int depth_get();
 
-    privated:
+    private:
     
         FenObject fen_;
         int depth_;

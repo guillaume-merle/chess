@@ -12,14 +12,14 @@ namespace perft_parser
     {
     public:
 
-        using side_piece_t = std::pair<PieceType, Color>;
+        using side_piece_t = std::pair<board::PieceType, board::Color>;
         using piece_t = std::vector<side_piece_t>;
         
         FenRank() = default;
 
         //operator[] TODO
 
-    privated:
+    private:
 
         piece_t pieces_;
     };
