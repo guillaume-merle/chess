@@ -1,8 +1,7 @@
 #pragma once
 
-#include <optional>
-
 #include "chessboard-interface.hh"
+#include "move.hh"
 
 namespace board
 {
