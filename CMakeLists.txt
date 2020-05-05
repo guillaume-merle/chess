@@ -5,8 +5,34 @@ set(OPT_FLAGS)
 # END OPTIMIZATION FLAGS
 # SOURCES : FIXME
 
-set(SRC_ENGINE)
-include_directories()
+set(SRC_ENGINE
+    src/main.cc
+    src/chess_engine/ai/uci.hh
+    src/chess_engine/ai/uci.cc
+    src/chess_engine/board/chessboard.hh
+    src/chess_engine/board/chessboard-interface.hh
+    src/chess_engine/board/color.hh
+    src/chess_engine/board/move.hh
+    src/chess_engine/board/piece-type.hh
+    src/chess_engine/board/position.hh
+    src/chess_engine/board/position.hxx
+    src/parsing/report-type.hh
+    src/parsing/pgn-exception.cc
+    src/parsing/pgn-exception.hh
+    src/parsing/pgn-move.cc
+    src/parsing/pgn-move.hh
+    src/parsing/pgn-parser.cc
+    src/parsing/pgn-parser.hh
+    src/listener/listener.hh
+    src/utils/utype.hh)
+
+include_directories(src)
+include_directories(src/chess_engine)
+include_directories(src/chess_engine/board)
+include_directories(src/chess_engine/ai)
+include_directories(src/parsing)
+include_directories(src/listener)
+include_directories(src/utils)
 
 # END SOURCES
 
