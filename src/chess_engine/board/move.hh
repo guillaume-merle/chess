@@ -1,7 +1,7 @@
 #pragma once
 
 #include "piece-type.hh"
-#include "chessboard.hh"
+#include "bitboard.hh"
 
 namespace board
 {
