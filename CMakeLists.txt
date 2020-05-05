@@ -33,6 +33,7 @@ set(SRC_ENGINE
     src/parsing/perft-object.hh
     src/parsing/perft-parser.hh
     src/listener/listener.hh
+    src/listener/listener-manager.hh
     src/utils/utype.hh
 )
 
