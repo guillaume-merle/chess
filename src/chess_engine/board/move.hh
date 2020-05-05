@@ -1,6 +1,7 @@
 #pragma once
 
 #include "piece-type.hh"
+#include "chessboard.hh"
 
 namespace board
 {
@@ -10,13 +11,18 @@ namespace board
     class Move
     {
     public:
-        
+
+        Move(Bitboard from, Bitboard to, PieceType piece);
+
         PieceType piece_get();
 
     private:
 
-        //TODO store the move
-        
+        // store the move
+
+        Bitboard from_;
+        Bitboard to_;
+
         PieceType piece_;
         PieceType promotion_;
         PieceType capture_;

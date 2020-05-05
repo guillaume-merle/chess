@@ -22,7 +22,9 @@ namespace board
         WHITEKNIGHT,
         BLACKKNIGHT
     };
+
     using Bitboard = uint64_t;
+
     /*
     ** \brief class of the chessboard.
     */
