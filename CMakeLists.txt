@@ -1,12 +1,16 @@
 # OPTIMISATION FLAGS : FIXME
+# In cmake, we define variables with set(VAR Value [Value]*)
+# set(MYVAR "val1") assigns value val1 to MYVAR
+# set(MYVAR "val1" "val2") creates a list
 
-set(OPT_FLAGS)
+set(OPT_FLAGS
+    ""
+)
 
 # END OPTIMIZATION FLAGS
 # SOURCES : FIXME
-
+# Put all your sources here EXCEPT YOUR MAIN.CC
 set(SRC_ENGINE
-    src/main.cc
     src/chess_engine/ai/uci.hh
     src/chess_engine/ai/uci.cc
     src/chess_engine/board/chessboard.hh
@@ -24,15 +28,27 @@ set(SRC_ENGINE
     src/parsing/pgn-parser.cc
     src/parsing/pgn-parser.hh
     src/listener/listener.hh
-    src/utils/utype.hh)
+    src/utils/utype.hh
+)
 
-include_directories(src)
-include_directories(src/chess_engine)
-include_directories(src/chess_engine/board)
-include_directories(src/chess_engine/ai)
-include_directories(src/parsing)
-include_directories(src/listener)
-include_directories(src/utils)
+
+# Directories containing headers must be specified in the include_directories()
+include_directories(
+    src
+    src/chess_engine
+    src/chess_engine/board
+    src/chess_engine/ai
+    src/parsing
+    src/listener
+    src/utils
+    tests
+)
+
+
+# Put your test files here
+set(SRC_GTEST
+    ""
+)
 
 # END SOURCES
 
@@ -54,11 +70,35 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OPT_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -g3 -fsanitize=address")
 
 # LIBRARIES
-set(Boost_USE_STATIC_LIBS ON)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(Boost_USE_STATIC_LIBS ON)
+endif()
 find_package(Boost REQUIRED COMPONENTS system program_options)
 set(LIBRARIES Boost::system Boost::program_options ${CMAKE_DL_LIBS})
 
 # CHESSENGINE
 add_executable(chessengine)
-target_sources(chessengine PRIVATE ${SRC_ENGINE})
-target_link_libraries(chessengine PRIVATE ${LIBRARIES} -static)
+target_sources(chessengine PRIVATE "src/main.cc" ${SRC_ENGINE})
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_libraries(chessengine PRIVATE ${LIBRARIES} -static)
+else()
+    target_link_libraries(chessengine PRIVATE ${LIBRARIES})
+endif()
+
+
+# TESTS
+# Check if GTest is installed
+find_package(GTest)
+
+# If it is, create a dedicated target "tests"
+if(GTest_FOUND)
+  include(GoogleTest)
+
+  add_executable(tests)
+  target_sources(tests PRIVATE 
+    ${SRC_GTEST}
+    ${SRC_ENGINE}
+  )
+  target_compile_options(tests PRIVATE -Wall -Werror -Wextra)
+  target_link_libraries(tests PRIVATE GTest::GTest ${LIBRARIES})
+endif()
