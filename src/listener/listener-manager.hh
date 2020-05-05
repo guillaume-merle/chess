@@ -16,11 +16,11 @@ namespace listener
     public:
         void play_ai();
 
-        Chessboard chessboard_;
+        void close_listeners();
     
-    privated:
+    private:
 
         std::vector<Listener> listeners_;
-        Chessboard chessboard_;
+        //board::Chessboard chessboard_; TODO
     };
 } // namespace listener

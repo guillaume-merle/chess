@@ -11,8 +11,8 @@ namespace board
     class Chessboard : public ChessboardInterface
     {
     public:
-        
-        vector<Move> generate_legal_moves();
+
+        std::vector<Move> generate_legal_moves();
 
         void do_move(Move move);
 
