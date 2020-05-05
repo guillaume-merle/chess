@@ -5,6 +5,24 @@
 
 namespace board
 {
+    enum class BitboardPiece
+    {
+        ALLWHITE = 0,
+        ALLBLACK,
+        WHITEPAWN,
+        BLACKPAWN,
+        WHITEQUEEN,
+        BLACKQUEEN,
+        WHITEKING,
+        BLACKKING,
+        WHITEROOK,
+        BLACKROOK,
+        WHITEBISHOP,
+        BLACKBISHOP,
+        WHITEKNIGHT,
+        BLACKKNIGHT
+    };
+    using Bitboard = uint64_t;
     /*
     ** \brief class of the chessboard.
     */
@@ -24,10 +42,13 @@ namespace board
 
         bool is_draw();
 
+        Bitboard get_bitboard(BitboardPiece piece);
+
         //TODO operator[]
 
     private:
         //TODO chessboard representation
+        Bitboard bitboards_[14];
 
         bool white_turn_;
         bool white_king_castling_;
