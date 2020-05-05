@@ -11,15 +11,23 @@ set(OPT_FLAGS
 # SOURCES : FIXME
 # Put all your sources here EXCEPT YOUR MAIN.CC
 set(SRC_ENGINE
-    src/chess_engine/ai/uci.hh
     src/chess_engine/ai/uci.cc
-    src/chess_engine/board/chessboard.hh
+    src/chess_engine/ai/uci.hh
+    src/chess_engine/board/bitboard.cc
+    src/chess_engine/board/bitboard.hh
     src/chess_engine/board/chessboard-interface.hh
+    src/chess_engine/board/chessboard.cc
+    src/chess_engine/board/chessboard.hh
     src/chess_engine/board/color.hh
+    src/chess_engine/board/move.cc
     src/chess_engine/board/move.hh
+    src/chess_engine/board/pawn.cc
+    src/chess_engine/board/pawn.hh
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
+    src/chess_engine/board/rule.cc
+    src/chess_engine/board/rule.hh
     src/parsing/report-type.hh
     src/parsing/pgn-exception.cc
     src/parsing/pgn-exception.hh
@@ -60,6 +68,7 @@ set(SRC_GTEST
 
 
 # SETUP
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 cmake_minimum_required(VERSION 3.12)
 project(Chess)
 
