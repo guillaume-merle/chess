@@ -3,7 +3,7 @@
 
 namespace board
 {
-    std::vector<Move> generate_pawn_moves(Chessboard chessboard)
+    std::vector<Move> generate_pawn_moves(Chessboard& chessboard)
     {
         std::vector<Move> moves;
 
