@@ -20,4 +20,11 @@ namespace board
     {
         return to_;
     }
+
+    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+        PieceType piece)
+    {
+        if (to)
+            moves.emplace_back(Move(from, to, piece));
+    }
 }

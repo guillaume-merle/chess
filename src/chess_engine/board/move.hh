@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "piece-type.hh"
 #include "bitboard.hh"
 
@@ -34,5 +36,8 @@ namespace board
         bool queen_castling_;
         bool en_passant_;
     };
+
+    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+        PieceType piece);
 
 } // namespace board
