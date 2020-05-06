@@ -70,6 +70,7 @@ include_directories(
 # Put your test files here
 set(SRC_GTEST
     tests/main-test.cc
+    tests/king-test.hh
     tests/pawn.hh
 )
 

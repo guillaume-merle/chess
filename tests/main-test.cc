@@ -1,4 +1,5 @@
 #include "pawn.hh"
+#include "king-test.hh"
 
 #include "gtest/gtest.h"
 
