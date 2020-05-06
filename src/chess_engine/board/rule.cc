@@ -1,5 +1,6 @@
 #include "rule.hh"
 #include "pawn.hh"
+#include "king.hh"
 
 namespace board
 {
@@ -27,6 +28,24 @@ namespace board
                 if (current)
                     moves = Pawn::generate_moves(moves, current, Color::BLACK);
             }
+        }
+
+        return moves;
+    }
+
+    std::vector<Move> generate_king_moves(Chessboard& chessboard)
+    {
+        std::vector<Move> moves;
+
+        if (chessboard.is_white_turn())
+        {
+            King::generate_moves(
+                moves, chessboard.get_bitboard(BitboardPiece::WHITEKING));
+        }
+        else
+        {
+            King::generate_moves(
+                moves, chessboard.get_bitboard(BitboardPiece::BLACKKING));
         }
 
         return moves;
