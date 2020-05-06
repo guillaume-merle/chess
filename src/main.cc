@@ -11,6 +11,7 @@
 #include "rule.hh"
 #include "bishop.hh"
 #include "rook.hh"
+#include "queen.hh"
 
 int main()
 {
@@ -29,6 +30,7 @@ int main()
         // board::print_bitboard(move.get_to());
     // }
     //
+    std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 19;
     std::vector<board::Move> moves;
@@ -43,13 +45,27 @@ int main()
 
     board::print_bitboard(all_moves);
 
-    std::cout << "\n";
+    std::cout << "\nROOK:\n";
 
     board::Bitboard rook = 1ULL << 19;
     moves.clear();
     moves = board::Rook::generate_moves(moves, rook);
 
     all_moves = rook;
+    for (auto& move : moves)
+    {
+        all_moves |= move.get_to();
+    }
+
+    board::print_bitboard(all_moves);
+
+    std::cout << "\nQUEEN:\n";
+
+    board::Bitboard queen = 1ULL << 19;
+    moves.clear();
+    moves = board::Queen::generate_moves(moves, queen);
+
+    all_moves = queen;
     for (auto& move : moves)
     {
         all_moves |= move.get_to();

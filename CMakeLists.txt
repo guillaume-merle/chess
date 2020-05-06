@@ -29,6 +29,8 @@ set(SRC_ENGINE
     src/chess_engine/board/move.hh
     src/chess_engine/board/pawn.cc
     src/chess_engine/board/pawn.hh
+    src/chess_engine/board/queen.cc
+    src/chess_engine/board/queen.hh
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
