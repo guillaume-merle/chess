@@ -43,6 +43,7 @@ set(SRC_ENGINE
     src/listener/listener.hh
     src/listener/listener-manager.hh
     src/utils/utype.hh
+    src/main.cc
 )
 
 
@@ -110,7 +111,7 @@ if(GTest_FOUND)
   include(GoogleTest)
 
   add_executable(tests)
-  target_sources(tests PRIVATE 
+  target_sources(tests PRIVATE
     ${SRC_GTEST}
     ${SRC_ENGINE}
   )

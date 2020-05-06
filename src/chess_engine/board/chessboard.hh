@@ -32,6 +32,9 @@ namespace board
     class Chessboard : public ChessboardInterface
     {
     public:
+        Chessboard()
+            : white_turn_(true)
+        {}
 
         std::vector<Move> generate_legal_moves();
 
@@ -51,9 +54,10 @@ namespace board
 
         virtual opt_piece_t operator[](const Position& position) const;
 
+        Bitboard bitboards_[14];
+
     private:
         //TODO chessboard representation
-        Bitboard bitboards_[14];
 
         bool white_turn_;
         bool white_king_castling_;
