@@ -77,4 +77,30 @@ namespace board
 
         return moves;
     }
+
+    std::vector<Move> generate_rook_moves(Chessboard& chessboard)
+    {
+        std::vector<Move> moves;
+
+        for(unsigned i = 0; i < 64; i++)
+        {
+            Bitboard current;
+
+            if (chessboard.is_white_turn())
+            {
+                current = (1ULL << i)
+                    & chessboard.get_bitboard(BitboardPiece::WHITEROOK);
+            }
+            else
+            {
+                current = (1ULL << i)
+                    & chessboard.get_bitboard(BitboardPiece::BLACKROOK);
+            }
+
+            if (current)
+                moves = Bishop::generate_moves(moves, current);
+        }
+
+        return moves;
+    }
 }
