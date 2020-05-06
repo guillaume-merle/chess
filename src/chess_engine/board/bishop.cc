@@ -11,7 +11,7 @@ namespace board
             add_move(moves, bitboard, pos, PieceType::BISHOP);
 
             // if the bishop is on FileH
-            if (!(pos & EmptyFileHBB))
+            if (pos & FileHBB)
                 break;
         }
 
@@ -20,7 +20,7 @@ namespace board
             add_move(moves, bitboard, pos, PieceType::BISHOP);
 
             // if the bishop is on FileA
-            if (!(pos & EmptyFileABB))
+            if (pos & FileABB)
                 break;
         }
 
@@ -29,7 +29,7 @@ namespace board
             add_move(moves, bitboard, pos, PieceType::BISHOP);
 
             // if the bishop is on FileH
-            if (!(pos & EmptyFileHBB))
+            if (pos & FileHBB)
                 break;
         }
 
@@ -38,7 +38,7 @@ namespace board
             add_move(moves, bitboard, pos, PieceType::BISHOP);
 
             // if the bishop is on FileA
-            if (!(pos & EmptyFileABB))
+            if (pos & FileABB)
                 break;
         }
 

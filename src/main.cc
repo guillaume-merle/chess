@@ -10,6 +10,7 @@
 #include "pawn.hh"
 #include "rule.hh"
 #include "bishop.hh"
+#include "rook.hh"
 
 int main()
 {
@@ -35,6 +36,20 @@ int main()
 
     board::Bitboard all_moves = bishop;
 
+    for (auto& move : moves)
+    {
+        all_moves |= move.get_to();
+    }
+
+    board::print_bitboard(all_moves);
+
+    std::cout << "\n";
+
+    board::Bitboard rook = 1ULL << 19;
+    moves.clear();
+    moves = board::Rook::generate_moves(moves, rook);
+
+    all_moves = rook;
     for (auto& move : moves)
     {
         all_moves |= move.get_to();

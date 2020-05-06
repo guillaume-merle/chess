@@ -32,6 +32,8 @@ set(SRC_ENGINE
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
+    src/chess_engine/board/rook.cc
+    src/chess_engine/board/rook.hh
     src/chess_engine/board/rule.cc
     src/chess_engine/board/rule.hh
     src/parsing/report-type.hh
