@@ -49,7 +49,6 @@ set(SRC_ENGINE
     src/listener/listener.hh
     src/listener/listener-manager.hh
     src/utils/utype.hh
-    src/main.cc
 )
 
 
@@ -68,7 +67,8 @@ include_directories(
 
 # Put your test files here
 set(SRC_GTEST
-    tests/pawn.cxx
+    tests/main-test.cc
+    tests/pawn.hh
 )
 
 # END SOURCES
@@ -121,9 +121,8 @@ if(GTest_FOUND)
     ${SRC_GTEST}
     ${SRC_ENGINE}
   )
-  gtest_add_tests(TARGET      tests
-                TEST_LIST   Dummy
-  )
+ 
   target_compile_options(tests PRIVATE -Wall -Werror -Wextra)
   target_link_libraries(tests PRIVATE GTest::GTest ${LIBRARIES})
+
 endif()
