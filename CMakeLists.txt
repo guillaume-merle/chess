@@ -23,6 +23,8 @@ set(SRC_ENGINE
     src/chess_engine/board/color.hh
     src/chess_engine/board/king.cc
     src/chess_engine/board/king.hh
+    src/chess_engine/board/knight.cc
+    src/chess_engine/board/knight.hh
     src/chess_engine/board/move.cc
     src/chess_engine/board/move.hh
     src/chess_engine/board/pawn.cc
