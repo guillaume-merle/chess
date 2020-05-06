@@ -10,4 +10,14 @@ namespace board
     {
         return piece_;
     }
+
+    Bitboard Move::get_from()
+    {
+        return from_;
+    }
+
+    Bitboard Move::get_to()
+    {
+        return to_;
+    }
 }

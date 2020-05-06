@@ -16,6 +16,9 @@ namespace board
 
         PieceType piece_get();
 
+        Bitboard get_from();
+        Bitboard get_to();
+
     private:
 
         // store the move
