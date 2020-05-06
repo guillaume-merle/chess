@@ -14,7 +14,7 @@ namespace board
             moves.emplace_back(Move(bitboard, generated, PieceType::KING));
 
         // the king is not on the left side
-        if (left_side & bitboard != 0)
+        if ((left_side & bitboard) != 0)
         {
             generated = west(bitboard, 1);
             if (generated)
@@ -30,7 +30,7 @@ namespace board
         }
 
         // the king is not on the right side
-        if (right_side & bitboard != 0)
+        if ((right_side & bitboard) != 0)
         {
             generated = east(bitboard, 1);
             if (generated)
