@@ -38,7 +38,6 @@ namespace board
     Pawn::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
                          Color color)
     {
-        
         add_move(moves, bitboard, single_push(bitboard, color),
             PieceType::PAWN);
 

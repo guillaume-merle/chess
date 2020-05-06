@@ -13,6 +13,8 @@ set(OPT_FLAGS
 set(SRC_ENGINE
     src/chess_engine/ai/uci.cc
     src/chess_engine/ai/uci.hh
+    src/chess_engine/board/bishop.cc
+    src/chess_engine/board/bishop.hh
     src/chess_engine/board/bitboard.cc
     src/chess_engine/board/bitboard.hh
     src/chess_engine/board/chessboard-interface.hh

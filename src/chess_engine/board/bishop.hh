@@ -3,11 +3,12 @@
 #include <vector>
 
 #include "bitboard.hh"
+#include "color.hh"
 #include "move.hh"
 
 namespace board
 {
-    class King
+    class Bishop
     {
     public:
         static std::vector<Move>

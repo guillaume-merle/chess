@@ -24,6 +24,9 @@ namespace board
     constexpr Bitboard Rank7BB = Rank1BB << (8 * 6);
     constexpr Bitboard Rank8BB = Rank1BB << (8 * 7);
 
+    constexpr Bitboard EmptyFileABB = 0xFEFEFEFEFEFEFEFE;
+    constexpr Bitboard EmptyFileHBB= 0x7F7F7F7F7F7F7F7F;
+
     Bitboard north(Bitboard bitboard, unsigned number);
     Bitboard northeast(Bitboard bitboard, unsigned number);
     Bitboard northwest(Bitboard bitboard, unsigned number);

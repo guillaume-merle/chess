@@ -10,7 +10,7 @@ namespace board
         add_move(moves, bitboard, south(bitboard, 1), PieceType::KING);
 
         // check if the king is not on the left side
-        if ((left_side & bitboard) != 0)
+        if ((EmptyFileABB & bitboard) != 0)
         {
             add_move(moves, bitboard, west(bitboard, 1), PieceType::KING);
 
@@ -20,7 +20,7 @@ namespace board
         }
 
         // icheck if the king is not on the right side
-        if ((right_side & bitboard) != 0)
+        if ((EmptyFileHBB & bitboard) != 0)
         {
             add_move(moves, bitboard, east(bitboard, 1), PieceType::KING);
 

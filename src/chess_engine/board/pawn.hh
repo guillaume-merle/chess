@@ -20,6 +20,7 @@ namespace board
         static Bitboard right_attack(Bitboard bitboard, Color color);
 
         static std::vector<Move>
-        generate_moves(std::vector<Move>& moves, Bitboard bitboard, Color color);
+        generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+                       Color color);
     };
 }
