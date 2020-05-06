@@ -1,6 +1,7 @@
 #include "rule.hh"
 #include "pawn.hh"
 #include "king.hh"
+#include "bishop.hh"
 
 namespace board
 {
@@ -46,6 +47,32 @@ namespace board
         {
             King::generate_moves(
                 moves, chessboard.get_bitboard(BitboardPiece::BLACKKING));
+        }
+
+        return moves;
+    }
+
+    std::vector<Move> generate_bishop_moves(Chessboard& chessboard)
+    {
+        std::vector<Move> moves;
+
+        for(unsigned i = 0; i < 64; i++)
+        {
+            Bitboard current;
+
+            if (chessboard.is_white_turn())
+            {
+                current = (1ULL << i)
+                    & chessboard.get_bitboard(BitboardPiece::WHITEBISHOP);
+            }
+            else
+            {
+                current = (1ULL << i)
+                    & chessboard.get_bitboard(BitboardPiece::BLACKBISHOP);
+            }
+
+            if (current)
+                moves = Bishop::generate_moves(moves, current);
         }
 
         return moves;
