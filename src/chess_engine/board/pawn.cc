@@ -35,7 +35,7 @@ namespace board
     }
 
     std::vector<Move>
-    Pawn::generate_moves(std::vector<Move> moves, Bitboard bitboard,
+    Pawn::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
                          Color color)
     {
         auto generated = Pawn::single_push(bitboard, color);
