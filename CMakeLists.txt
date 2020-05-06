@@ -66,7 +66,7 @@ include_directories(
 
 # Put your test files here
 set(SRC_GTEST
-    ""
+    tests/pawn.cxx
 )
 
 # END SOURCES
@@ -118,6 +118,9 @@ if(GTest_FOUND)
   target_sources(tests PRIVATE
     ${SRC_GTEST}
     ${SRC_ENGINE}
+  )
+  gtest_add_tests(TARGET      tests
+                TEST_LIST   Dummy
   )
   target_compile_options(tests PRIVATE -Wall -Werror -Wextra)
   target_link_libraries(tests PRIVATE GTest::GTest ${LIBRARIES})
