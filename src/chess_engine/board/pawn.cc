@@ -38,17 +38,15 @@ namespace board
     Pawn::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
                          Color color)
     {
-        auto generated = Pawn::single_push(bitboard, color);
-
-        if (generated)
-            moves.emplace_back(Move(bitboard, generated, PieceType::PAWN));
+        
+        add_move(moves, bitboard, single_push(bitboard, color),
+            PieceType::PAWN);
 
         if ((color == Color::WHITE && bitboard <= white_pawn_start)
                 || (color == Color::BLACK && bitboard >= black_pawn_start))
         {
-            moves.emplace_back(
-                    Move(bitboard, Pawn::double_push(bitboard, color),
-                         PieceType::PAWN));
+            add_move(moves, bitboard, Pawn::double_push(bitboard, color),
+                PieceType::PAWN);
         }
 
         // moves.emplace_back(Move(bitboard, Pawn::left_attack(bitboard, color),
