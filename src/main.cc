@@ -76,10 +76,9 @@ int main()
 
     std::cout << "\nKNIGHT:\n";
 
-    board::Color color = board::Color::BLACK;
     board::Bitboard knight = 1ULL << 19;
     moves.clear();
-    moves = board::Knight::generate_moves(moves, knight, color);
+    moves = board::Knight::generate_moves(moves, knight);
 
     all_moves = knight;
     for (auto& move : moves)
