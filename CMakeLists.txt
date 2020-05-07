@@ -76,6 +76,7 @@ set(SRC_GTEST
     tests/test_knight.hh
     tests/test_pawn.hh
     tests/test_bishop.hh
+    tests/test_bitboard.hh
 )
 
 # END SOURCES
@@ -131,5 +132,12 @@ if(GTest_FOUND)
 
   target_compile_options(tests PRIVATE -Wall -Werror -Wextra)
   target_link_libraries(tests PRIVATE GTest::GTest ${LIBRARIES})
+
+  add_custom_target(check
+                    COMMAND ./tests
+                    DEPENDS
+                    tests
+  )
+
 
 endif()
