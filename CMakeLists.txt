@@ -73,6 +73,7 @@ include_directories(
 set(SRC_GTEST
     tests/test_main.cc
     tests/test_king.hh
+    tests/test_knight.hh
     tests/test_pawn.hh
 )
 
