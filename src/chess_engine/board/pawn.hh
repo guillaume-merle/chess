@@ -5,6 +5,7 @@
 #include "bitboard.hh"
 #include "color.hh"
 #include "move.hh"
+#include "chessboard.hh"
 
 namespace board
 {
@@ -22,5 +23,8 @@ namespace board
         static std::vector<Move>
         generate_moves(std::vector<Move>& moves, Bitboard bitboard,
                        Color color);
+        static std::vector<Move>
+        generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+                       Color color, Chessboard& board);
     };
 }
