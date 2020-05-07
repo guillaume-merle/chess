@@ -78,6 +78,7 @@ set(SRC_GTEST
     tests/test_bishop.hh
     tests/test_rook.hh
     tests/test_bitboard.hh
+    tests/test_queen.hh
 )
 
 # END SOURCES
