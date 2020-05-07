@@ -45,7 +45,7 @@ namespace board
                 || (color == Color::BLACK && bitboard >= black_pawn_start))
         {
             add_move(moves, bitboard, Pawn::double_push(bitboard, color),
-                PieceType::PAWN);
+                     PieceType::PAWN);
         }
 
         // moves.emplace_back(Move(bitboard, Pawn::left_attack(bitboard, color),
