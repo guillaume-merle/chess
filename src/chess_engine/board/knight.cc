@@ -6,57 +6,41 @@ namespace board
 {
     Bitboard Knight::northwestwest(Bitboard bitboard)
     {
-        if (bitboard & (FileABB | FileBBB))
-            return 0;
         return northwest(west(bitboard, 1), 1);
     }
 
     Bitboard Knight::northeasteast(Bitboard bitboard)
     {
-        if (bitboard & (FileHBB | FileGBB))
-            return 0;
         return northeast(east(bitboard, 1), 1);
     }
 
     Bitboard Knight::northnorthwest(Bitboard bitboard)
     {
-        if (bitboard & FileABB)
-            return 0;
         return northwest(north(bitboard, 1), 1);
     }
 
     Bitboard Knight::northnortheast(Bitboard bitboard)
     {
-        if (bitboard & FileHBB)
-            return 0;
         return northeast(north(bitboard, 1), 1);
     }
 
     Bitboard Knight::southwestwest(Bitboard bitboard)
     {
-        if (bitboard & (FileABB | FileBBB))
-            return 0;
         return southwest(west(bitboard, 1), 1);
     }
 
     Bitboard Knight::southeasteast(Bitboard bitboard)
     {
-        if (bitboard & (FileHBB | FileHBB))
-            return 0;
         return southeast(east(bitboard, 1), 1);
     }
 
     Bitboard Knight::southsouthwest(Bitboard bitboard)
     {
-        if (bitboard & FileABB)
-            return 0;
         return southwest(south(bitboard, 1), 1);
     }
 
     Bitboard Knight::southsoutheast(Bitboard bitboard)
     {
-        if (bitboard & FileHBB)
-            return 0;
         return southeast(south(bitboard, 1), 1);
     }
 
