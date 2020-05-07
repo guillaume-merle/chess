@@ -27,4 +27,15 @@ namespace board
         if (to)
             moves.emplace_back(Move(from, to, piece));
     }
+
+    Bitboard combine_moves(std::vector<Move>& moves)
+    {
+        Bitboard all_moves = 0;
+        for (auto& move : moves)
+        {
+            all_moves |= move.get_to();
+        }
+
+        return all_moves;
+    }
 }

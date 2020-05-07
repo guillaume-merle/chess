@@ -38,6 +38,7 @@ namespace board
     };
 
     void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-        PieceType piece);
+                  PieceType piece);
+    Bitboard combine_moves(std::vector<Move>& moves);
 
 } // namespace board
