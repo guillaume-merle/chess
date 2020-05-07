@@ -33,7 +33,7 @@ int main()
     //
     std::cout << "BISHOP:\n";
 
-    board::Bitboard bishop = 1ULL << 19;
+    board::Bitboard bishop = 1ULL << 28;
     std::vector<board::Move> moves;
     moves = board::Bishop::generate_moves(moves, bishop);
 

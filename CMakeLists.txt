@@ -75,6 +75,7 @@ set(SRC_GTEST
     tests/test_king.hh
     tests/test_knight.hh
     tests/test_pawn.hh
+    tests/test_bishop.hh
 )
 
 # END SOURCES
