@@ -27,14 +27,14 @@ namespace board
     constexpr Bitboard EmptyFileABB = 0xFEFEFEFEFEFEFEFE;
     constexpr Bitboard EmptyFileHBB = 0x7F7F7F7F7F7F7F7F;
 
-    Bitboard north(Bitboard bitboard, unsigned number);
-    Bitboard northeast(Bitboard bitboard, unsigned number);
-    Bitboard northwest(Bitboard bitboard, unsigned number);
-    Bitboard south(Bitboard bitboard, unsigned number);
-    Bitboard southeast(Bitboard bitboard, unsigned number);
-    Bitboard southwest(Bitboard bitboard, unsigned number);
-    Bitboard east(Bitboard bitboard, unsigned number);
-    Bitboard west(Bitboard bitboard, unsigned number);
+    Bitboard north(Bitboard bitboard, unsigned number = 1);
+    Bitboard northeast(Bitboard bitboard, unsigned number = 1);
+    Bitboard northwest(Bitboard bitboard, unsigned number = 1);
+    Bitboard south(Bitboard bitboard, unsigned number = 1);
+    Bitboard southeast(Bitboard bitboard, unsigned number = 1);
+    Bitboard southwest(Bitboard bitboard, unsigned number = 1);
+    Bitboard east(Bitboard bitboard, unsigned number = 1);
+    Bitboard west(Bitboard bitboard, unsigned number = 1);
 
     void print_bitboard(Bitboard bitboard);
 }
