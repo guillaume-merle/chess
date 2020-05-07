@@ -1,5 +1,5 @@
-#include "pawn.hh"
-#include "king-test.hh"
+#include "test_pawn.hh"
+#include "test_king.hh"
 
 #include "gtest/gtest.h"
 

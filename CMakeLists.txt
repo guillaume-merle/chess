@@ -71,9 +71,9 @@ include_directories(
 
 # Put your test files here
 set(SRC_GTEST
-    tests/main-test.cc
-    tests/king-test.hh
-    tests/pawn.hh
+    tests/test_main.cc
+    tests/test_king.hh
+    tests/test_pawn.hh
 )
 
 # END SOURCES
@@ -126,7 +126,7 @@ if(GTest_FOUND)
     ${SRC_GTEST}
     ${SRC_ENGINE}
   )
- 
+
   target_compile_options(tests PRIVATE -Wall -Werror -Wextra)
   target_link_libraries(tests PRIVATE GTest::GTest ${LIBRARIES})
 
