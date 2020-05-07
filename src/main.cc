@@ -10,6 +10,7 @@
 #include "pawn.hh"
 #include "rule.hh"
 #include "bishop.hh"
+#include "knight.hh"
 #include "rook.hh"
 #include "queen.hh"
 
@@ -66,6 +67,21 @@ int main()
     moves = board::Queen::generate_moves(moves, queen);
 
     all_moves = queen;
+    for (auto& move : moves)
+    {
+        all_moves |= move.get_to();
+    }
+
+    board::print_bitboard(all_moves);
+
+    std::cout << "\nKNIGHT:\n";
+
+    board::Color color = board::Color::BLACK;
+    board::Bitboard knight = 1ULL << 19;
+    moves.clear();
+    moves = board::Knight::generate_moves(moves, knight, color);
+
+    all_moves = knight;
     for (auto& move : moves)
     {
         all_moves |= move.get_to();

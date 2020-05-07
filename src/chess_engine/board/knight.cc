@@ -82,19 +82,19 @@ namespace board
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = northwestwest(bitboard, color);
-        if (pos & EmptyFileAB)
+        if (pos & EmptyFileGH)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = northeasteast(bitboard, color);
-        if (pos & EmptyFileGH)
-            add_move(moves, bitboard, pos, PieceType::KNIGHT);
-
-        pos = southwestwest(bitboard, color);
         if (pos & EmptyFileAB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
-        pos = southeasteast(bitboard, color);
+        pos = southwestwest(bitboard, color);
         if (pos & EmptyFileGH)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = southeasteast(bitboard, color);
+        if (pos & EmptyFileAB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         return moves;
