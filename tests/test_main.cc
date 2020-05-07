@@ -2,6 +2,7 @@
 #include "test_king.hh"
 #include "test_knight.hh"
 #include "test_bishop.hh"
+#include "test_bitboard.hh"
 
 #include "gtest/gtest.h"
 
