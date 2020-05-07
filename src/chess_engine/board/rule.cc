@@ -17,7 +17,7 @@ namespace board
             if (chessboard.is_white_turn())
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::WHITEPAWN);
+                    & chessboard.get(BitboardType::WHITEPAWN);
 
                 if (current)
                     moves = Pawn::generate_moves(moves, current, Color::WHITE);
@@ -25,7 +25,7 @@ namespace board
             else
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::BLACKPAWN);
+                    & chessboard.get(BitboardType::BLACKPAWN);
 
                 if (current)
                     moves = Pawn::generate_moves(moves, current, Color::BLACK);
@@ -42,12 +42,12 @@ namespace board
         if (chessboard.is_white_turn())
         {
             King::generate_moves(
-                moves, chessboard.get_bitboard(BitboardPiece::WHITEKING));
+                moves, chessboard.get(BitboardType::WHITEKING));
         }
         else
         {
             King::generate_moves(
-                moves, chessboard.get_bitboard(BitboardPiece::BLACKKING));
+                moves, chessboard.get(BitboardType::BLACKKING));
         }
 
         return moves;
@@ -64,12 +64,12 @@ namespace board
             if (chessboard.is_white_turn())
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::WHITEBISHOP);
+                    & chessboard.get(BitboardType::WHITEBISHOP);
             }
             else
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::BLACKBISHOP);
+                    & chessboard.get(BitboardType::BLACKBISHOP);
             }
 
             if (current)
@@ -90,12 +90,12 @@ namespace board
             if (chessboard.is_white_turn())
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::WHITEROOK);
+                    & chessboard.get(BitboardType::WHITEROOK);
             }
             else
             {
                 current = (1ULL << i)
-                    & chessboard.get_bitboard(BitboardPiece::BLACKROOK);
+                    & chessboard.get(BitboardType::BLACKROOK);
             }
 
             if (current)
@@ -112,12 +112,12 @@ namespace board
         if (chessboard.is_white_turn())
         {
             Queen::generate_moves(
-                moves, chessboard.get_bitboard(BitboardPiece::WHITEQUEEN));
+                moves, chessboard.get(BitboardType::WHITEQUEEN));
         }
         else
         {
             Queen::generate_moves(
-                moves, chessboard.get_bitboard(BitboardPiece::BLACKQUEEN));
+                moves, chessboard.get(BitboardType::BLACKQUEEN));
         }
 
         return moves;
