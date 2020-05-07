@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "knight.hh"
 
 namespace board
@@ -66,35 +68,35 @@ namespace board
                            Color color)
     {
         auto pos = northnorthwest(bitboard, color);
-        if (pos & EmptyFileABB)
+        if (bitboard & EmptyFileABB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = northnortheast(bitboard, color);
-        if (pos & EmptyFileHBB)
+        if (bitboard & EmptyFileHBB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = southsouthwest(bitboard, color);
-        if (pos & EmptyFileABB)
+        if (bitboard & EmptyFileABB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = southsoutheast(bitboard, color);
-        if (pos & EmptyFileHBB)
+        if (bitboard & EmptyFileHBB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = northwestwest(bitboard, color);
-        if (pos & EmptyFileGH)
+        if (bitboard & EmptyFileAB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = northeasteast(bitboard, color);
-        if (pos & EmptyFileAB)
+        if (bitboard & EmptyFileGH)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = southwestwest(bitboard, color);
-        if (pos & EmptyFileGH)
+        if (bitboard & EmptyFileAB)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         pos = southeasteast(bitboard, color);
-        if (pos & EmptyFileAB)
+        if (bitboard & EmptyFileGH)
             add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
         return moves;
