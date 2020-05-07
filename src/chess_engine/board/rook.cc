@@ -5,32 +5,28 @@ namespace board
     std::vector<Move>
     Rook::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
     {
-        for (Bitboard pos = bitboard; pos; pos = north(pos, 1))
+        Bitboard pos = north(bitboard);
+        for (; pos; pos = north(pos))
         {
             add_move(moves, bitboard, pos, PieceType::ROOK);
         }
 
-        for (Bitboard pos = bitboard; pos; pos = south(pos, 1))
+        pos = south(bitboard);
+        for (; pos; pos = south(pos))
         {
             add_move(moves, bitboard, pos, PieceType::ROOK);
         }
 
-        for (Bitboard pos = bitboard; pos; pos = east(pos, 1))
+        pos = east(bitboard);
+        for (; pos; pos = east(pos))
         {
             add_move(moves, bitboard, pos, PieceType::ROOK);
-
-            // if the rook is on FileH
-            if (pos & FileHBB)
-                break;
         }
 
-        for (Bitboard pos = bitboard; pos; pos = west(pos, 1))
+        pos = west(bitboard);
+        for (; pos; pos = west(pos))
         {
             add_move(moves, bitboard, pos, PieceType::ROOK);
-
-            // if the rook is on FileA
-            if (pos & FileABB)
-                break;
         }
 
         return moves;
