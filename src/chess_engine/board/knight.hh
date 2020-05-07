@@ -21,6 +21,7 @@ namespace board
         static Bitboard southsoutheast(Bitboard bitboard, Color color);
 
         static std::vector<Move>
-        generate_moves(std::vector<Move>& moves, Bitboard bitboard);
+        generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+                       Color color);
     };
 }

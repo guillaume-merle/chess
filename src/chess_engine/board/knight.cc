@@ -2,6 +2,9 @@
 
 namespace board
 {
+    constexpr Bitboard EmptyFileAB = ~(FileABB | FileBBB);
+    constexpr Bitboard EmptyFileGH = ~(FileHBB | FileGBB);
+
     Bitboard Knight::northwestwest(Bitboard bitboard, Color color)
     {
         if (color == Color::WHITE)
@@ -58,9 +61,42 @@ namespace board
         return northeast(north(bitboard, 1), 1);
     }
 
-    /*std::vector<Move>
-    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
+    std::vector<Move>
+    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+                           Color color)
     {
+        auto pos = northnorthwest(bitboard, color);
+        if (pos & EmptyFileABB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
 
-    }*/
+        pos = northnortheast(bitboard, color);
+        if (pos & EmptyFileHBB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = southsouthwest(bitboard, color);
+        if (pos & EmptyFileABB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = southsoutheast(bitboard, color);
+        if (pos & EmptyFileHBB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = northwestwest(bitboard, color);
+        if (pos & EmptyFileAB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = northeasteast(bitboard, color);
+        if (pos & EmptyFileGH)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = southwestwest(bitboard, color);
+        if (pos & EmptyFileAB)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        pos = southeasteast(bitboard, color);
+        if (pos & EmptyFileGH)
+            add_move(moves, bitboard, pos, PieceType::KNIGHT);
+
+        return moves;
+    }
 }
