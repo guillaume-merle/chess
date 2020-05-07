@@ -8,7 +8,9 @@
 
 namespace board
 {
-    enum BitboardPiece
+    constexpr int BITBOARDS_NUMBER = 14;
+
+    enum BitboardType
     {
         ALLWHITE = 0,
         ALLBLACK,
@@ -48,16 +50,17 @@ namespace board
 
         bool is_draw();
 
-        Bitboard get_bitboard(BitboardPiece piece);
+        Bitboard get(BitboardType piece);
+
+        bool set(BitboardType piece, Bitboard value);
 
         bool is_white_turn();
 
         virtual opt_piece_t operator[](const Position& position) const;
 
-        Bitboard bitboards_[14];
 
     private:
-        //TODO chessboard representation
+        Bitboard bitboards_[BITBOARDS_NUMBER] = {0};
 
         bool white_turn_;
         bool white_king_castling_;
