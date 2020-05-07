@@ -113,3 +113,29 @@ TEST (Knight, southwestwest_out)
     board::Bitboard move = board::Knight::southwestwest(knight);
     EXPECT_EQ(0, move);
 }
+
+TEST (Knight, generate_moves)
+{
+    board::Bitboard knight = 1 << 9;
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight);
+
+    EXPECT_EQ(4, moves.size());
+    EXPECT_EQ(1 << 24, moves.at(0).get_to());
+    EXPECT_EQ(1 << 26, moves.at(1).get_to());
+    EXPECT_EQ(1 << 19, moves.at(2).get_to());
+    EXPECT_EQ(1 << 3, moves.at(3).get_to());
+}
+
+TEST (Knight, generate_moves2)
+{
+    board::Bitboard knight = 1ULL << 54;
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight);
+
+    EXPECT_EQ(4, moves.size());
+    EXPECT_EQ(1ULL << 37, moves.at(0).get_to());
+    EXPECT_EQ(1ULL << 39, moves.at(1).get_to());
+    EXPECT_EQ(1ULL << 60, moves.at(2).get_to());
+    EXPECT_EQ(1ULL << 44, moves.at(3).get_to());
+}
