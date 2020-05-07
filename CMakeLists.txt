@@ -76,6 +76,7 @@ set(SRC_GTEST
     tests/test_knight.hh
     tests/test_pawn.hh
     tests/test_bishop.hh
+    tests/test_rook.hh
     tests/test_bitboard.hh
 )
 
