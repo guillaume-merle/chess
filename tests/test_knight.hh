@@ -121,10 +121,10 @@ TEST (Knight, generate_moves)
     board::Knight::generate_moves(moves, knight);
 
     EXPECT_EQ(4, moves.size());
-    EXPECT_EQ(1 << 24, moves.at(0).get_to());
-    EXPECT_EQ(1 << 26, moves.at(1).get_to());
-    EXPECT_EQ(1 << 19, moves.at(2).get_to());
-    EXPECT_EQ(1 << 3, moves.at(3).get_to());
+
+    board::Bitboard expected_moves = 1 << 24 | 1 << 26 | 1 << 3 | 1 << 19;
+
+    EXPECT_EQ(board::combine_moves(moves), expected_moves);
 }
 
 TEST (Knight, generate_moves2)
@@ -134,8 +134,9 @@ TEST (Knight, generate_moves2)
     board::Knight::generate_moves(moves, knight);
 
     EXPECT_EQ(4, moves.size());
-    EXPECT_EQ(1ULL << 37, moves.at(0).get_to());
-    EXPECT_EQ(1ULL << 39, moves.at(1).get_to());
-    EXPECT_EQ(1ULL << 60, moves.at(2).get_to());
-    EXPECT_EQ(1ULL << 44, moves.at(3).get_to());
+
+    board::Bitboard expected_moves = 1ULL << 37 | 1ULL << 60 | 1ULL << 39
+                                     | 1ULL << 44;
+
+    EXPECT_EQ(board::combine_moves(moves), expected_moves);
 }
