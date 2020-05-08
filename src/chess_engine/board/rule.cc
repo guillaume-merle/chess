@@ -43,12 +43,13 @@ namespace board
         if (chessboard.is_white_turn())
         {
             King::generate_moves(
-                moves, chessboard.get(BitboardType::WHITEKING));
+                moves, chessboard.get(BitboardType::WHITEKING), chessboard);
         }
         else
         {
             King::generate_moves(
-                moves, chessboard.get(BitboardType::BLACKKING));
+                moves, chessboard.get(BitboardType::BLACKKING), chessboard,
+                                      Color::BLACK);
         }
 
         return moves;

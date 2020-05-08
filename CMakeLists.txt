@@ -53,6 +53,7 @@ set(SRC_ENGINE
     src/listener/listener.hh
     src/listener/listener-manager.hh
     src/utils/utype.hh
+    src/utils/utils.hh
 )
 
 
@@ -79,6 +80,7 @@ set(SRC_GTEST
     tests/test_rook.hh
     tests/test_bitboard.hh
     tests/test_queen.hh
+    tests/test_chessboard.hh
 )
 
 # END SOURCES
