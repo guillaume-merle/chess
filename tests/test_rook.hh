@@ -44,3 +44,39 @@ TEST (Rook, generate_moves_southeast)
 
     EXPECT_EQ(board::combine_moves(moves), expected_moves);
 }
+
+TEST (Rook, generate_moves_with_chessboard_none_blocking)
+{
+    board::Bitboard rook = 1;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1 << 9);
+
+    std::vector<board::Move> moves;
+    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+
+    EXPECT_EQ(14, moves.size());
+}
+
+TEST (Rook, generate_moves_with_chessboard_one_blocking)
+{
+    board::Bitboard rook = 1;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1 << 3);
+
+    std::vector<board::Move> moves;
+    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+
+    EXPECT_EQ(9, moves.size());
+}
+
+TEST (Rook, generate_moves_with_chessboard_no_move_possible)
+{
+    board::Bitboard rook = 1 << 27;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+
+    std::vector<board::Move> moves;
+    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+
+    EXPECT_EQ(0, moves.size());
+}
