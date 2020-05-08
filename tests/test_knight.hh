@@ -189,3 +189,19 @@ TEST (Knight, generate_moves_with_chessboard_no_move_possible)
 
     EXPECT_EQ(0, moves.size());
 }
+
+TEST (Knight, generate_moves_with_chessboard_capture)
+{
+    board::Bitboard knight = 1 << 20;
+    board::Chessboard board;
+
+    board.set(board::BitboardType::ALLWHITE, 1ULL << 35 );
+    board.set(board::BitboardType::WHITEBISHOP, 1ULL << 35);
+
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight, board, board::Color::BLACK);
+
+    EXPECT_EQ(8, moves.size());
+    EXPECT_TRUE(moves.at(0).is_capture());
+    EXPECT_EQ(board::PieceType::BISHOP, moves.at(0).get_capture());
+}
