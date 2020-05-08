@@ -14,6 +14,9 @@ namespace listener
     class ListenerManager
     {
     public:
+
+        ListenerManager(std::vector<Listener> listeners);
+
         void play_ai();
 
         void close_listeners();
