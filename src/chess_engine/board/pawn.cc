@@ -1,3 +1,4 @@
+#include <iostream>
 #include "pawn.hh"
 
 namespace board
@@ -52,14 +53,16 @@ namespace board
         auto move = single_push(bitboard, color);
 
         if ((move & all_pieces) == 0)
+        {
             add_move(moves, bitboard, move, PieceType::PAWN);
 
-        if ((color == Color::WHITE && bitboard <= white_pawn_start)
-                || (color == Color::BLACK && bitboard >= black_pawn_start))
-        {
-            move = double_push(bitboard, color);
-            if ((move & all_pieces) == 0)
-                add_move(moves, bitboard, move, PieceType::PAWN);
+            if ((color == Color::WHITE && bitboard <= white_pawn_start)
+                    || (color == Color::BLACK && bitboard >= black_pawn_start))
+            {
+                move = double_push(bitboard, color);
+                if ((move & all_pieces) == 0)
+                    add_move(moves, bitboard, move, PieceType::PAWN);
+            }
         }
 
         // moves.emplace_back(Move(bitboard, Pawn::left_attack(bitboard, color),

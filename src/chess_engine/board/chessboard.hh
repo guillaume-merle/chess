@@ -35,7 +35,7 @@ namespace board
     {
     public:
         Chessboard()
-            : white_turn_(true)
+            : bitboards_{0}, white_turn_(true)
         {}
 
         std::vector<Move> generate_legal_moves();
@@ -60,7 +60,7 @@ namespace board
 
 
     private:
-        Bitboard bitboards_[BITBOARDS_NUMBER] = {0};
+        Bitboard bitboards_[BITBOARDS_NUMBER];
 
         bool white_turn_;
         bool white_king_castling_;

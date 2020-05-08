@@ -95,3 +95,42 @@ TEST (Pawn, generate_black_moves_out)
 
     EXPECT_EQ(0, moves.size());
 }
+
+TEST (Pawn, generate_moves_with_chessboard_no_move)
+{
+    board::Bitboard pawn = 1 << 8;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLBLACK, 1 << 16);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(0, moves.size());
+}
+
+TEST (Pawn, generate_moves_with_chessboard_single_but_not_double)
+{
+    board::Bitboard pawn = 1 << 8;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLBLACK, 1 << 24);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(1, moves.size());
+    EXPECT_EQ(1 << 16, moves.at(0).get_to());
+}
+
+TEST (Pawn, generate_moves_with_chessboard_no_collision)
+{
+    board::Bitboard pawn = 1 << 8;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLBLACK, 1);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(2, moves.size());
+    EXPECT_EQ(1 << 16, moves.at(0).get_to());
+    EXPECT_EQ(1 << 24, moves.at(1).get_to());
+}
