@@ -3,6 +3,7 @@
 #include "king.hh"
 #include "queen.hh"
 #include "bishop.hh"
+#include "knight.hh"
 
 namespace board
 {
@@ -48,6 +49,32 @@ namespace board
         {
             King::generate_moves(
                 moves, chessboard.get(BitboardType::BLACKKING));
+        }
+
+        return moves;
+    }
+
+    std::vector<Move> generate_knight_moves(Chessboard& chessboard)
+    {
+        std::vector<Move> moves;
+
+        for(unsigned i = 0; i < 64; i++)
+        {
+            Bitboard current;
+
+            if (chessboard.is_white_turn())
+            {
+                current = (1ULL << i)
+                    & chessboard.get(BitboardType::WHITEKNIGHT);
+            }
+            else
+            {
+                current = (1ULL << i)
+                    & chessboard.get(BitboardType::BLACKKNIGHT);
+            }
+
+            if (current)
+                moves = Knight::generate_moves(moves, current);
         }
 
         return moves;
