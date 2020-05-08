@@ -140,3 +140,52 @@ TEST (Knight, generate_moves2)
 
     EXPECT_EQ(board::combine_moves(moves), expected_moves);
 }
+
+TEST (Knight, generate_moves_with_chessboard_none_blocking)
+{
+    board::Bitboard knight = 1 << 28;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1ULL << 63);
+
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+
+    EXPECT_EQ(8, moves.size());
+}
+
+TEST (Knight, generate_moves_with_chessboard_one_blocking)
+{
+    board::Bitboard knight = 1 << 9;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1 << 24);
+
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+
+    EXPECT_EQ(3, moves.size());
+}
+
+TEST (Knight, generate_moves_with_chessboard_three_blocking)
+{
+    board::Bitboard knight = 1ULL << 42;
+    board::Chessboard board;
+    board::Bitboard blocker = 1Ull << 32 | 1ULL << 52 | 1ULL << 25;
+    board.set(board::BitboardType::ALLWHITE, blocker);
+
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+
+    EXPECT_EQ(5, moves.size());
+}
+
+TEST (Knight, generate_moves_with_chessboard_no_move_possible)
+{
+    board::Bitboard knight = 1 << 19;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+
+    std::vector<board::Move> moves;
+    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+
+    EXPECT_EQ(0, moves.size());
+}
