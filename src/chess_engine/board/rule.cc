@@ -101,7 +101,7 @@ namespace board
             }
 
             if (current)
-                moves = Bishop::generate_moves(moves, current);
+                moves = Bishop::generate_moves(moves, current, chessboard);
         }
 
         return moves;
@@ -127,7 +127,7 @@ namespace board
             }
 
             if (current)
-                moves = Bishop::generate_moves(moves, current);
+                moves = Bishop::generate_moves(moves, current, chessboard);
         }
 
         return moves;
@@ -140,12 +140,13 @@ namespace board
         if (chessboard.is_white_turn())
         {
             Queen::generate_moves(
-                moves, chessboard.get(BitboardType::WHITEQUEEN));
+                moves, chessboard.get(BitboardType::WHITEQUEEN), chessboard);
         }
         else
         {
             Queen::generate_moves(
-                moves, chessboard.get(BitboardType::BLACKQUEEN));
+                moves, chessboard.get(BitboardType::BLACKQUEEN), chessboard,
+                                      Color::BLACK);
         }
 
         return moves;
