@@ -143,4 +143,3 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     target_sources(chessengine-static PRIVATE "src/main.cc" ${SRC_ENGINE})
     target_link_libraries(chessengine-static PRIVATE ${LIBRARIES} -static)
 endif()
-

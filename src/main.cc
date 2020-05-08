@@ -1,4 +1,5 @@
 #include <iostream>
+#include <dlfcn.h>
 
 #include "chessboard.hh"
 #include "pgn-parser.hh"
@@ -14,7 +15,7 @@
 #include "rook.hh"
 #include "queen.hh"
 
-int main()
+int main(int argc, char **argv)
 {
     // auto chessboard = board::Chessboard();
 //
@@ -31,6 +32,16 @@ int main()
         // board::print_bitboard(move.get_to());
     // }
     //
+    if (argc > 1)
+    {
+        void* handle = dlopen(argv[1], RTLD_LAZY);
+        void* symbol = dlsym(handle, "listener_create");
+        listener::Listener* listener = reinterpret_cast<listener::Listener*(*)()>(symbol)();
+        if (listener == NULL)
+            puts("Ztf");
+        if (dlclose(handle))
+            puts("Error general");
+    }
     std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 28;

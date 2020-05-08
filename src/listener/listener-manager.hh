@@ -21,6 +21,6 @@ namespace listener
     private:
 
         std::vector<Listener> listeners_;
-        //board::Chessboard chessboard_; TODO
+        board::Chessboard chessboard_;
     };
 } // namespace listener
