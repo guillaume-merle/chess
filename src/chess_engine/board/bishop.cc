@@ -6,28 +6,38 @@ namespace board
     std::vector<Move>
     Bishop::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
     {
-        Bitboard pos = northeast(bitboard, 1);
-        for (; pos; pos = northeast(pos, 1))
+        Chessboard board;
+        return generate_moves(moves, bitboard, board);
+    }
+
+    std::vector<Move>
+    Bishop::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+                           Chessboard& board, Color color)
+    {
+        PieceType piece = PieceType::BISHOP;
+
+        Bitboard pos = northeast(bitboard);
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::BISHOP);
+            pos = northeast(pos);
         }
 
-        pos = northwest(bitboard, 1);
-        for (; pos; pos = northwest(pos, 1))
+        pos = northwest(bitboard);
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::BISHOP);
+            pos = northwest(pos);
         }
 
-        pos = southeast(bitboard, 1);
-        for (; pos; pos = southeast(pos, 1))
+        pos = southeast(bitboard);
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::BISHOP);
+            pos = southeast(pos);
         }
 
-        pos = southwest(bitboard, 1);
-        for (; pos; pos = southwest(pos, 1))
+        pos = southwest(bitboard);
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::BISHOP);
+            pos = southwest(pos);
         }
 
         return moves;
