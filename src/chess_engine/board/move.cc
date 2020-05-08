@@ -32,6 +32,11 @@ namespace board
         return capture_;
     }
 
+    bool Move::is_capture()
+    {
+        return is_capture_;
+    }
+
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece)
     {
@@ -60,7 +65,6 @@ namespace board
                 if (to & board.get(i))
                 {
                     // get PieceType from BitboardType
-                    std::cout << "Piece: " << i << "\n";
                     PieceType capture = static_cast<PieceType>((i - 2) / 2);
                     moves.emplace_back(Move(from, to, piece, capture));
 

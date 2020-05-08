@@ -25,6 +25,7 @@ namespace board
         Bitboard get_from();
         Bitboard get_to();
         PieceType get_capture();
+        bool is_capture();
 
     private:
         // store the move

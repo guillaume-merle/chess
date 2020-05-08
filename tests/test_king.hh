@@ -121,5 +121,6 @@ TEST (King, generate_moves_with_chessboard_capture)
     board::King::generate_moves(moves, king, board, board::Color::WHITE);
 
     EXPECT_EQ(3, moves.size());
+    EXPECT_TRUE(moves.at(1).is_capture());
     EXPECT_EQ(board::PieceType::ROOK, moves.at(1).get_capture());
 }
