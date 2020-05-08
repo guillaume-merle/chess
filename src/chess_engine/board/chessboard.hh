@@ -61,6 +61,9 @@ namespace board
 
         virtual opt_piece_t operator[](const Position& position) const;
 
+        bool would_collide(Bitboard pos, Color color);
+
+        bool would_capture(Bitboard pos, Color color);
 
     private:
         Bitboard bitboards_[BITBOARDS_NUMBER];

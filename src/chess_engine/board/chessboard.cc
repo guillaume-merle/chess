@@ -31,4 +31,30 @@ namespace board
     {
         return std::nullopt;
     }
+
+    bool Chessboard::would_collide(Bitboard pos, Color color)
+    {
+        if (color == Color::WHITE
+                && (pos & get(BitboardType::ALLWHITE)))
+            return true;
+
+        if (color == Color::BLACK
+                && (pos & get(BitboardType::ALLBLACK)))
+            return true;
+
+        return false;
+    }
+
+    bool Chessboard::would_capture(Bitboard pos, Color color)
+    {
+        if (color == Color::WHITE
+                && (pos & get(BitboardType::ALLBLACK)))
+            return true;
+
+        if (color == Color::BLACK
+                && (pos & get(BitboardType::ALLWHITE)))
+            return true;
+
+        return false;
+    }
 }
