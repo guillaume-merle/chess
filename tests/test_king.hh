@@ -72,3 +72,39 @@ TEST (King, generate_moves_only_5_v4)
 
     EXPECT_EQ(5, moves.size());
 }
+
+TEST (King, generate_moves_with_chessboard_none_blocking)
+{
+    board::Bitboard king = 1 << 9;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1ULL << 63);
+
+    std::vector<board::Move> moves;
+    board::King::generate_moves(moves, king, board, board::Color::WHITE);
+
+    EXPECT_EQ(8, moves.size());
+}
+
+TEST (King, generate_moves_with_chessboard_one_blocking)
+{
+    board::Bitboard king = 1 << 9;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, 1);
+
+    std::vector<board::Move> moves;
+    board::King::generate_moves(moves, king, board, board::Color::WHITE);
+
+    EXPECT_EQ(7, moves.size());
+}
+
+TEST (King, generate_moves_with_chessboard_no_move_possible)
+{
+    board::Bitboard king = 1 << 9;
+    board::Chessboard board;
+    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+
+    std::vector<board::Move> moves;
+    board::King::generate_moves(moves, king, board, board::Color::WHITE);
+
+    EXPECT_EQ(0, moves.size());
+}
