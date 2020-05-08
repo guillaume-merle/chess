@@ -24,3 +24,16 @@ TEST (Queen, generate_moves_with_chessboard)
 
     EXPECT_EQ(15, moves.size());
 }
+
+TEST (Queen, generate_moves_with_chessboard_multiple_blockers)
+{
+    board::Bitboard queen = 1;
+    board::Chessboard board;
+    board::Bitboard blockers = 1 << 18 | 1 << 5 | 1ULL << 32;
+    board.set(board::BitboardType::ALLWHITE, blockers);
+
+    std::vector<board::Move> moves;
+    board::Queen::generate_moves(moves, queen, board);
+
+    EXPECT_EQ(8, moves.size());
+}
