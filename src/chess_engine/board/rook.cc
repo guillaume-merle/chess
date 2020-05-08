@@ -5,28 +5,38 @@ namespace board
     std::vector<Move>
     Rook::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
     {
+        Chessboard board;
+        return generate_moves(moves, bitboard, board);
+    }
+
+    std::vector<Move>
+    Rook::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
+            Chessboard& board, Color color)
+    {
+        PieceType piece = PieceType::ROOK;
+
         Bitboard pos = north(bitboard);
-        for (; pos; pos = north(pos))
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::ROOK);
+            pos = north(pos);
         }
 
         pos = south(bitboard);
-        for (; pos; pos = south(pos))
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::ROOK);
+            pos = south(pos);
         }
 
         pos = east(bitboard);
-        for (; pos; pos = east(pos))
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::ROOK);
+            pos = east(pos);
         }
 
         pos = west(bitboard);
-        for (; pos; pos = west(pos))
+        while (add_move(moves, bitboard, pos, piece, color, board))
         {
-            add_move(moves, bitboard, pos, PieceType::ROOK);
+            pos = west(pos);
         }
 
         return moves;
