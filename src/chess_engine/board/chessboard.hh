@@ -15,18 +15,18 @@ namespace board
     {
         ALLWHITE = 0,
         ALLBLACK,
-        WHITEPAWN,
-        BLACKPAWN,
         WHITEQUEEN,
         BLACKQUEEN,
-        WHITEKING,
-        BLACKKING,
         WHITEROOK,
         BLACKROOK,
         WHITEBISHOP,
         BLACKBISHOP,
         WHITEKNIGHT,
-        BLACKKNIGHT
+        BLACKKNIGHT,
+        WHITEPAWN,
+        BLACKPAWN,
+        WHITEKING,
+        BLACKKING,
     };
 
     /*
@@ -52,6 +52,8 @@ namespace board
         bool is_draw();
 
         Bitboard get(BitboardType piece);
+
+        Bitboard get(int piece);
 
         bool set(BitboardType piece, Bitboard value);
 

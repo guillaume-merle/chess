@@ -9,9 +9,9 @@ namespace board
      * piece type present on the board. The char associated
      * with each value is the ascii char representing the
      * piece on the board */
-    enum class PieceType
+    enum class PieceType : int
     {
-        QUEEN,
+        QUEEN = 0,
         ROOK,
         BISHOP,
         KNIGHT,

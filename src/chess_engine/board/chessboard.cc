@@ -7,6 +7,11 @@ namespace board
         return bitboards_[piece];
     }
 
+    Bitboard Chessboard::get(int piece)
+    {
+        return bitboards_[piece];
+    }
+
     bool Chessboard::is_white_turn()
     {
         return white_turn_;

@@ -32,7 +32,7 @@ namespace board
                      color, board);
         }
 
-        // icheck if the king is not on the right side
+        // check if the king is not on the right side
         if ((EmptyFileHBB & bitboard) != 0)
         {
             add_move(moves, bitboard, east(bitboard, 1), PieceType::KING,
