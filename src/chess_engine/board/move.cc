@@ -50,12 +50,8 @@ namespace board
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece, Color color, Chessboard& board)
     {
-        auto all_white_pieces = board.get(BitboardType::ALLWHITE);
-        auto all_black_pieces = board.get(BitboardType::ALLBLACK);
-
         // if there is an opponant piece to capture on the square
-        if ((color == Color::WHITE && (to & all_black_pieces))
-                  || (color == Color::BLACK && (to & all_white_pieces)))
+        if (board.would_capture(to, color))
         {
             BitboardType start = color == Color::WHITE ?
                             BitboardType::BLACKQUEEN : BitboardType::WHITEQUEEN;
@@ -76,8 +72,7 @@ namespace board
             throw std::runtime_error("add_move: invalid bitboards");
         }
         // else if there is an ally piece on the square
-        else if ((color == Color::WHITE && (to & all_white_pieces) != 0)
-            || (color == Color::BLACK && (to & all_black_pieces) != 0))
+        else if (board.would_collide(to, color))
             return false;
 
         // the square is free
