@@ -83,3 +83,19 @@ TEST (Chessboard, is_check_by_queen)
 
     EXPECT_TRUE(board.is_check());
 }
+
+TEST (Chessboard, is_check_by_pawn)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1 << 22;
+
+    board::Bitboard enemy_pawn = 1 << 13;
+
+    board.set(board::BitboardType::WHITEPAWN, enemy_pawn);
+    board.set(board::BitboardType::ALLWHITE, enemy_pawn);
+
+    board.set(board::BitboardType::BLACKKING, king);
+    board.set(board::BitboardType::ALLBLACK, king);
+
+    EXPECT_TRUE(board.is_check());
+}

@@ -22,7 +22,8 @@ namespace board
                     & chessboard.get(BitboardType::WHITEPAWN);
 
                 if (current)
-                    moves = Pawn::generate_moves(moves, current, Color::WHITE);
+                    moves = Pawn::generate_moves(moves, current, Color::WHITE,
+                                                 chessboard);
             }
             else
             {
@@ -30,7 +31,8 @@ namespace board
                     & chessboard.get(BitboardType::BLACKPAWN);
 
                 if (current)
-                    moves = Pawn::generate_moves(moves, current, Color::BLACK);
+                    moves = Pawn::generate_moves(moves, current, Color::BLACK,
+                                                 chessboard);
             }
         }
 
