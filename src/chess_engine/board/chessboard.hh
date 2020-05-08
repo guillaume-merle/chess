@@ -1,16 +1,43 @@
 #pragma once
 
+#include <vector>
+
 #include "chessboard-interface.hh"
-#include "move.hh"
+#include "bitboard.hh"
 
 namespace board
 {
+    constexpr int BITBOARDS_NUMBER = 14;
+
+    class Move;
+
+    enum BitboardType
+    {
+        ALLWHITE = 0,
+        ALLBLACK,
+        WHITEPAWN,
+        BLACKPAWN,
+        WHITEQUEEN,
+        BLACKQUEEN,
+        WHITEKING,
+        BLACKKING,
+        WHITEROOK,
+        BLACKROOK,
+        WHITEBISHOP,
+        BLACKBISHOP,
+        WHITEKNIGHT,
+        BLACKKNIGHT
+    };
+
     /*
     ** \brief class of the chessboard.
     */
     class Chessboard : public ChessboardInterface
     {
     public:
+        Chessboard()
+            : bitboards_{0}, white_turn_(true)
+        {}
 
         std::vector<Move> generate_legal_moves();
 
@@ -24,10 +51,17 @@ namespace board
 
         bool is_draw();
 
-        //TODO operator[]
+        Bitboard get(BitboardType piece);
+
+        bool set(BitboardType piece, Bitboard value);
+
+        bool is_white_turn();
+
+        virtual opt_piece_t operator[](const Position& position) const;
+
 
     private:
-        //TODO chessboard representation
+        Bitboard bitboards_[BITBOARDS_NUMBER];
 
         bool white_turn_;
         bool white_king_castling_;
