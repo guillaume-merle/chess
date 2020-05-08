@@ -75,7 +75,7 @@ namespace board
             }
 
             if (current)
-                moves = Knight::generate_moves(moves, current);
+                moves = Knight::generate_moves(moves, current, chessboard);
         }
 
         return moves;
