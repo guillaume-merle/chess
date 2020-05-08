@@ -15,7 +15,7 @@
 #include "rook.hh"
 #include "queen.hh"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     // auto chessboard = board::Chessboard();
 //
@@ -32,16 +32,11 @@ int main(int argc, char **argv)
         // board::print_bitboard(move.get_to());
     // }
     //
-    std::vector<listener::Listener> listeners_vect;
-
+    std::vector<std::string> listeners_paths;
     if (argc > 1)
-    {
-        void* handle = dlopen(argv[1], RTLD_LAZY);
-        void* symbol = dlsym(handle, "listener_create");
-        listener::Listener* listener = reinterpret_cast<listener::Listener*(*)()>(symbol)();
-        listeners_vect.push_back(listener);
-    }
-    listener::ListenerManager tmp = listener::ListenerManager(listeners_vect);
+        listeners_paths.push_back(argv[1]);
+    listener::ListenerManager tmp = listener::ListenerManager(listeners_paths);
+
     std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 28;
@@ -100,7 +95,6 @@ int main(int argc, char **argv)
     board::print_bitboard(all_moves);
 
     tmp.close_listeners();
-
 
     return 0;
 }

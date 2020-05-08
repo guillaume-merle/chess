@@ -15,7 +15,7 @@ namespace listener
     {
     public:
 
-        ListenerManager(std::vector<Listener> listeners);
+        ListenerManager(std::vector<std::string> paths);
 
         void play_ai();
 
@@ -23,7 +23,7 @@ namespace listener
     
     private:
 
-        std::vector<Listener> listeners_;
+        std::vector<Listener*> listeners_;
         board::Chessboard chessboard_;
     };
 } // namespace listener
