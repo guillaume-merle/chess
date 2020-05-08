@@ -111,12 +111,7 @@ set(LIBRARIES Boost::system Boost::program_options ${CMAKE_DL_LIBS})
 # CHESSENGINE
 add_executable(chessengine)
 target_sources(chessengine PRIVATE "src/main.cc" ${SRC_ENGINE})
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_libraries(chessengine PRIVATE ${LIBRARIES} -static)
-else()
-    target_link_libraries(chessengine PRIVATE ${LIBRARIES})
-endif()
-
+target_link_libraries(chessengine PRIVATE ${LIBRARIES})
 
 # TESTS
 # Check if GTest is installed
@@ -140,6 +135,12 @@ if(GTest_FOUND)
                     DEPENDS
                     tests
   )
-
-
 endif()
+
+# STATIC TARGET
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_executable(chessengine-static)
+    target_sources(chessengine-static PRIVATE "src/main.cc" ${SRC_ENGINE})
+    target_link_libraries(chessengine-static PRIVATE ${LIBRARIES} -static)
+endif()
+
