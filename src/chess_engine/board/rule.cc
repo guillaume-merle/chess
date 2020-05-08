@@ -4,6 +4,7 @@
 #include "queen.hh"
 #include "bishop.hh"
 #include "knight.hh"
+#include "rook.hh"
 
 namespace board
 {
@@ -67,15 +68,15 @@ namespace board
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::WHITEKNIGHT);
+                moves = Knight::generate_moves(moves, current, chessboard);
             }
             else
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::BLACKKNIGHT);
+                moves = Knight::generate_moves(moves, current, chessboard,
+                                               Color::BLACK);
             }
-
-            if (current)
-                moves = Knight::generate_moves(moves, current, chessboard);
         }
 
         return moves;
@@ -93,15 +94,15 @@ namespace board
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::WHITEBISHOP);
+                moves = Bishop::generate_moves(moves, current, chessboard);
             }
             else
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::BLACKBISHOP);
+                moves = Bishop::generate_moves(moves, current, chessboard,
+                                               Color::BLACK);
             }
-
-            if (current)
-                moves = Bishop::generate_moves(moves, current, chessboard);
         }
 
         return moves;
@@ -119,15 +120,15 @@ namespace board
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::WHITEROOK);
+                moves = Rook::generate_moves(moves, current, chessboard);
             }
             else
             {
                 current = (1ULL << i)
                     & chessboard.get(BitboardType::BLACKROOK);
+                moves = Rook::generate_moves(moves, current, chessboard,
+                                               Color::BLACK);
             }
-
-            if (current)
-                moves = Bishop::generate_moves(moves, current, chessboard);
         }
 
         return moves;
