@@ -21,23 +21,27 @@ namespace board
         return to_;
     }
 
-    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece)
     {
-        if (to)
-            moves.emplace_back(Move(from, to, piece));
+        if (to == 0)
+            return false;
+
+        moves.emplace_back(Move(from, to, piece));
+        return true;
     }
 
-    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-                  PieceType piece, Color color, Chessboard board)
+    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+                  PieceType piece, Color color, Chessboard& board)
     {
         auto all_white_pieces = board.get(BitboardType::ALLWHITE);
         auto all_black_pieces = board.get(BitboardType::ALLBLACK);
 
-        if (color == Color::WHITE && (to & all_white_pieces) == 0)
-            add_move(moves, from, to, piece);
-        else if (color == Color::BLACK && (to & all_black_pieces) == 0)
-            add_move(moves, from, to, piece);
+        if ((color == Color::WHITE && (to & all_white_pieces) == 0)
+            || (color == Color::BLACK && (to & all_black_pieces) == 0))
+            return add_move(moves, from, to, piece);
+
+        return false;
     }
 
     Bitboard combine_moves(std::vector<Move>& moves)
