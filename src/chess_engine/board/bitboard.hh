@@ -27,6 +27,8 @@ namespace board
     constexpr Bitboard EmptyFileABB = 0xFEFEFEFEFEFEFEFE;
     constexpr Bitboard EmptyFileHBB = 0x7F7F7F7F7F7F7F7F;
 
+    constexpr Bitboard FullBB = 0xFFFFFFFFFFFFFFFF;
+
     Bitboard north(Bitboard bitboard, unsigned number = 1);
     Bitboard northeast(Bitboard bitboard, unsigned number = 1);
     Bitboard northwest(Bitboard bitboard, unsigned number = 1);

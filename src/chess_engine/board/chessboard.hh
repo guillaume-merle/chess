@@ -3,12 +3,13 @@
 #include <vector>
 
 #include "chessboard-interface.hh"
-#include "move.hh"
 #include "bitboard.hh"
 
 namespace board
 {
     constexpr int BITBOARDS_NUMBER = 14;
+
+    class Move;
 
     enum BitboardType
     {
