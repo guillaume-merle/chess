@@ -28,6 +28,18 @@ namespace board
             moves.emplace_back(Move(from, to, piece));
     }
 
+    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+                  PieceType piece, Color color, Chessboard board)
+    {
+        auto all_white_pieces = board.get(BitboardType::ALLWHITE);
+        auto all_black_pieces = board.get(BitboardType::ALLBLACK);
+
+        if (color == Color::WHITE && (to & all_white_pieces) == 0)
+            add_move(moves, from, to, piece);
+        else if (color == Color::BLACK && (to & all_black_pieces) == 0)
+            add_move(moves, from, to, piece);
+    }
+
     Bitboard combine_moves(std::vector<Move>& moves)
     {
         Bitboard all_moves = 0;

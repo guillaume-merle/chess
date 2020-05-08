@@ -4,6 +4,8 @@
 
 #include "piece-type.hh"
 #include "bitboard.hh"
+#include "color.hh"
+#include "chessboard.hh"
 
 namespace board
 {
@@ -39,6 +41,9 @@ namespace board
 
     void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece);
+
+    void add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
+                  PieceType piece, Color color, Chessboard board);
     Bitboard combine_moves(std::vector<Move>& moves);
 
 } // namespace board
