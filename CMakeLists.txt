@@ -56,6 +56,9 @@ set(SRC_ENGINE
     src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
     src/listener/listener.hh
+    #src/listener/chessboard-listener.cc
+    #src/listener/chessboard-listener.hh
+    src/listener/listener-manager.cc
     src/listener/listener-manager.hh
     src/utils/utype.hh
     src/utils/utils.hh
@@ -150,4 +153,3 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     target_sources(chessengine-static PRIVATE "src/main.cc" ${SRC_ENGINE})
     target_link_libraries(chessengine-static PRIVATE ${LIBRARIES} -static)
 endif()
-

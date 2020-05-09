@@ -14,13 +14,16 @@ namespace listener
     class ListenerManager
     {
     public:
+
+        ListenerManager(std::vector<std::string> paths);
+
         void play_ai();
 
         void close_listeners();
     
     private:
 
-        std::vector<Listener> listeners_;
-        //board::Chessboard chessboard_; TODO
+        std::vector<Listener*> listeners_;
+        board::Chessboard chessboard_;
     };
 } // namespace listener

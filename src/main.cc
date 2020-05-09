@@ -1,4 +1,5 @@
 #include <iostream>
+#include <dlfcn.h>
 
 #include "chessboard.hh"
 #include "pgn-parser.hh"
@@ -14,7 +15,7 @@
 #include "rook.hh"
 #include "queen.hh"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     // auto chessboard = board::Chessboard();
 //
@@ -31,10 +32,12 @@ int main(int argc, char **argv)
         // board::print_bitboard(move.get_to());
     // }
     //
+    std::vector<std::string> listeners_paths;
+    if (argc > 1)
+        listeners_paths.push_back(argv[1]);
+    listener::ListenerManager tmp = listener::ListenerManager(listeners_paths);
 
-    option_parser::parse_options(argc, argv);
-
-    /*std::cout << "BISHOP:\n";
+    std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 28;
     std::vector<board::Move> moves;
@@ -90,6 +93,8 @@ int main(int argc, char **argv)
     }
 
     board::print_bitboard(all_moves);*/
+
+    tmp.close_listeners();
 
     return 0;
 }
