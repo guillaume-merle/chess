@@ -4,6 +4,7 @@
 #include <boost/utility/in_place_factory.hpp>
 #include <iostream>
 
+#include "pgn-parser.hh"
 #include "option-parser.hh"
 
 namespace option_parser
@@ -17,7 +18,8 @@ namespace option_parser
         desc.add_options()
             ("help,h", "show usage")
             ("pgn", po::value<std::string>(), "path to the PGN game file")
-            ("listeners,l", po::value<std::vector<std::string>>(), "list of paths to listener plugins")
+            ("listeners,l", po::value<std::vector<std::string>>(),
+                "list of paths to listener plugins")
             ("perft", po::value<std::string>(), "path to a perft game file")
             ;
 
@@ -32,8 +34,8 @@ namespace option_parser
 
         if (vm.count("pgn"))
         {
-            std::cout << "pgn path is "
-                << vm["pgn"].as<std::string>() << ".\n";
+            std::vector<board::PgnMove> pgn_vect = pgn_parser::parse_pgn(
+                                                   vm["pgn"].as<std::string>());
         }
 
         if (vm.count("l") || vm.count("listeners"))
@@ -41,16 +43,21 @@ namespace option_parser
             std::cout << "listeners path are " << std::endl;
             if (vm.count("l"))
             {
-                for (size_t i = 0; i < vm["l"].as<std::vector<std::string>>().size(); ++i)
+                for (size_t i = 0;
+                    i < vm["l"].as<std::vector<std::string>>().size(); ++i)
                 {
-                    std::cout << vm["l"].as< std::vector<std::string> >()[i] << ".\n";
+                    std::cout << vm["l"].as< std::vector<std::string> >()[i]
+                    << ".\n";
                 }
             }
             else
             {
-                for (size_t i = 0; i < vm["listeners"].as<std::vector<std::string>>().size(); ++i)
+                for (size_t i = 0;
+                    i < vm["listeners"].as<std::vector<std::string>>().size(); ++i)
                 {
-                    std::cout << vm["listeners"].as< std::vector<std::string> >()[i] << ".\n";
+                    std::cout
+                    << vm["listeners"].as< std::vector<std::string> >()[i]
+                    << ".\n";
                 }
             }
         }
