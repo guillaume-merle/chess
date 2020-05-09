@@ -26,10 +26,14 @@ namespace perft_parser
     {
         //piece placement
         std::vector<board::FenRank> ranks;
-        
-        for (size_t i = 0; i < splited_input[0].size(); ++i)
+
+        size_t pos = 0;
+        std::string placement = splited_input[0];
+        std::string token;
+        while ((pos = placement.find('/')) != std::string::npos)
         {
-            //ranks.push_back(); TODO
+            token = placement.substr(0, pos);
+            ranks.push_back(board::FenRank(token));
         }
 
 

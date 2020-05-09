@@ -11,16 +11,16 @@ namespace board
     class FenRank
     {
     public:
-
+        
         using side_piece_t = std::pair<PieceType, Color>;
         using piece_t = std::vector<side_piece_t>;
-        
-        FenRank();
+
+        FenRank(std::string rank);
 
         //operator[] TODO
 
     private:
 
-        piece_t pieces_;
+        std::vector<std::pair<PieceType, Color>> pieces_;
     };
 } // namespace board
