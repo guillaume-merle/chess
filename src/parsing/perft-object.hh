@@ -11,7 +11,9 @@ namespace board
     {
     public:
         
-        PerftObject() = default;
+        PerftObject(FenObject fen, int depth)
+            : fen_(fen), depth_(depth)
+        {};
 
         FenObject fen_get();
 
@@ -22,4 +24,4 @@ namespace board
         FenObject fen_;
         int depth_;
     };
-} // namespace perft_parser
+} // namespace board
