@@ -30,4 +30,4 @@ namespace board
         std::vector<char> castling_;
         Position en_passant_target_;
     };
-} // namespace perft_parser
+} // namespace board
