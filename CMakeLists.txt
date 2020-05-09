@@ -47,6 +47,7 @@ set(SRC_ENGINE
     src/parsing/pgn-parser.hh
     src/parsing/fen-object.hh
     src/parsing/fen-rank.hh
+    src/parsing/option-parser.cc
     src/parsing/option-parser.hh
     src/parsing/perft-object.hh
     src/parsing/perft-parser.hh

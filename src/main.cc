@@ -14,7 +14,7 @@
 #include "rook.hh"
 #include "queen.hh"
 
-int main()
+int main(int argc, char **argv)
 {
     // auto chessboard = board::Chessboard();
 //
@@ -31,6 +31,9 @@ int main()
         // board::print_bitboard(move.get_to());
     // }
     //
+
+    option_parser::parse_options(argc, argv);
+
     std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 28;
