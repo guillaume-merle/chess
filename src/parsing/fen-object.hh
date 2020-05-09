@@ -5,9 +5,10 @@
 
 #include "fen-rank.hh"
 #include "color.hh"
+#include "position.hh"
 #include "piece-type.hh"
 
-namespace perft_parser
+namespace board
 {
     class FenObject
     {
@@ -16,17 +17,17 @@ namespace perft_parser
 
         //operator[] TODO
         
-        board::Color side_to_move_get();
+        Color side_to_move_get();
 
         std::vector<char> castling_get();
 
-        board::Position en_passant_target_get();
+        Position en_passant_target_get();
 
     private:
         
         std::vector<FenRank> ranks_;
-        board::Color side_to_move_;
+        Color side_to_move_;
         std::vector<char> castling_;
-        board::Position en_passant_target_;
+        Position en_passant_target_;
     };
 } // namespace perft_parser

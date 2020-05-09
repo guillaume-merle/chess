@@ -4,6 +4,7 @@
 #include <boost/utility/in_place_factory.hpp>
 #include <iostream>
 
+#include "perft-parser.hh"
 #include "pgn-parser.hh"
 #include "option-parser.hh"
 
@@ -67,8 +68,8 @@ namespace option_parser
 
         if (vm.count("perft"))
         {
-            std::cout << "perft path is "
-                << vm["perft"].as<std::string>() << ".\n";
+            board::PerftObject perft_obj = perft_parser::parse_perft(
+                                                   vm["perft"].as<std::string>());
             //run perft
         }
 

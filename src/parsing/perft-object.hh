@@ -5,7 +5,7 @@
 
 #include "fen-object.hh"
 
-namespace perft_parser
+namespace board
 {
     class PerftObject
     {
