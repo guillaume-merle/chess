@@ -15,7 +15,7 @@ namespace board
         using side_piece_t = std::pair<PieceType, Color>;
         using piece_t = std::vector<side_piece_t>;
         
-        FenRank() = default;
+        FenRank();
 
         //operator[] TODO
 
@@ -23,4 +23,4 @@ namespace board
 
         piece_t pieces_;
     };
-} // namespace perft_parser
+} // namespace board

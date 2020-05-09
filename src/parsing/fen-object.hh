@@ -4,16 +4,21 @@
 #include <vector>
 
 #include "fen-rank.hh"
-#include "color.hh"
 #include "position.hh"
-#include "piece-type.hh"
 
 namespace board
 {
     class FenObject
     {
     public:
+
         FenObject();
+
+        FenObject(std::vector<FenRank> ranks, Color side_to_move,
+                  std::vector<char> castling, Position en_passant_target)
+            : ranks_(ranks), side_to_move_(side_to_move),
+              castling_(castling), en_passant_target_(en_passant_target)
+        {};
 
         //operator[] TODO
         

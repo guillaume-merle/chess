@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "perft-object.hh"
-#include "fen-object.hh"
 
 namespace perft_parser
 {
