@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 
     option_parser::parse_options(argc, argv);
 
-    std::cout << "BISHOP:\n";
+    /*std::cout << "BISHOP:\n";
 
     board::Bitboard bishop = 1ULL << 28;
     std::vector<board::Move> moves;
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         all_moves |= move.get_to();
     }
 
-    board::print_bitboard(all_moves);
+    board::print_bitboard(all_moves);*/
 
     return 0;
 }

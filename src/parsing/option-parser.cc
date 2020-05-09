@@ -15,23 +15,50 @@ namespace option_parser
         // Declare the supported options.
         po::options_description desc("Allowed options");
         desc.add_options()
-            ("help", "produce help message")
-            ("compression", po::value<int>(), "set compression level")
+            ("help,h", "show usage")
+            ("pgn", po::value<std::string>(), "path to the PGN game file")
+            ("listeners,l", po::value<std::vector<std::string>>(), "list of paths to listener plugins")
+            ("perft", po::value<std::string>(), "path to a perft game file")
             ;
 
         po::variables_map vm;
         po::store(po::parse_command_line(argc, argv, desc), vm);
         po::notify(vm);
 
-        if (vm.count("help")) {
+        if (vm.count("help") || vm.count("h"))
+        {
             std::cout << desc << "\n";
         }
 
-        if (vm.count("compression")) {
-            std::cout << "Compression level was set to "
-                << vm["compression"].as<int>() << ".\n";
-        } else {
-            std::cout << "Compression level was not set.\n";
+        if (vm.count("pgn"))
+        {
+            std::cout << "pgn path is "
+                << vm["pgn"].as<std::string>() << ".\n";
+        }
+
+        if (vm.count("l") || vm.count("listeners"))
+        {
+            std::cout << "listeners path are " << std::endl;
+            if (vm.count("l"))
+            {
+                for (size_t i = 0; i < vm["l"].as<std::vector<std::string>>().size(); ++i)
+                {
+                    std::cout << vm["l"].as< std::vector<std::string> >()[i] << ".\n";
+                }
+            }
+            else
+            {
+                for (size_t i = 0; i < vm["listeners"].as<std::vector<std::string>>().size(); ++i)
+                {
+                    std::cout << vm["listeners"].as< std::vector<std::string> >()[i] << ".\n";
+                }
+            }
+        }
+
+        if (vm.count("perft"))
+        {
+            std::cout << "perft path is "
+                << vm["perft"].as<std::string>() << ".\n";
         }
     }
 } // namespace option_parser
