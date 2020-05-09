@@ -92,7 +92,7 @@ int main(int argc, char** argv)
         all_moves |= move.get_to();
     }
 
-    board::print_bitboard(all_moves);
+    board::print_bitboard(all_moves);*/
 
     tmp.close_listeners();
 

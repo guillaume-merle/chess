@@ -5,13 +5,15 @@
 
 #include "fen-object.hh"
 
-namespace perft_parser
+namespace board
 {
     class PerftObject
     {
     public:
         
-        PerftObject() = default;
+        PerftObject(FenObject fen, int depth)
+            : fen_(fen), depth_(depth)
+        {};
 
         FenObject fen_get();
 
@@ -22,4 +24,4 @@ namespace perft_parser
         FenObject fen_;
         int depth_;
     };
-} // namespace perft_parser
+} // namespace board

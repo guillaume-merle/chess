@@ -24,3 +24,54 @@ TEST (Queen, generate_moves_with_chessboard)
 
     EXPECT_EQ(15, moves.size());
 }
+
+TEST (Queen, generate_moves_with_chessboard_multiple_blockers)
+{
+    board::Bitboard queen = 1;
+    board::Chessboard board;
+    board::Bitboard blockers = 1 << 18 | 1 << 5 | 1ULL << 32;
+    board.set(board::BitboardType::ALLWHITE, blockers);
+
+    std::vector<board::Move> moves;
+    board::Queen::generate_moves(moves, queen, board);
+
+    EXPECT_EQ(8, moves.size());
+}
+
+TEST (Queen, generate_moves_with_chessboard_capture)
+{
+    board::Bitboard queen = 1;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 << 8;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Queen::generate_moves(moves, queen, board);
+
+    EXPECT_EQ(15, moves.size());
+    EXPECT_EQ(1 << 8, moves.at(0).get_to());
+    EXPECT_TRUE(moves.at(0).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(0).get_capture());
+}
+
+TEST (Queen, generate_moves_with_chessboard_capture_multiple)
+{
+    board::Bitboard queen = 1;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 << 1 | 1 << 8 | 1 << 9;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Queen::generate_moves(moves, queen, board);
+
+    EXPECT_EQ(3, moves.size());
+    for (auto& move : moves)
+    {
+        EXPECT_TRUE(move.is_capture());
+        EXPECT_EQ(board::PieceType::PAWN, move.get_capture());
+    }
+}

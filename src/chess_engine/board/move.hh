@@ -18,13 +18,16 @@ namespace board
 
         Move(Bitboard from, Bitboard to, PieceType piece);
 
+        Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture);
+
         PieceType piece_get();
 
         Bitboard get_from();
         Bitboard get_to();
+        PieceType get_capture();
+        bool is_capture();
 
     private:
-
         // store the move
 
         Bitboard from_;
@@ -33,6 +36,8 @@ namespace board
         PieceType piece_;
         PieceType promotion_;
         PieceType capture_;
+
+        bool is_capture_;
         bool double_pawn_push_;
         bool king_castling_;
         bool queen_castling_;

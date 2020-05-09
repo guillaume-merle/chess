@@ -5,6 +5,7 @@
 #include "test_bishop.hh"
 #include "test_rook.hh"
 #include "test_queen.hh"
+#include "test_chessboard.hh"
 
 #include "gtest/gtest.h"
 

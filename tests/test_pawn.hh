@@ -134,3 +134,56 @@ TEST (Pawn, generate_moves_with_chessboard_no_collision)
     EXPECT_EQ(1 << 16, moves.at(0).get_to());
     EXPECT_EQ(1 << 24, moves.at(1).get_to());
 }
+
+TEST (Pawn, generate_moves_with_chessboard_capture)
+{
+    board::Bitboard pawn = 1 << 16;
+    board::Chessboard board;
+
+    board::Bitboard other_pawn = 1 << 25;
+    board.set(board::BitboardType::ALLBLACK, other_pawn);
+    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(2, moves.size());
+    EXPECT_TRUE(moves.at(1).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(1).get_capture());
+}
+
+TEST (Pawn, generate_moves_with_chessboard_capture_double_push)
+{
+    board::Bitboard pawn = 1 << 8;
+    board::Chessboard board;
+
+    board::Bitboard other_pawn = 1 << 17;
+    board.set(board::BitboardType::ALLBLACK, other_pawn);
+    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(3, moves.size());
+    EXPECT_TRUE(moves.at(2).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(2).get_capture());
+}
+
+TEST (Pawn, generate_moves_with_chessboard_capture_left_and_right)
+{
+    board::Bitboard pawn = 1 << 17;
+    board::Chessboard board;
+
+    board::Bitboard other_pawn = 1 << 24 | 1 << 26;
+    board.set(board::BitboardType::ALLBLACK, other_pawn);
+    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+
+    std::vector<board::Move> moves;
+    board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
+
+    EXPECT_EQ(3, moves.size());
+    EXPECT_TRUE(moves.at(1).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(1).get_capture());
+    EXPECT_TRUE(moves.at(1).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(2).get_capture());
+}

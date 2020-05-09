@@ -45,10 +45,15 @@ set(SRC_ENGINE
     src/parsing/pgn-move.hh
     src/parsing/pgn-parser.cc
     src/parsing/pgn-parser.hh
+    src/parsing/fen-object.cc
     src/parsing/fen-object.hh
+    src/parsing/fen-rank.cc
     src/parsing/fen-rank.hh
+    src/parsing/option-parser.cc
     src/parsing/option-parser.hh
+    src/parsing/perft-object.cc
     src/parsing/perft-object.hh
+    src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
     src/listener/listener.hh
     #src/listener/chessboard-listener.cc
@@ -56,6 +61,7 @@ set(SRC_ENGINE
     src/listener/listener-manager.cc
     src/listener/listener-manager.hh
     src/utils/utype.hh
+    src/utils/utils.hh
 )
 
 
@@ -82,6 +88,7 @@ set(SRC_GTEST
     tests/test_rook.hh
     tests/test_bitboard.hh
     tests/test_queen.hh
+    tests/test_chessboard.hh
 )
 
 # END SOURCES

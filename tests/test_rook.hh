@@ -80,3 +80,41 @@ TEST (Rook, generate_moves_with_chessboard_no_move_possible)
 
     EXPECT_EQ(0, moves.size());
 }
+
+TEST (Rook, generate_moves_with_chessboard_capture)
+{
+    board::Bitboard rook = 1;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 << 8;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+
+    EXPECT_EQ(8, moves.size());
+    EXPECT_EQ(1 << 8, moves.at(0).get_to());
+    EXPECT_TRUE(moves.at(0).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(0).get_capture());
+}
+
+TEST (Rook, generate_moves_with_chessboard_capture_multiple)
+{
+    board::Bitboard rook = 1;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 << 1 | 1 << 8;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+
+    EXPECT_EQ(2, moves.size());
+    for (auto& move : moves)
+    {
+        EXPECT_TRUE(move.is_capture());
+        EXPECT_EQ(board::PieceType::PAWN, move.get_capture());
+    }
+}

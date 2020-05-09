@@ -107,3 +107,41 @@ TEST (Bishop, generate_moves_with_chessboard_no_move_possible)
 
     EXPECT_EQ(0, moves.size());
 }
+
+TEST (Bishop, generate_moves_with_chessboard_capture)
+{
+    board::Bitboard bishop = 1;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 << 27;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
+
+    EXPECT_EQ(3, moves.size());
+    EXPECT_EQ(1 << 27, moves.at(2).get_to());
+    EXPECT_TRUE(moves.at(2).is_capture());
+    EXPECT_EQ(board::PieceType::PAWN, moves.at(2).get_capture());
+}
+
+TEST (Bishop, generate_moves_with_chessboard_capture_multiple)
+{
+    board::Bitboard bishop = 1 << 9;
+    board::Chessboard board;
+
+    board::Bitboard pawns = 1 | 1 << 2 | 1 << 16 | 1 << 18;
+    board.set(board::BitboardType::BLACKPAWN, pawns);
+    board.set(board::BitboardType::ALLBLACK, pawns);
+
+    std::vector<board::Move> moves;
+    board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
+
+    EXPECT_EQ(4, moves.size());
+    for (auto& move : moves)
+    {
+        EXPECT_TRUE(move.is_capture());
+        EXPECT_EQ(board::PieceType::PAWN, move.get_capture());
+    }
+}

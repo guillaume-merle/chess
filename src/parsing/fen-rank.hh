@@ -6,21 +6,21 @@
 #include "color.hh"
 #include "piece-type.hh"
 
-namespace perft_parser
+namespace board
 {
     class FenRank
     {
     public:
-
-        using side_piece_t = std::pair<board::PieceType, board::Color>;
-        using piece_t = std::vector<side_piece_t>;
         
-        FenRank() = default;
+        using side_piece_t = std::pair<PieceType, Color>;
+        using piece_t = std::vector<side_piece_t>;
+
+        FenRank(std::string rank);
 
         //operator[] TODO
 
     private:
 
-        piece_t pieces_;
+        std::vector<std::pair<PieceType, Color>> pieces_;
     };
-} // namespace perft_parser
+} // namespace board

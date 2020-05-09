@@ -43,11 +43,10 @@ namespace board
     }
 
     std::vector<Move>
-    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
-                           Color color)
+    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
     {
         Chessboard board = Chessboard();
-        return generate_moves(moves, bitboard, board, color);
+        return generate_moves(moves, bitboard, board);
     }
 
     std::vector<Move>

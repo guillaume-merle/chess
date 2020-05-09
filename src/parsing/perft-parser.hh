@@ -4,18 +4,10 @@
 #include <vector>
 
 #include "perft-object.hh"
-#include "fen-object.hh"
 
 namespace perft_parser
 {
-    class PerftParser
-    {
-    public:
-        // Constructor of the functor
-        PerftParser() = default;
+    board::PerftObject parse_perft(std::string input);
 
-        PerftObject parse_perft(std::string input);
-
-        FenObject parse_fen(std::vector<std::string> splited_input);
-    };
+    board::FenObject parse_fen(std::vector<std::string> splited_input);
 } // namespace perft_parser

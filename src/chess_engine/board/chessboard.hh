@@ -15,18 +15,18 @@ namespace board
     {
         ALLWHITE = 0,
         ALLBLACK,
-        WHITEPAWN,
-        BLACKPAWN,
         WHITEQUEEN,
         BLACKQUEEN,
-        WHITEKING,
-        BLACKKING,
         WHITEROOK,
         BLACKROOK,
         WHITEBISHOP,
         BLACKBISHOP,
         WHITEKNIGHT,
-        BLACKKNIGHT
+        BLACKKNIGHT,
+        WHITEPAWN,
+        BLACKPAWN,
+        WHITEKING,
+        BLACKKING,
     };
 
     /*
@@ -53,12 +53,17 @@ namespace board
 
         Bitboard get(BitboardType piece);
 
+        Bitboard get(int piece);
+
         bool set(BitboardType piece, Bitboard value);
 
         bool is_white_turn();
 
         virtual opt_piece_t operator[](const Position& position) const;
 
+        bool would_collide(Bitboard pos, Color color);
+
+        bool would_capture(Bitboard pos, Color color);
 
     private:
         Bitboard bitboards_[BITBOARDS_NUMBER];

@@ -48,6 +48,7 @@ namespace board
     Pawn::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
                          Color color, Chessboard& board)
     {
+        PieceType piece = PieceType::PAWN;
         auto all_pieces = board.get(BitboardType::ALLWHITE)
                           | board.get(BitboardType::ALLBLACK);
 
@@ -55,21 +56,26 @@ namespace board
 
         if ((move & all_pieces) == 0)
         {
-            add_move(moves, bitboard, move, PieceType::PAWN);
+            add_move(moves, bitboard, move, piece);
 
             if ((color == Color::WHITE && bitboard <= white_pawn_start)
                     || (color == Color::BLACK && bitboard >= black_pawn_start))
             {
                 move = double_push(bitboard, color);
                 if ((move & all_pieces) == 0)
-                    add_move(moves, bitboard, move, PieceType::PAWN);
+                    add_move(moves, bitboard, move, piece);
             }
         }
 
-        // moves.emplace_back(Move(bitboard, Pawn::left_attack(bitboard, color),
-                                // PieceType.PAWN));
-        // moves.emplace_back(Move(bitboard, Pawn::right_attack(bitboard, color),
-                                // PieceType.PAWN));
+        move = left_attack(bitboard, color);
+        // only add move if there is a capture
+        if (board.would_capture(move, color))
+            add_move(moves, bitboard, move, piece, color, board);
+
+        move = right_attack(bitboard, color);
+        // only add move if there is a capture
+        if (board.would_capture(move, color))
+            add_move(moves, bitboard, move, piece, color, board);
 
         return moves;
     }
