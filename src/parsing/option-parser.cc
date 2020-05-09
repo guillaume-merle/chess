@@ -4,6 +4,7 @@
 #include <boost/utility/in_place_factory.hpp>
 #include <iostream>
 
+#include "listener-manager.hh"
 #include "perft-parser.hh"
 #include "pgn-parser.hh"
 #include "option-parser.hh"
@@ -36,27 +37,19 @@ namespace option_parser
 
         if (vm.count("l") || vm.count("listeners"))
         {
-            std::cout << "listeners path are " << std::endl;
+            std::vector<std::string> listeners_paths;
             if (vm.count("l"))
             {
-                for (size_t i = 0;
-                    i < vm["l"].as<std::vector<std::string>>().size(); ++i)
-                {
-                    std::cout << vm["l"].as< std::vector<std::string> >()[i]
-                    << ".\n";
-                }
+                listeners_paths = vm["l"].as<std::vector<std::string>>();
             }
             else
             {
-                for (size_t i = 0;
-                    i < vm["listeners"].as<std::vector<std::string>>().size(); ++i)
-                {
-                    std::cout
-                    << vm["listeners"].as< std::vector<std::string> >()[i]
-                    << ".\n";
-                }
+                listeners_paths = vm["listeners"].as<std::vector<std::string>>();
             }
+
             //run listeners
+            listener::ListenerManager listenerManager = listener::ListenerManager(listeners_paths);
+            listenerManager.close_listeners();
         }
 
         if (vm.count("pgn"))
