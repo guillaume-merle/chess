@@ -34,8 +34,8 @@ namespace perft_parser
         {
             token = placement.substr(0, pos);
             ranks.push_back(board::FenRank(token));
+            placement.erase(0, pos + 1);
         }
-
 
         //side to move
         board::Color side_to_move;
