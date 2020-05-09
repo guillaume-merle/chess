@@ -18,7 +18,7 @@ namespace option_parser
         desc.add_options()
             ("help,h", "show usage")
             ("pgn", po::value<std::string>(), "path to the PGN game file")
-            ("listeners,l", po::value<std::vector<std::string>>(),
+            ("listeners,l", po::value<std::vector<std::string>>()->multitoken(),
                 "list of paths to listener plugins")
             ("perft", po::value<std::string>(), "path to a perft game file")
             ;
@@ -30,12 +30,7 @@ namespace option_parser
         if (vm.count("help") || vm.count("h"))
         {
             std::cout << desc << "\n";
-        }
-
-        if (vm.count("pgn"))
-        {
-            std::vector<board::PgnMove> pgn_vect = pgn_parser::parse_pgn(
-                                                   vm["pgn"].as<std::string>());
+            //run help
         }
 
         if (vm.count("l") || vm.count("listeners"))
@@ -60,12 +55,23 @@ namespace option_parser
                     << ".\n";
                 }
             }
+            //run listeners
+        }
+
+        if (vm.count("pgn"))
+        {
+            std::vector<board::PgnMove> pgn_vect = pgn_parser::parse_pgn(
+                                                   vm["pgn"].as<std::string>());
+            //run pgn
         }
 
         if (vm.count("perft"))
         {
             std::cout << "perft path is "
                 << vm["perft"].as<std::string>() << ".\n";
+            //run perft
         }
+
+        //run ai
     }
 } // namespace option_parser
