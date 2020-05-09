@@ -13,7 +13,7 @@ namespace board
     class FenObject
     {
     public:
-        FenObject() = default;
+        FenObject();
 
         //operator[] TODO
         

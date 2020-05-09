@@ -49,7 +49,9 @@ set(SRC_ENGINE
     src/parsing/fen-rank.hh
     src/parsing/option-parser.cc
     src/parsing/option-parser.hh
+    src/parsing/perft-object.cc
     src/parsing/perft-object.hh
+    src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
     src/listener/listener.hh
     src/listener/listener-manager.hh
