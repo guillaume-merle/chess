@@ -33,6 +33,11 @@ namespace board
         return _knight_attacks[square];
     }
 
+    Bitboard attacks::get_king_attacks(const unsigned int square)
+    {
+        return _king_attacks[square];
+    }
+
     void attacks::init_knight_attacks()
     {
         for (int i = 0; i < 64; i++)
@@ -45,6 +50,19 @@ namespace board
                 | Knight::southsouthwest(pos) | Knight::southsoutheast(pos);
 
             _knight_attacks[i] = attacks;
+        }
+    }
+
+    void attacks::init_king_attacks()
+    {
+        for (int i = 0; i < 64; i++)
+        {
+            Bitboard pos = 1 << i;
+            Bitboard attacks =
+                north(pos) | northeast(pos) | east(pos) | southeast(pos)
+                | south(pos) | southwest(pos) | west(pos) | northwest(pos);
+
+            _king_attacks[i] = attacks;
         }
     }
 }
