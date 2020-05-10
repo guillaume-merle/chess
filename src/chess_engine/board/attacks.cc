@@ -60,7 +60,7 @@ namespace board
     {
         for (int i = 0; i < 64; i++)
         {
-            Bitboard pos = 1 << i;
+            Bitboard pos = 1ULL << i;
             Bitboard attacks =
                 Knight::northwestwest(pos) | Knight::northeasteast(pos)
                 | Knight::southwestwest(pos) | Knight::southeasteast(pos)
@@ -75,7 +75,7 @@ namespace board
     {
         for (int i = 0; i < 64; i++)
         {
-            Bitboard pos = 1 << i;
+            Bitboard pos = 1ULL << i;
             Bitboard attacks =
                 north(pos) | northeast(pos) | east(pos) | southeast(pos)
                 | south(pos) | southwest(pos) | west(pos) | northwest(pos);
@@ -88,7 +88,7 @@ namespace board
     {
         for (int i = 0; i < 64; i++)
         {
-            Bitboard pos = 1 << i;
+            Bitboard pos = 1ULL << i;
             Bitboard white_attacks = northwest(pos) | northeast(pos);
             Bitboard black_attacks = southwest(pos) | southeast(pos);
 
