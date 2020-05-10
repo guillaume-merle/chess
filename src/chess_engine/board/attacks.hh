@@ -11,6 +11,8 @@ namespace board
         extern Bitboard _king_attacks[64];
         extern Bitboard _pawn_attacks[2][64];
 
+        void init();
+
         void init_knight_attacks();
 
         void init_king_attacks();

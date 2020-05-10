@@ -4,22 +4,30 @@
 
 namespace board
 {
+    void attacks::init()
+    {
+        magic::init();
+        attacks::init_knight_attacks();
+        attacks::init_king_attacks();
+        attacks::init_pawn_attacks();
+    }
+
     Bitboard attacks::get_bishop_attacks(const unsigned int square,
             const Bitboard occupancy)
     {
-        return *(magicmoves_b_indices[square] +
-                (((occupancy&magicmoves_b_mask[square])
-                  * magicmoves_b_magics[square])
-                 >> magicmoves_b_shift[square]));
+        return *(magic::magicmoves_b_indices[square] +
+                (((occupancy & magic::magicmoves_b_mask[square])
+                  * magic::magicmoves_b_magics[square])
+                 >> magic::magicmoves_b_shift[square]));
     }
 
     Bitboard attacks::get_rook_attacks(const unsigned int square,
             const Bitboard occupancy)
     {
-        return *(magicmoves_r_indices[square] +
-                (((occupancy&magicmoves_r_mask[square])
-                  * magicmoves_r_magics[square])
-                 >> magicmoves_r_shift[square]));
+        return *(magic::magicmoves_r_indices[square] +
+                (((occupancy & magic::magicmoves_r_mask[square])
+                  * magic::magicmoves_r_magics[square])
+                 >> magic::magicmoves_r_shift[square]));
     }
 
     Bitboard attacks::get_queen_attacks(const unsigned int square,
