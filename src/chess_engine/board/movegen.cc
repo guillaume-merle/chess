@@ -1,5 +1,6 @@
 #include "movegen.hh"
 #include "attacks.hh"
+#include "pawn.hh"
 
 namespace board
 {
@@ -52,8 +53,45 @@ namespace board
         }
     }
 
-    void MoveGen::generate_pawn_moves(Chessboard&, Color)
+    void MoveGen::generate_pawn_moves(Chessboard& board, Color color)
     {
+        Bitboard pawns = board.get(WHITE, PAWN);
+        auto all_pieces = board.get(WHITE, ALL)
+                          | board.get(BLACK, ALL);
+
+        while (pawns)
+        {
+            Square square = pop(pawns);
+            Bitboard bitboard = 1ULL << square;
+
+            auto move = Pawn::single_push(bitboard, color);
+            moves_.emplace_back(Move(square, bitscan(move), PAWN));
+
+            if ((move & all_pieces) == 0)
+            {
+                if ((color == WHITE && (bitboard & Rank7BB))
+                     || (color == BLACK && (bitboard & Rank2BB)))
+                {
+                    move = Pawn::double_push(bitboard, color);
+                    if ((move & all_pieces) == 0)
+                        moves_.emplace_back(
+                            Move(square, bitscan(move), PAWN));
+                }
+            }
+
+            Bitboard attacks = attacks::get_pawn_attacks(square, color);
+
+            while (attacks)
+            {
+                Square attacked_square = pop(attacks);
+                if (board.would_capture(1ULL << attacked_square, color))
+                    moves_.emplace_back(
+                            Move(square, attacked_square, PAWN,
+                                 board.get_piece_type(attacked_square,
+                                                      opposite_color(color))
+                                ));
+            }
+        }
 
     }
 
