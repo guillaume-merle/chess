@@ -4,6 +4,10 @@
 
 namespace board
 {
+    Bitboard attacks::_knight_attacks[64] = {0};
+    Bitboard attacks::_king_attacks[64] = {0};
+    Bitboard attacks::_pawn_attacks[2][64] = {{0}};
+
     void attacks::init()
     {
         magic::init();

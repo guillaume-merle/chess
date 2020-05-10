@@ -18,6 +18,7 @@
 
 int main()
 {
+    board::attacks::init();
     // auto chessboard = board::Chessboard();
 //
     // chessboard.bitboards_[2] = board::Rank2BB;
@@ -89,8 +90,6 @@ int main()
     }
 
     board::print_bitboard(all_moves);
-
-    board::init_magic();
 
     board::Bitboard occupancy = 1 << 3 | 1ULL << 32;
     board::Bitboard rook_moves = board::attacks::get_rook_attacks(0, occupancy);
