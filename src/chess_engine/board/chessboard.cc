@@ -12,6 +12,11 @@ namespace board
         return bitboards_[color][piece];
     }
 
+    Bitboard Chessboard::get(Color color, int piece)
+    {
+        return bitboards_[color][piece];
+    }
+
     bool Chessboard::is_white_turn()
     {
         return white_turn_;

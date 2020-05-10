@@ -55,11 +55,11 @@ namespace board
         {
             PieceType start = PieceType::QUEEN;
 
-            for (int i = start; i < BITBOARDS_NUMBER; i ++)
+            for (int i = start; i < BITBOARDS_NUMBER; i++)
             {
-                if (to & board.get(color, PieceType(i)))
+                if (to & board.get(opposite_color(color), i))
                 {
-                    PieceType capture = PieceType(i);
+                    PieceType capture = static_cast<PieceType>(i);
                     moves.emplace_back(Move(from, to, piece, capture));
 
                     // return false to stop sliding pieces movements
