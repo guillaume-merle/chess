@@ -62,7 +62,7 @@ namespace board
         {
             Bitboard pos = 1 << i;
             Bitboard attacks =
-                Knight::northeasteast(pos) | Knight::northeasteast(pos)
+                Knight::northwestwest(pos) | Knight::northeasteast(pos)
                 | Knight::southwestwest(pos) | Knight::southeasteast(pos)
                 | Knight::northnorthwest(pos) | Knight::northnortheast(pos)
                 | Knight::southsouthwest(pos) | Knight::southsoutheast(pos);
