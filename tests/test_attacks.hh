@@ -86,3 +86,20 @@ TEST (Attacks, rook_attacks2)
     EXPECT_EQ(moves, expected_moves);
 }
 
+TEST (Attacks, pawn_right_attacks)
+{
+    auto moves = board::attacks::get_pawn_attacks(10, board::WHITE);
+
+    board::Bitboard expected_moves = 1 << 19 | 1 << 17;
+
+    EXPECT_EQ(moves, expected_moves);
+}
+
+TEST (Attacks, pawn_left_attacks)
+{
+    auto moves = board::attacks::get_pawn_attacks(58, board::BLACK);
+
+    board::Bitboard expected_moves = 1ULL << 49 | 1ULL << 51;
+
+    EXPECT_EQ(moves, expected_moves);
+}
