@@ -13,6 +13,8 @@
 #include "knight.hh"
 #include "rook.hh"
 #include "queen.hh"
+#include "magic.hh"
+#include "attacks.hh"
 
 int main()
 {
@@ -87,6 +89,14 @@ int main()
     }
 
     board::print_bitboard(all_moves);
+
+    board::init_magic();
+
+    board::Bitboard occupancy = 1 << 3 | 1ULL << 32;
+    board::Bitboard rook_moves = board::attacks::get_rook_attacks(0, occupancy);
+
+    std::cout << "\n\nRook magic moves:\n";
+    board::print_bitboard(rook_moves);
 
     return 0;
 }
