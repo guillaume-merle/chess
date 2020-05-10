@@ -42,6 +42,8 @@ set(SRC_ENGINE
     src/chess_engine/board/rook.hh
     src/chess_engine/board/rule.cc
     src/chess_engine/board/rule.hh
+    src/chess_engine/board/movegen.cc
+    src/chess_engine/board/movegen.hh
     src/parsing/report-type.hh
     src/parsing/pgn-exception.cc
     src/parsing/pgn-exception.hh

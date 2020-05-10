@@ -97,5 +97,8 @@ int main()
     std::cout << "\n\nRook magic moves:\n";
     board::print_bitboard(rook_moves);
 
+    board::Bitboard bitscan = 1 << 17 | 1 << 2;
+    std::cout << "\n\nBITSCAN: " <<  board::pop(bitscan) << "\n";
+
     return 0;
 }

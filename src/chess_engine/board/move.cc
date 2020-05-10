@@ -53,15 +53,13 @@ namespace board
         // if there is an opponant piece to capture on the square
         if (board.would_capture(to, color))
         {
-            BitboardType start = color == Color::WHITE ?
-                            BitboardType::BLACKQUEEN : BitboardType::WHITEQUEEN;
+            PieceType start = PieceType::QUEEN;
 
-            for (int i = start; i < BITBOARDS_NUMBER; i += 2)
+            for (int i = start; i < BITBOARDS_NUMBER; i ++)
             {
-                if (to & board.get(i))
+                if (to & board.get(color, PieceType(i)))
                 {
-                    // get PieceType from BitboardType
-                    PieceType capture = static_cast<PieceType>((i - 2) / 2);
+                    PieceType capture = PieceType(i);
                     moves.emplace_back(Move(from, to, piece, capture));
 
                     // return false to stop sliding pieces movements

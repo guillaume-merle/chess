@@ -1,6 +1,5 @@
 #include "attacks.hh"
 #include "knight.hh"
-#include "color.hh"
 
 namespace board
 {
