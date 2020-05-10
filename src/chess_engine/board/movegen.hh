@@ -29,8 +29,8 @@ namespace board
 
         void generate_queen_moves(Chessboard& board, Color color);
 
-        void add_move(Chessboard& board, PieceType piece, Color color,
-                      unsigned from, Bitboard moves);
+        void add_moves(Chessboard& board, PieceType piece, Color color,
+                      Square from, Bitboard moves);
 
         static const int MAX_MOVES_SIZE = 220;
     };

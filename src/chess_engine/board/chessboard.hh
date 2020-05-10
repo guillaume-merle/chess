@@ -37,6 +37,8 @@ namespace board
 
         Bitboard get(Color color, int piece);
 
+        PieceType get_piece_type(Square square, Color color);
+
         bool set(Color color, PieceType piece, Bitboard value);
 
         bool is_white_turn();

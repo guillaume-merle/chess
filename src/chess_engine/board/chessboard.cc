@@ -17,6 +17,20 @@ namespace board
         return bitboards_[color][piece];
     }
 
+    PieceType Chessboard::get_piece_type(Square square, Color color)
+    {
+        Bitboard piece = 1ULL << square;
+
+        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        {
+            if (piece & get(color, i))
+                return static_cast<PieceType>(i);
+        }
+
+        throw std::runtime_error("get_piece_type: the given square doesn't"
+                                 "match a piece.");
+    }
+
     bool Chessboard::is_white_turn()
     {
         return white_turn_;

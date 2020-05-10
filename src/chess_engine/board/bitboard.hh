@@ -5,6 +5,7 @@
 namespace board
 {
     using Bitboard = uint64_t;
+    using Square = int;
 
     constexpr Bitboard FileABB = 0x0101010101010101ULL;
     constexpr Bitboard FileBBB = FileABB << 1;

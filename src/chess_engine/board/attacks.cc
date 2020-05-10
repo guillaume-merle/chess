@@ -16,7 +16,7 @@ namespace board
     }
 
     Bitboard attacks::get_bishop_attacks(const unsigned int square,
-            const Bitboard occupancy)
+                                         const Bitboard occupancy)
     {
         return *(magic::magicmoves_b_indices[square] +
                 (((occupancy & magic::magicmoves_b_mask[square])
@@ -25,7 +25,7 @@ namespace board
     }
 
     Bitboard attacks::get_rook_attacks(const unsigned int square,
-            const Bitboard occupancy)
+                                       const Bitboard occupancy)
     {
         return *(magic::magicmoves_r_indices[square] +
                 (((occupancy & magic::magicmoves_r_mask[square])
@@ -34,7 +34,7 @@ namespace board
     }
 
     Bitboard attacks::get_queen_attacks(const unsigned int square,
-            const Bitboard occupancy)
+                                        const Bitboard occupancy)
     {
         return get_bishop_attacks(square, occupancy)
             | get_rook_attacks(square, occupancy);
