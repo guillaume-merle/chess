@@ -13,8 +13,8 @@ namespace board
     extern const Bitboard magicmoves_b_mask[64];
     extern const unsigned int magicmoves_b_shift[64];
     extern const unsigned int magicmoves_r_shift[64];
-    extern const Bitboard* magicmoves_b_indices[64];
-    extern const Bitboard* magicmoves_r_indices[64];
+    extern Bitboard* magicmoves_b_indices[64];
+    extern Bitboard* magicmoves_r_indices[64];
 
     static inline Bitboard BmagicNOMASK(const unsigned int square,
                                         const Bitboard occupancy)
