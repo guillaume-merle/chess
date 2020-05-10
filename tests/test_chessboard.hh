@@ -11,11 +11,11 @@ TEST (Chessboard, is_check)
 
     board::Bitboard enemy_king = 1 << 4;
 
-    board.set(board::BitboardType::WHITEKING, king);
-    board.set(board::BitboardType::ALLWHITE, king);
+    board.set(board::WHITE, board::KING, king);
+    board.set(board::WHITE, board::ALL, king);
 
-    board.set(board::BitboardType::BLACKKING, enemy_king);
-    board.set(board::BitboardType::ALLBLACK, enemy_king);
+    board.set(board::BLACK, board::KING, enemy_king);
+    board.set(board::BLACK, board::ALL, enemy_king);
 
     EXPECT_TRUE(board.is_check());
 }
@@ -27,11 +27,11 @@ TEST (Chessboard, is_check_by_knight)
 
     board::Bitboard enemy_knight = 1 << 21;
 
-    board.set(board::BitboardType::WHITEKNIGHT, enemy_knight);
-    board.set(board::BitboardType::ALLWHITE, enemy_knight);
+    board.set(board::WHITE, board::KNIGHT, enemy_knight);
+    board.set(board::WHITE, board::ALL, enemy_knight);
 
-    board.set(board::BitboardType::BLACKKING, king);
-    board.set(board::BitboardType::ALLBLACK, king);
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
 
     EXPECT_TRUE(board.is_check());
 }
@@ -43,11 +43,11 @@ TEST (Chessboard, is_check_by_bishop)
 
     board::Bitboard enemy_bishop = 1 << 25;
 
-    board.set(board::BitboardType::WHITEBISHOP, enemy_bishop);
-    board.set(board::BitboardType::ALLWHITE, enemy_bishop);
+    board.set(board::WHITE, board::BISHOP, enemy_bishop);
+    board.set(board::WHITE, board::ALL, enemy_bishop);
 
-    board.set(board::BitboardType::BLACKKING, king);
-    board.set(board::BitboardType::ALLBLACK, king);
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
 
     EXPECT_TRUE(board.is_check());
 }
@@ -59,11 +59,11 @@ TEST (Chessboard, is_check_by_rook)
 
     board::Bitboard enemy_rook = 1 << 7;
 
-    board.set(board::BitboardType::WHITEROOK, enemy_rook);
-    board.set(board::BitboardType::ALLWHITE, enemy_rook);
+    board.set(board::WHITE, board::ROOK, enemy_rook);
+    board.set(board::WHITE, board::ALL, enemy_rook);
 
-    board.set(board::BitboardType::BLACKKING, king);
-    board.set(board::BitboardType::ALLBLACK, king);
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
 
     EXPECT_TRUE(board.is_check());
 }
@@ -75,11 +75,11 @@ TEST (Chessboard, is_check_by_queen)
 
     board::Bitboard enemy_queen = 1ULL << 36;
 
-    board.set(board::BitboardType::WHITEQUEEN, enemy_queen);
-    board.set(board::BitboardType::ALLWHITE, enemy_queen);
+    board.set(board::WHITE, board::QUEEN, enemy_queen);
+    board.set(board::WHITE, board::ALL, enemy_queen);
 
-    board.set(board::BitboardType::BLACKKING, king);
-    board.set(board::BitboardType::ALLBLACK, king);
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
 
     EXPECT_TRUE(board.is_check());
 }
@@ -91,11 +91,11 @@ TEST (Chessboard, is_check_by_pawn)
 
     board::Bitboard enemy_pawn = 1 << 13;
 
-    board.set(board::BitboardType::WHITEPAWN, enemy_pawn);
-    board.set(board::BitboardType::ALLWHITE, enemy_pawn);
+    board.set(board::WHITE, board::PAWN, enemy_pawn);
+    board.set(board::WHITE, board::ALL, enemy_pawn);
 
-    board.set(board::BitboardType::BLACKKING, king);
-    board.set(board::BitboardType::ALLBLACK, king);
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
 
     EXPECT_TRUE(board.is_check());
 }

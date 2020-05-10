@@ -76,7 +76,7 @@ TEST (Bishop, generate_moves_with_chessboard_none_blocking)
 {
     board::Bitboard bishop = 1;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1 << 1);
+    board.set(board::WHITE, board::ALL, 1 << 1);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -88,7 +88,7 @@ TEST (Bishop, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard bishop = 1;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1 << 27);
+    board.set(board::WHITE, board::ALL, 1 << 27);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -100,7 +100,7 @@ TEST (Bishop, generate_moves_with_chessboard_no_move_possible)
 {
     board::Bitboard bishop = 1 << 27;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+    board.set(board::WHITE, board::ALL, board::FullBB);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -114,8 +114,8 @@ TEST (Bishop, generate_moves_with_chessboard_capture)
     board::Chessboard board;
 
     board::Bitboard pawns = 1 << 27;
-    board.set(board::BitboardType::BLACKPAWN, pawns);
-    board.set(board::BitboardType::ALLBLACK, pawns);
+    board.set(board::BLACK, board::PAWN, pawns);
+    board.set(board::BLACK, board::ALL, pawns);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -132,8 +132,8 @@ TEST (Bishop, generate_moves_with_chessboard_capture_multiple)
     board::Chessboard board;
 
     board::Bitboard pawns = 1 | 1 << 2 | 1 << 16 | 1 << 18;
-    board.set(board::BitboardType::BLACKPAWN, pawns);
-    board.set(board::BitboardType::ALLBLACK, pawns);
+    board.set(board::BLACK, board::PAWN, pawns);
+    board.set(board::BLACK, board::ALL, pawns);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);

@@ -100,7 +100,7 @@ TEST (Pawn, generate_moves_with_chessboard_no_move)
 {
     board::Bitboard pawn = 1 << 8;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLBLACK, 1 << 16);
+    board.set(board::BLACK, board::ALL, 1 << 16);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
@@ -112,7 +112,7 @@ TEST (Pawn, generate_moves_with_chessboard_single_but_not_double)
 {
     board::Bitboard pawn = 1 << 8;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLBLACK, 1 << 24);
+    board.set(board::BLACK, board::ALL, 1 << 24);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
@@ -125,7 +125,7 @@ TEST (Pawn, generate_moves_with_chessboard_no_collision)
 {
     board::Bitboard pawn = 1 << 8;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLBLACK, 1);
+    board.set(board::BLACK, board::ALL, 1);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
@@ -141,8 +141,8 @@ TEST (Pawn, generate_moves_with_chessboard_capture)
     board::Chessboard board;
 
     board::Bitboard other_pawn = 1 << 25;
-    board.set(board::BitboardType::ALLBLACK, other_pawn);
-    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+    board.set(board::BLACK, board::ALL, other_pawn);
+    board.set(board::BLACK, board::PAWN, other_pawn);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
@@ -158,8 +158,8 @@ TEST (Pawn, generate_moves_with_chessboard_capture_double_push)
     board::Chessboard board;
 
     board::Bitboard other_pawn = 1 << 17;
-    board.set(board::BitboardType::ALLBLACK, other_pawn);
-    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+    board.set(board::BLACK, board::ALL, other_pawn);
+    board.set(board::BLACK, board::PAWN, other_pawn);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);
@@ -175,8 +175,8 @@ TEST (Pawn, generate_moves_with_chessboard_capture_left_and_right)
     board::Chessboard board;
 
     board::Bitboard other_pawn = 1 << 24 | 1 << 26;
-    board.set(board::BitboardType::ALLBLACK, other_pawn);
-    board.set(board::BitboardType::BLACKPAWN, other_pawn);
+    board.set(board::BLACK, board::ALL, other_pawn);
+    board.set(board::BLACK, board::PAWN, other_pawn);
 
     std::vector<board::Move> moves;
     board::Pawn::generate_moves(moves, pawn, board::Color::WHITE, board);

@@ -7,27 +7,9 @@
 
 namespace board
 {
-    constexpr int BITBOARDS_NUMBER = 14;
+    constexpr int BITBOARDS_NUMBER = 7;
 
     class Move;
-
-    enum BitboardType
-    {
-        ALLWHITE = 0,
-        ALLBLACK,
-        WHITEQUEEN,
-        BLACKQUEEN,
-        WHITEROOK,
-        BLACKROOK,
-        WHITEBISHOP,
-        BLACKBISHOP,
-        WHITEKNIGHT,
-        BLACKKNIGHT,
-        WHITEPAWN,
-        BLACKPAWN,
-        WHITEKING,
-        BLACKKING,
-    };
 
     /*
     ** \brief class of the chessboard.
@@ -36,7 +18,7 @@ namespace board
     {
     public:
         Chessboard()
-            : bitboards_{0}, white_turn_(true)
+            : bitboards_{{0}}, white_turn_(true)
         {}
 
         std::vector<Move> generate_legal_moves();
@@ -51,11 +33,11 @@ namespace board
 
         bool is_draw();
 
-        Bitboard get(BitboardType piece);
+        Bitboard get(Color color, PieceType piece);
 
-        Bitboard get(int piece);
+        Bitboard get(Color color, int piece);
 
-        bool set(BitboardType piece, Bitboard value);
+        bool set(Color color, PieceType piece, Bitboard value);
 
         bool is_white_turn();
 
@@ -66,7 +48,7 @@ namespace board
         bool would_capture(Bitboard pos, Color color);
 
     private:
-        Bitboard bitboards_[BITBOARDS_NUMBER];
+        Bitboard bitboards_[2][BITBOARDS_NUMBER];
 
         bool white_turn_;
         bool white_king_castling_;

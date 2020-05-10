@@ -7,14 +7,9 @@
 
 namespace board
 {
-    Bitboard Chessboard::get(BitboardType piece)
+    Bitboard Chessboard::get(Color color, PieceType piece)
     {
-        return bitboards_[piece];
-    }
-
-    Bitboard Chessboard::get(int piece)
-    {
-        return bitboards_[piece];
+        return bitboards_[color][piece];
     }
 
     bool Chessboard::is_white_turn()
@@ -22,12 +17,12 @@ namespace board
         return white_turn_;
     }
 
-    bool Chessboard::set(BitboardType piece, Bitboard value)
+    bool Chessboard::set(Color color, PieceType piece, Bitboard value)
     {
         if (piece < 0 || piece >= BITBOARDS_NUMBER)
             return false;
 
-        bitboards_[piece] = value;
+        bitboards_[color][piece] = value;
         return true;
     }
 
@@ -39,39 +34,23 @@ namespace board
 
     bool Chessboard::would_collide(Bitboard pos, Color color)
     {
-        if (color == Color::WHITE
-                && (pos & get(BitboardType::ALLWHITE)))
-            return true;
-
-        if (color == Color::BLACK
-                && (pos & get(BitboardType::ALLBLACK)))
-            return true;
-
-        return false;
+        return (pos & get(color, ALL));
     }
 
     bool Chessboard::would_capture(Bitboard pos, Color color)
     {
-        if (color == Color::WHITE
-                && (pos & get(BitboardType::ALLBLACK)))
-            return true;
-
-        if (color == Color::BLACK
-                && (pos & get(BitboardType::ALLWHITE)))
-            return true;
-
-        return false;
+        return (pos & get(color, ALL));
     }
 
     bool Chessboard::is_check()
     {
         std::vector<Move> moves;
-        moves += generate_pawn_moves(*this);
-        moves += generate_king_moves(*this);
-        moves += generate_bishop_moves(*this);
-        moves += generate_rook_moves(*this);
-        moves += generate_queen_moves(*this);
-        moves += generate_knight_moves(*this);
+        // moves += generate_pawn_moves(*this);
+        // moves += generate_king_moves(*this);
+        // moves += generate_bishop_moves(*this);
+        // moves += generate_rook_moves(*this);
+        // moves += generate_queen_moves(*this);
+        // moves += generate_knight_moves(*this);
 
         for (auto& move : moves)
         {

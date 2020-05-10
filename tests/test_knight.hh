@@ -145,7 +145,7 @@ TEST (Knight, generate_moves_with_chessboard_none_blocking)
 {
     board::Bitboard knight = 1 << 28;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1ULL << 63);
+    board.set(board::WHITE, board::ALL, 1ULL << 63);
 
     std::vector<board::Move> moves;
     board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
@@ -157,7 +157,7 @@ TEST (Knight, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard knight = 1 << 9;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1 << 24);
+    board.set(board::WHITE, board::ALL, 1 << 24);
 
     std::vector<board::Move> moves;
     board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
@@ -170,7 +170,7 @@ TEST (Knight, generate_moves_with_chessboard_three_blocking)
     board::Bitboard knight = 1ULL << 42;
     board::Chessboard board;
     board::Bitboard blocker = 1Ull << 32 | 1ULL << 52 | 1ULL << 25;
-    board.set(board::BitboardType::ALLWHITE, blocker);
+    board.set(board::WHITE, board::ALL, blocker);
 
     std::vector<board::Move> moves;
     board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
@@ -182,7 +182,7 @@ TEST (Knight, generate_moves_with_chessboard_no_move_possible)
 {
     board::Bitboard knight = 1 << 19;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+    board.set(board::WHITE, board::ALL, board::FullBB);
 
     std::vector<board::Move> moves;
     board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
@@ -195,8 +195,8 @@ TEST (Knight, generate_moves_with_chessboard_capture)
     board::Bitboard knight = 1 << 20;
     board::Chessboard board;
 
-    board.set(board::BitboardType::ALLWHITE, 1ULL << 35 );
-    board.set(board::BitboardType::WHITEBISHOP, 1ULL << 35);
+    board.set(board::WHITE, board::ALL, 1ULL << 35 );
+    board.set(board::WHITE, board::BISHOP, 1ULL << 35);
 
     std::vector<board::Move> moves;
     board::Knight::generate_moves(moves, knight, board, board::Color::BLACK);
