@@ -4,6 +4,7 @@
 #include "rule.hh"
 #include "utils.hh"
 #include "move.hh"
+#include "attacks.hh"
 
 namespace board
 {
@@ -76,21 +77,26 @@ namespace board
         return (pos & get(opposite_color(color), ALL));
     }
 
-    bool Chessboard::is_check()
+    bool Chessboard::is_check(Color color)
     {
-        std::vector<Move> moves;
-        // moves += generate_pawn_moves(*this);
-        // moves += generate_king_moves(*this);
-        // moves += generate_bishop_moves(*this);
-        // moves += generate_rook_moves(*this);
-        // moves += generate_queen_moves(*this);
-        // moves += generate_knight_moves(*this);
+        Square king_square = bitscan(get(color, KING));
+        Bitboard all_pieces = get(WHITE, ALL) | get(BLACK, ALL);
+        Color them = opposite_color(color);
 
-        for (auto& move : moves)
-        {
-            if (move.is_capture() && move.get_capture() == PieceType::KING)
-                return true;
-        }
+        Bitboard attackers = 0;
+        attackers |= attacks::get_knight_attacks(king_square)
+                     & get(them, KNIGHT);
+        attackers |= attacks::get_pawn_attacks(king_square, color)
+                     & get(them, PAWN);
+        attackers |= attacks::get_bishop_attacks(king_square, all_pieces)
+                     & get(them, BISHOP);
+        attackers |= attacks::get_rook_attacks(king_square, all_pieces)
+                     & get(them, ROOK);
+        attackers |= attacks::get_queen_attacks(king_square, all_pieces)
+                     & get(them, QUEEN);
+
+        if (attackers)
+            return true;
 
         return false;
     }

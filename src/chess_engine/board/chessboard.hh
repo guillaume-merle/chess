@@ -27,7 +27,7 @@ namespace board
 
         bool is_move_legal(Move move);
 
-        bool is_check();
+        bool is_check(Color color);
 
         bool is_checkmate();
 

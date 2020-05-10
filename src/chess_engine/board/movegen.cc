@@ -23,9 +23,17 @@ namespace board
         generate_pawn_moves(board, color);
         generate_knight_moves(board, color);
         generate_king_moves(board, color);
+
+        // ignore the opposite king for sliding pieces attacks, to avoid false
+        // check evasions
+        // Bitboard king = board.get(opposite_color(color), KING);
+        // board.set(opposite_color(color), KING, 0);
+
         generate_rook_moves(board, color);
         generate_bishop_moves(board, color);
         generate_queen_moves(board, color);
+
+        // board.set(opposite_color(color), KING, king);
     }
 
     void MoveGen::generate_king_moves(Chessboard& board, Color color)
