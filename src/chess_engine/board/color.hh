@@ -3,10 +3,10 @@
 namespace board
 {
     /* The Color enum represent a side. */
-    enum class Color : bool
+    enum Color
     {
-        WHITE = false,
-        BLACK = true
+        WHITE = 0,
+        BLACK
     };
 
 

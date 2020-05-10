@@ -1,5 +1,6 @@
 #include "attacks.hh"
 #include "knight.hh"
+#include "color.hh"
 
 namespace board
 {
@@ -38,6 +39,11 @@ namespace board
         return _king_attacks[square];
     }
 
+    Bitboard attacks::get_pawn_attacks(const unsigned int square, Color color)
+    {
+        return _pawn_attacks[color][square];
+    }
+
     void attacks::init_knight_attacks()
     {
         for (int i = 0; i < 64; i++)
@@ -63,6 +69,19 @@ namespace board
                 | south(pos) | southwest(pos) | west(pos) | northwest(pos);
 
             _king_attacks[i] = attacks;
+        }
+    }
+
+    void attacks::init_pawn_attacks()
+    {
+        for (int i = 0; i < 64; i++)
+        {
+            Bitboard pos = 1 << i;
+            Bitboard white_attacks = northwest(pos) | northeast(pos);
+            Bitboard black_attacks = southwest(pos) | southeast(pos);
+
+            _pawn_attacks[WHITE][i] = white_attacks;
+            _pawn_attacks[BLACK][i] = black_attacks;
         }
     }
 }
