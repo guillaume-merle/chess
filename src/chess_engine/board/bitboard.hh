@@ -38,5 +38,10 @@ namespace board
     Bitboard east(Bitboard bitboard, unsigned number = 1);
     Bitboard west(Bitboard bitboard, unsigned number = 1);
 
+    int bitscan(Bitboard board);
+    int bitscan_reverse(Bitboard board);
+    int pop(Bitboard& board);
+    int popcount(Bitboard board);
+
     void print_bitboard(Bitboard bitboard);
 }

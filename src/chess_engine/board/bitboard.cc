@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "bitboard.hh"
 
@@ -78,5 +79,29 @@ namespace board
             else
                 std::cout << " ";
         }
+    }
+
+    int bitscan(Bitboard board)
+    {
+        return __builtin_ctzll(board);
+    }
+
+    int bitscan_reverse(Bitboard board)
+    {
+        return __builtin_clzll(board);
+    }
+
+    int pop(Bitboard& board)
+    {
+        assert(board);
+        int square = bitscan(board);
+        board &= board - 1;
+
+        return square;
+    }
+
+    int popcount(Bitboard board)
+    {
+        return __builtin_popcountll(board);
     }
 }
