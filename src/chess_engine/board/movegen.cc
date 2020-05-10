@@ -8,8 +8,15 @@ namespace board
         generate_moves(board);
     }
 
+    std::vector<Move> MoveGen::get()
+    {
+        return moves_;
+    }
+
     void MoveGen::generate_moves(Chessboard& board)
     {
+        moves_.reserve(MAX_MOVES_SIZE);
+
         Color color = board.is_white_turn() ? WHITE : BLACK;
 
         generate_pawn_moves(board, color);
@@ -68,7 +75,7 @@ namespace board
 
     void MoveGen::generate_bishop_moves(Chessboard& board, Color color)
     {
-        Bitboard bishop = board.get(color, ROOK);
+        Bitboard bishop = board.get(color, BISHOP);
 
         Bitboard occupancy = board.get(color, ALL)
                              | board.get(opposite_color(color), ALL);

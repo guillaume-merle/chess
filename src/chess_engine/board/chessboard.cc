@@ -17,6 +17,21 @@ namespace board
         return bitboards_[color][piece];
     }
 
+    void Chessboard::update_all_boards()
+    {
+        Bitboard all_white = 0;
+        Bitboard all_black = 0;
+
+        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        {
+            all_white |= get(WHITE, i);
+            all_black |= get(BLACK, i);
+        }
+
+        set(WHITE, ALL, all_white);
+        set(BLACK, ALL, all_black);
+    }
+
     PieceType Chessboard::get_piece_type(Square square, Color color)
     {
         Bitboard piece = 1ULL << square;

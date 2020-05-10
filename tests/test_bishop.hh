@@ -1,29 +1,32 @@
 #include "gtest/gtest.h"
 
 #include "bishop.hh"
-
+#include "movegen.hh"
 
 TEST (Bishop, generate_moves)
 {
-    board::Bitboard bishop = 1 << 28;
-    std::vector<board::Move> moves;
-    board::Bishop::generate_moves(moves, bishop);
+    board::Chessboard board;
+    board.set(board::WHITE, board::BISHOP, 1 << 28);
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(13, moves.size());
 }
 
 TEST (Bishop, generate_moves_northwest)
 {
-    board::Bitboard bishop = 1ULL << 56;
-    std::vector<board::Move> moves;
-    board::Bishop::generate_moves(moves, bishop);
+    board::Chessboard board;
+    board.set(board::WHITE, board::BISHOP, 1ULL << 56);
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(7, moves.size());
-    auto pos = bishop;
+
+    int pos = 7;
     for (auto& move : moves)
     {
-        pos = board::southeast(pos);
         EXPECT_EQ(pos, move.get_to());
+        pos += 7;
     }
 }
 
