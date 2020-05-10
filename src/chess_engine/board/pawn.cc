@@ -50,7 +50,7 @@ namespace board
     {
         PieceType piece = PieceType::PAWN;
         auto all_pieces = board.get(WHITE, ALL)
-                          | board.get(WHITE, ALL);
+                          | board.get(BLACK, ALL);
 
         auto move = single_push(bitboard, color);
 

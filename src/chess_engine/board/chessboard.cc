@@ -39,7 +39,7 @@ namespace board
 
     bool Chessboard::would_capture(Bitboard pos, Color color)
     {
-        return (pos & get(color, ALL));
+        return (pos & get(opposite_color(color), ALL));
     }
 
     bool Chessboard::is_check()

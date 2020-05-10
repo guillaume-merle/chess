@@ -9,5 +9,11 @@ namespace board
         BLACK
     };
 
+    inline Color opposite_color(Color color)
+    {
+        if (color == WHITE)
+            return BLACK;
+        return WHITE;
+    }
 
 } // namespace board
