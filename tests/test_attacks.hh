@@ -63,4 +63,26 @@ TEST (Attacks, bishop_attacks2)
     EXPECT_EQ(moves, expected_moves);
 }
 
+TEST (Attacks, rook_attacks)
+{
+    board::Bitboard occupancy = 1ULL << 32 | 1ULL << 57;
+    auto moves = board::attacks::get_rook_attacks(56, occupancy);
+
+    board::Bitboard expected_moves = 1ULL << 57 | 1ULL << 48 | 1ULL << 40
+                                     | 1ULL << 32;
+
+    EXPECT_EQ(moves, expected_moves);
+}
+
+TEST (Attacks, rook_attacks2)
+{
+    board::Bitboard occupancy = 1ULL << 37 | 1ULL << 43 | 1 << 11;
+    auto moves = board::attacks::get_rook_attacks(35, occupancy);
+
+    board::Bitboard expected_moves = 1ULL << 36 | 1ULL << 37 | 1 << 27
+                                     | 1 << 19 | 1 << 11 | 1ULL << 34
+                                     | 1ULL << 33 | 1ULL << 32 | 1ULL << 43;
+
+    EXPECT_EQ(moves, expected_moves);
+}
 
