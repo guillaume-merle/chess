@@ -35,6 +35,8 @@ namespace board
 
         bool is_check(Color color);
 
+        bool illegal_king_check(Color color);
+
         bool is_checkmate(Color color);
 
         bool is_draw(Color color);

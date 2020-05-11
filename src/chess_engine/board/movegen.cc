@@ -184,7 +184,8 @@ namespace board
             moves_.emplace_back(Move(from, to, piece, capture));
         }
 
-        Bitboard other_moves = moves & ~board.get(color, ALL) & ~attacks;
+        Bitboard other_moves = moves & ~board.get(color, ALL)
+                                     & ~board.get(opposite_color(color), ALL);
 
         while (other_moves)
         {

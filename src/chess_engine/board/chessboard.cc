@@ -143,6 +143,17 @@ namespace board
         return false;
     }
 
+    bool Chessboard::illegal_king_check(Color color)
+    {
+        Square king_square = bitscan(get(color, KING));
+        Color them = opposite_color(color);
+
+        if (attacks::get_king_attacks(king_square) & get(them, KING))
+            return true;
+
+        return false;
+    }
+
     bool Chessboard::is_checkmate(Color color)
     {
         return is_check(color) && generate_legal_moves(color).empty();
@@ -158,7 +169,11 @@ namespace board
         if (is_check(color))
             return false;
 
-        std::vector<Move> legal_moves = generate_legal_moves();
+        std::vector<Move> legal_moves = generate_legal_moves(color);
+        for (auto& move : legal_moves)
+        {
+            std::cout << "MOVE: " << move.get_from() << " To: " << move.get_to() << '\n';
+        }
         //verify if legal_moves are available.
         if (!legal_moves.empty())
             return false;
@@ -244,7 +259,8 @@ namespace board
             Chessboard temp_board = *this;
             temp_board.do_move(move, color);
 
-            if (!temp_board.is_check(color))
+            //check if the piece is in check and if it's not a bad check (king)
+            if (!temp_board.is_check(color) && illegal_king_check(color))
                 legal_moves.emplace_back(move);
         }
 
