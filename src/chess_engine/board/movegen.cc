@@ -9,6 +9,11 @@ namespace board
         generate_moves(board);
     }
 
+    MoveGen::MoveGen(Chessboard& board, Color color)
+    {
+        generate_moves_for_color(board, color);
+    }
+
     std::vector<Move> MoveGen::get()
     {
         return moves_;
@@ -16,9 +21,13 @@ namespace board
 
     void MoveGen::generate_moves(Chessboard& board)
     {
-        moves_.reserve(MAX_MOVES_SIZE);
+        Color color = board.current_color();
+        generate_moves_for_color(board, color);
+    }
 
-        Color color = board.is_white_turn() ? WHITE : BLACK;
+    void MoveGen::generate_moves_for_color(Chessboard& board, Color color)
+    {
+        moves_.reserve(MAX_MOVES_SIZE);
 
         generate_pawn_moves(board, color);
         generate_knight_moves(board, color);
@@ -34,6 +43,7 @@ namespace board
         generate_queen_moves(board, color);
 
         // board.set(opposite_color(color), KING, king);
+
     }
 
     void MoveGen::generate_king_moves(Chessboard& board, Color color)

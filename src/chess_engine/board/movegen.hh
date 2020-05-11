@@ -10,6 +10,8 @@ namespace board
     public:
         MoveGen(Chessboard& board);
 
+        MoveGen(Chessboard& board, Color color);
+
         std::vector<Move> get();
         //
         // Maximum number of moves per round
@@ -19,6 +21,7 @@ namespace board
         std::vector<Move> moves_;
 
         void generate_moves(Chessboard& board);
+        void generate_moves_for_color(Chessboard& board, Color color);
 
         void generate_pawn_moves(Chessboard& board, Color color);
 
