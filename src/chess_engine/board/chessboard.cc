@@ -148,10 +148,10 @@ namespace board
         Square king_square = bitscan(get(color, KING));
         Color them = opposite_color(color);
 
-        if (attacks::get_king_attacks(king_square) & get(them, KING))
-            return true;
+        if (!attacks::get_king_attacks(king_square) & !get(them, KING))
+            return false;
 
-        return false;
+        return true;
     }
 
     bool Chessboard::is_checkmate(Color color)
@@ -260,7 +260,7 @@ namespace board
             temp_board.do_move(move, color);
 
             //check if the piece is in check and if it's not a bad check (king)
-            if (!temp_board.is_check(color) && illegal_king_check(color))
+            if (!temp_board.is_check(color) && !illegal_king_check(color))
                 legal_moves.emplace_back(move);
         }
 

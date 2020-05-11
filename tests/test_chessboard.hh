@@ -240,29 +240,10 @@ TEST (Chessboard, is_draw)
     board.set(board::WHITE, board::BISHOP, enemy_bishop);
     board.set(board::WHITE, board::PAWN, enemy_pawn);
     board.set(board::WHITE, board::ALL, enemy_king | enemy_bishop | enemy_pawn);
-    std::cout << "BISHOP:\n";
-    board::print_bitboard(enemy_bishop);
-    std::cout << '\n';
-    std::cout << "KING:\n";
-    board::print_bitboard(enemy_king);
-    std::cout << '\n';
-    std::cout << "ENNEMIES:\n";
-    board::print_bitboard(enemy_pawn | enemy_king | enemy_bishop);
-    std::cout << '\n';
 
     board.set(board::BLACK, board::KING, king);
     board.set(board::BLACK, board::PAWN, pawn);
     board.set(board::BLACK, board::ALL, king | pawn);
-    std::cout << "KING:\n";
-    board::print_bitboard(king);
-    std::cout << '\n';
 
-    std::cout << "FRIEND:\n";
-    board::print_bitboard(king | pawn);
-    std::cout << '\n';
-
-    std::cout << "ALL:\n";
-    board::print_bitboard(king | pawn | enemy_bishop | enemy_king | enemy_pawn);
-    std::cout << '\n';
     EXPECT_TRUE(board.is_draw(board::BLACK));
 }
