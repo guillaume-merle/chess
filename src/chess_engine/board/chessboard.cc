@@ -182,6 +182,7 @@ namespace board
     void Chessboard::do_move(Move& move)
     {
         Color color = this->current_color();
+        PieceType piece = move.get_piece();
 
         if (move.is_capture())
         {
@@ -189,14 +190,13 @@ namespace board
                                move.get_to());
         }
 
-        this->move_piece(color, move.get_piece(), move.get_from(),
-                         move.get_to());
-
-        //check if piece is capture or a pawn is moving
+        // check if move is capture or a pawn is moving
         if (move.is_capture() || move.get_piece() == PAWN)
             last_fifty_turn_ = 0;
         else
             last_fifty_turn_++;
+
+        this->move_piece(color, piece, move.get_from(), move.get_to());
     }
 
     void Chessboard::move_piece(Color color, PieceType piece, Square from,

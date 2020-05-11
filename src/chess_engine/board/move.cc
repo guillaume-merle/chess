@@ -3,14 +3,28 @@
 
 namespace board
 {
-    Move::Move(Bitboard from, Bitboard to, PieceType piece)
-        : from_(from), to_(to), piece_(piece), is_capture_(false)
-    {}
+    Move::Move(Bitboard from, Bitboard to, PieceType piece, int flags)
+        : from_(from), to_(to), piece_(piece), promotion_(ALL)
+        , capture_(ALL), is_capture_(false)
+    {
+        parse_flags(flags);
+    }
 
-    Move::Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture)
-        : from_(from), to_(to), piece_(piece)
+    Move::Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
+               int flags)
+        : from_(from), to_(to), piece_(piece), promotion_(ALL)
         , capture_(capture), is_capture_(true)
-    {}
+    {
+        parse_flags(flags);
+    }
+
+    void Move::parse_flags(int flags)
+    {
+        double_pawn_push_ = MoveFlag::DOUBLE_PAWN_PUSH & flags;
+        en_passant_ = MoveFlag::EN_PASSANT & flags;
+        king_castling_ = MoveFlag::KING_CASTLING & flags;
+        queen_castling_ = MoveFlag::QUEEN_CASTLING & flags;
+    }
 
     PieceType Move::get_piece()
     {
@@ -35,6 +49,11 @@ namespace board
     bool Move::is_capture()
     {
         return is_capture_;
+    }
+
+    bool Move::is_double_pawn_push()
+    {
+        return double_pawn_push_;
     }
 
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,

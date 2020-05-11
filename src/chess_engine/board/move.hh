@@ -9,16 +9,24 @@
 
 namespace board
 {
+    enum MoveFlag : int
+    {
+        DOUBLE_PAWN_PUSH = 1,
+        EN_PASSANT = 1 << 1,
+        KING_CASTLING = 1 << 2,
+        QUEEN_CASTLING = 1 << 3,
+    };
+
     /*
     ** \brief class of the move.
     */
     class Move
     {
     public:
+        Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
 
-        Move(Bitboard from, Bitboard to, PieceType piece);
-
-        Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture);
+        Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
+             int flags = 0);
 
         PieceType get_piece();
 
@@ -28,11 +36,12 @@ namespace board
 
         PieceType get_capture();
 
+        bool is_double_pawn_push();
+
         bool is_capture();
 
     private:
         // store the move
-
         Bitboard from_;
         Bitboard to_;
 
@@ -45,6 +54,8 @@ namespace board
         bool king_castling_;
         bool queen_castling_;
         bool en_passant_;
+
+        void parse_flags(int flags);
     };
 
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
