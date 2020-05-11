@@ -18,6 +18,25 @@ namespace board
         parse_flags(flags);
     }
 
+    std::string Move::to_string()
+    {
+        std::string move_str;
+
+        // from: file
+        move_str += 'a' + from_ % 8;
+
+        // from: rank
+        move_str += '1' + from_ / 8;
+
+        // to : file
+        move_str += 'a' + to_ % 8;
+
+        // to : rank
+        move_str += '1' + to_ / 8;
+
+        return move_str;
+    }
+
     void Move::parse_flags(int flags)
     {
         double_pawn_push_ = MoveFlag::DOUBLE_PAWN_PUSH & flags;

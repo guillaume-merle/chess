@@ -7,6 +7,7 @@
 #include "test_queen.hh"
 #include "test_chessboard.hh"
 #include "test_attacks.hh"
+#include "test_move.hh"
 
 #include "gtest/gtest.h"
 

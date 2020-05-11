@@ -42,6 +42,8 @@ namespace board
 
         bool is_capture();
 
+        std::string to_string();
+
     private:
         // store the move
         Bitboard from_;
