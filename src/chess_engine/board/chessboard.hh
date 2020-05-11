@@ -55,6 +55,9 @@ namespace board
 
         bool would_capture(Bitboard pos, Color color);
 
+        // check for en_passant capture
+        bool would_capture_en_passant(Bitboard pos);
+
     private:
         Bitboard bitboards_[2][BITBOARDS_NUMBER];
 

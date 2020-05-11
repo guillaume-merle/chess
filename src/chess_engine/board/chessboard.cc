@@ -114,6 +114,11 @@ namespace board
         return (pos & get(opposite_color(color), ALL));
     }
 
+    bool Chessboard::would_capture_en_passant(Bitboard pos)
+    {
+        return (pos & (1ULL << en_passant_));
+    }
+
     bool Chessboard::is_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
@@ -178,7 +183,7 @@ namespace board
 
     void Chessboard::do_move(Move& move)
     {
-        Color color = this->current_color();
+        Color color = current_color();
         PieceType piece = move.get_piece();
 
         // reset en_passant_
@@ -186,12 +191,19 @@ namespace board
 
         if (move.is_capture())
         {
-            this->remove_piece(opposite_color(color), move.get_capture(),
-                               move.get_to());
+            remove_piece(opposite_color(color), move.get_capture(),
+                         move.get_to());
         }
         else if (move.is_double_pawn_push())
         {
             en_passant_ = move.get_from() + (color == WHITE ? 8 : -8);
+        }
+        else if (move.is_en_passant())
+        {
+            if (color == WHITE)
+                remove_piece(BLACK, move.get_capture(), move.get_to() - 8);
+            else
+                remove_piece(WHITE, move.get_capture(), move.get_to() + 8);
         }
 
         // check if move is capture or a pawn is moving
@@ -200,7 +212,10 @@ namespace board
         else
             last_fifty_turn_++;
 
-        this->move_piece(color, piece, move.get_from(), move.get_to());
+        move_piece(color, piece, move.get_from(), move.get_to());
+
+        // set next turn
+        white_turn_ = !white_turn_;
     }
 
     void Chessboard::move_piece(Color color, PieceType piece, Square from,
