@@ -116,6 +116,9 @@ namespace board
     bool Chessboard::is_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
+        if (king_square > 63)
+            return false;
+
         Bitboard all_pieces = get(WHITE, ALL) | get(BLACK, ALL);
         Color them = opposite_color(color);
 
@@ -140,6 +143,10 @@ namespace board
     bool Chessboard::illegal_king_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
+
+        if (king_square > 63)
+            return false;
+
         Color them = opposite_color(color);
 
         std::cout << "ILLEGAL KING CHECK:\n";

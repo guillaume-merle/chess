@@ -197,10 +197,38 @@ TEST (Pawn, generate_moves_with_chessboard_capture_left_and_right)
     EXPECT_EQ(board::PieceType::PAWN, moves.at(2).get_capture());
 }
 
-// TEST (Pawn, en_passant_capture)
-// {
-    // board::Chessboard board;
-    // board.set(board::WHITE, board::PAWN, 1 << 13);
-//
-    // board.set(board::BLACK, board::PAWN, 1 << 28);
-// }
+TEST (Pawn, en_passant_capture)
+{
+    board::Chessboard board;
+    board.set(board::WHITE, board::PAWN, 1 << 13);
+    board.set(board::BLACK, board::PAWN, 1 << 28);
+
+    board.update_all_boards();
+    auto move =
+        board::Move(13, 29, board::PAWN, board::MoveFlag::DOUBLE_PAWN_PUSH);
+
+    board.do_move(move);
+
+    std::vector<board::Move> moves = board.generate_legal_moves();
+
+    EXPECT_EQ(2, moves.size());
+    EXPECT_TRUE(moves.at(1).is_en_passant());
+}
+
+TEST (Pawn, en_passant_capture_2)
+{
+    board::Chessboard board;
+    board.set(board::WHITE, board::PAWN, 1ULL << 35);
+    board.set(board::BLACK, board::PAWN, 1ULL << 50);
+
+    board.update_all_boards();
+    auto move =
+        board::Move(50, 34, board::PAWN, board::MoveFlag::DOUBLE_PAWN_PUSH);
+
+    board.do_move(move, board::BLACK);
+
+    std::vector<board::Move> moves = board.generate_legal_moves(board::WHITE);
+
+    EXPECT_EQ(2, moves.size());
+    EXPECT_TRUE(moves.at(1).is_en_passant());
+}
