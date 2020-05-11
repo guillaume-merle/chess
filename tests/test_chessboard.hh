@@ -120,6 +120,36 @@ TEST (Chessboard, is_checkmate)
     EXPECT_TRUE(board.is_checkmate(board::BLACK));
 }
 
+TEST (Chessboard, scholar_checkmate)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 60;
+    board::Bitboard pawn = 1ULL << 48 | 1ULL << 49 | 1ULL << 50 | 1ULL << 51
+                           | 1ULL << 54 | 1ULL << 55 | 1ULL << 36;
+    board::Bitboard rook = 1ULL << 56 | 1ULL << 63;
+    board::Bitboard bishop = 1ULL << 58 | 1ULL << 61;
+    board::Bitboard queen = 1ULL << 59;
+    board::Bitboard knight = 1ULL << 42 | 1ULL << 45;
+
+    board::Bitboard enemy_queen = 1ULL << 53;
+    board::Bitboard enemy_bishop = 1 << 26;
+
+    board.set(board::WHITE, board::QUEEN, enemy_queen);
+    board.set(board::WHITE, board::BISHOP, enemy_bishop);
+    board.set(board::WHITE, board::ALL, enemy_queen | enemy_bishop);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::PAWN, pawn);
+    board.set(board::BLACK, board::ROOK, rook);
+    board.set(board::BLACK, board::BISHOP, bishop);
+    board.set(board::BLACK, board::QUEEN, queen);
+    board.set(board::BLACK, board::KNIGHT, knight);
+    board.set(board::BLACK, board::ALL, king | pawn | rook | bishop | queen
+                                        | knight);
+
+    EXPECT_TRUE(board.is_checkmate(board::BLACK));
+}
+
 TEST (Chessboard, is_not_checkmate)
 {
     board::Chessboard board;
