@@ -86,18 +86,12 @@ namespace board
 
             if (move && (move & all_pieces) == 0)
             {
-                if (color == WHITE && (move & Rank8BB) != 0)
+                if ((color == WHITE && (move & Rank8BB) != 0)
+                    || (color == BLACK && (move & Rank1BB) != 0))
                 {
                     moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN, 
-                            PROMOTION));
+                                             MoveFlag::PROMOTION));
                 }
-
-                else if (color == BLACK && (move & Rank1BB) != 0)
-                {
-                    moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN, 
-                            PROMOTION));
-                }
-
                 else
                 {
                     moves_.emplace_back(Move(square, bitscan(move), PAWN));
@@ -124,14 +118,22 @@ namespace board
                 {
                     PieceType capture = board.get_piece_type(attacked_square,
                                                         opposite_color(color));
-
-                    auto move = Move(square, attacked_square, PAWN, capture);
-                    moves_.emplace_back(move);
+                    if ((color == WHITE && (move & Rank8BB) != 0)
+                        || (color == BLACK && (move & Rank1BB) != 0))
+                    {
+                        moves_.emplace_back(Move(square, attacked_square, QUEEN,
+                            capture, MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+                    }
+                    else
+                    {
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                                 capture, MoveFlag::CAPTURE));
+                    }
                 }
                 else if (board.would_capture_en_passant(attacked))
                 {
                     auto move = Move(square, attacked_square, PAWN, PAWN,
-                                     MoveFlag::EN_PASSANT);
+                                     MoveFlag::EN_PASSANT | MoveFlag::CAPTURE);
                     moves_.emplace_back(move);
                 }
             }
@@ -197,7 +199,8 @@ namespace board
             PieceType capture =
                 board.get_piece_type(to, opposite_color(color));
 
-            moves_.emplace_back(Move(from, to, piece, capture));
+            moves_.emplace_back(Move(from, to, piece,
+                                     capture, MoveFlag::CAPTURE));
         }
 
         Bitboard other_moves = moves & ~board.get(color, ALL)
