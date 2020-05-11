@@ -247,3 +247,55 @@ TEST (Chessboard, is_draw)
 
     EXPECT_TRUE(board.is_draw(board::BLACK));
 }
+
+TEST (Chessboard, only_two_bare_king)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 33;
+
+    board::Bitboard enemy_king = 1ULL << 53;
+
+    board.set(board::WHITE, board::KING, enemy_king);
+    board.set(board::WHITE, board::ALL, enemy_king);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
+
+    EXPECT_TRUE(board.is_draw(board::BLACK));
+}
+
+TEST (Chessboard, only_two_bare_king_and_one_knight)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 33;
+
+    board::Bitboard enemy_king = 1ULL << 53;
+    board::Bitboard enemy_knight = 1 << 7;
+
+    board.set(board::WHITE, board::KING, enemy_king);
+    board.set(board::WHITE, board::KNIGHT, enemy_knight);
+    board.set(board::WHITE, board::ALL, enemy_king | enemy_knight);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
+
+    EXPECT_TRUE(board.is_draw(board::BLACK));
+}
+
+TEST (Chessboard, only_two_bare_king_and_one_bishop)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 33;
+    board::Bitboard bishop = 1ULL << 49;
+
+    board::Bitboard enemy_king = 1ULL << 53;
+
+    board.set(board::WHITE, board::KING, enemy_king);
+    board.set(board::WHITE, board::ALL, enemy_king);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::BISHOP, bishop);
+    board.set(board::BLACK, board::ALL, king | bishop);
+
+    EXPECT_TRUE(board.is_draw(board::BLACK));
+}

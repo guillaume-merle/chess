@@ -142,10 +142,13 @@ namespace board
         Square king_square = bitscan(get(color, KING));
         Color them = opposite_color(color);
 
-        if (!attacks::get_king_attacks(king_square) & !get(them, KING))
-            return false;
+        std::cout << "ILLEGAL KING CHECK:\n";
+        print_bitboard(attacks::get_king_attacks(king_square));
 
-        return true;
+        if (attacks::get_king_attacks(king_square) & get(them, KING))
+            return true;
+
+        return false;
     }
 
     bool Chessboard::is_checkmate(Color color)
@@ -155,8 +158,35 @@ namespace board
 
     bool Chessboard::is_draw(Color color)
     {
+        Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);
+        Bitboard all_bishop = get(WHITE, BISHOP) | get(BLACK, BISHOP);
+        //check if there is only two bare king
+        if (popcount(get(WHITE, ALL) | get(BLACK, ALL)) == 2 && get(WHITE, KING)
+                                                            && get(BLACK, KING))
+        {
+            return true;
+        }
+
+        //check if there is only bare king and a knight (whatever his color).
+        if (popcount(get(WHITE, ALL) | get(BLACK, ALL)) == 3
+                                     && get(WHITE, KING)
+                                     && get(BLACK, KING)
+                                     && all_knight)
+        {
+            return true;
+        }
+
+        //check if there is only bare king and a bishop (whatever his color).
+        if (popcount(get(WHITE, ALL) | get(BLACK, ALL)) == 3
+                                     && get(WHITE, KING)
+                                     && get(BLACK, KING)
+                                     && all_bishop)
+        {
+            return true;
+        }
+
         //check if the game lasts more than 50 turns
-        if(last_fifty_turn_ > 50)
+        if (last_fifty_turn_ > 50)
             return true;
 
         //first verify that my king is not in check
@@ -164,10 +194,6 @@ namespace board
             return false;
 
         std::vector<Move> legal_moves = generate_legal_moves(color);
-        for (auto& move : legal_moves)
-        {
-            std::cout << "MOVE: " << move.get_from() << " To: " << move.get_to() << '\n';
-        }
         //verify if legal_moves are available.
         if (!legal_moves.empty())
             return false;
@@ -253,9 +279,17 @@ namespace board
             Chessboard temp_board = *this;
             temp_board.do_move(move, color);
 
+            std::cout << "Move: " << move.get_from() << " to " << move.get_to() << "\n";
+
             //check if the piece is in check and if it's not a bad check (king)
-            if (!temp_board.is_check(color) && !illegal_king_check(color))
+            if (!temp_board.is_check(color))
+            {
+                if (move.get_piece() == KING
+                    && temp_board.illegal_king_check(color))
+                    continue;
+
                 legal_moves.emplace_back(move);
+            }
         }
 
         return legal_moves;
