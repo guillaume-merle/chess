@@ -145,22 +145,7 @@ namespace board
 
     bool Chessboard::is_checkmate(Color color)
     {
-        //first verify if i'm in check
-        if (!is_check(color))
-            return false;
-
-        std::vector<Move> pseudo_legal_moves = MoveGen(*this, color).get();
-
-        //loop over all possible moves
-        for(auto& move : pseudo_legal_moves)
-        {
-            auto temp_board = *this;
-            temp_board.do_move(move, color);
-            //verify if this pseudo_legal_moves is legal
-            if (!temp_board.is_check(color))
-                return false;
-        }
-        return true;
+        return is_check(color) && generate_legal_moves(color).empty();
     }
 
     bool Chessboard::is_draw(Color color)
@@ -244,7 +229,12 @@ namespace board
 
     std::vector<Move> Chessboard::generate_legal_moves()
     {
-        std::vector<Move> moves = MoveGen(*this).get();
+        return generate_legal_moves(current_color());
+    }
+
+    std::vector<Move> Chessboard::generate_legal_moves(Color color)
+    {
+        std::vector<Move> moves = MoveGen(*this, color).get();
 
         std::vector<Move> legal_moves;
         legal_moves.reserve(MoveGen::MAX_MOVES_SIZE);
@@ -252,9 +242,9 @@ namespace board
         for (auto& move : moves)
         {
             Chessboard temp_board = *this;
-            temp_board.do_move(move);
+            temp_board.do_move(move, color);
 
-            if (!temp_board.is_check(current_color()))
+            if (!temp_board.is_check(color))
                 legal_moves.emplace_back(move);
         }
 

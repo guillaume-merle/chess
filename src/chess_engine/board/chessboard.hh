@@ -25,6 +25,8 @@ namespace board
 
         std::vector<Move> generate_legal_moves();
 
+        std::vector<Move> generate_legal_moves(Color color);
+
         void do_move(Move& move);
 
         void do_move(Move& move, Color color);
