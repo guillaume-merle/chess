@@ -15,6 +15,7 @@ namespace board
         EN_PASSANT = 1 << 1,
         KING_CASTLING = 1 << 2,
         QUEEN_CASTLING = 1 << 3,
+        PROMOTION = 1 << 4
     };
 
     /*
@@ -60,6 +61,7 @@ namespace board
         bool king_castling_;
         bool queen_castling_;
         bool en_passant_;
+        bool promotion_;
 
         void parse_flags(int flags);
     };

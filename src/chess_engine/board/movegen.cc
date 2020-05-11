@@ -86,7 +86,22 @@ namespace board
 
             if (move && (move & all_pieces) == 0)
             {
-                moves_.emplace_back(Move(square, bitscan(move), PAWN));
+                if (color == WHITE && (move & Rank8BB) != 0)
+                {
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN, 
+                            PROMOTION));
+                }
+
+                else if (color == BLACK && (move & Rank1BB) != 0)
+                {
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN, 
+                            PROMOTION));
+                }
+
+                else
+                {
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN));
+                }
 
                 if ((color == WHITE && (bitboard & Rank2BB))
                      || (color == BLACK && (bitboard & Rank7BB)))
