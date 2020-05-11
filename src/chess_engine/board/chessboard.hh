@@ -31,7 +31,7 @@ namespace board
 
         bool is_check(Color color);
 
-        bool is_checkmate();
+        bool is_checkmate(Color color);
 
         bool is_draw();
 

@@ -133,8 +133,24 @@ namespace board
         return false;
     }
 
-    bool Chessboard::is_checkmate()
+    bool Chessboard::is_checkmate(Color color)
     {
+        auto temp_board = *this;
+        std::vector<Move> pseudo_legal_moves = MoveGen(*this).get();
+
+        //first verify if i'm in check
+        if (is_check(color))
+        {
+            //loop over all possible moves
+            for(const auto& move : pseudo_legal_moves)
+            {
+                temp_board.do_move(move);
+                //verify if this pseudo_legal_moves is legal
+                if (!temp_board.is_check(color))
+                    return false;
+            }
+            return true;
+        }
         return false;
     }
 
