@@ -31,7 +31,7 @@ namespace board
 
         void do_move(Move& move, Color color);
 
-        bool is_move_legal(Move move);
+        bool is_move_legal(const Move& move);
 
         bool is_check(Color color);
 
