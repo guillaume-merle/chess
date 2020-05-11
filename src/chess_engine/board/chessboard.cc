@@ -140,24 +140,22 @@ namespace board
 
     bool Chessboard::is_checkmate(Color color)
     {
-        auto temp_board = *this;
-        std::vector<Move> pseudo_legal_moves = MoveGen(*this).get();
-
         //first verify if i'm in check
-        if (is_check(color))
-        {
-            //loop over all possible moves
-            for(auto& move : pseudo_legal_moves)
-            {
-                temp_board.do_move(move);
-                //verify if this pseudo_legal_moves is legal
-                if (!temp_board.is_check(color))
-                    return false;
-            }
-            return true;
-        }
+        if (!is_check(color))
+            return false;
 
-        return false;
+        std::vector<Move> pseudo_legal_moves = MoveGen(*this, color).get();
+
+        //loop over all possible moves
+        for(auto& move : pseudo_legal_moves)
+        {
+            auto temp_board = *this;
+            temp_board.do_move(move);
+            //verify if this pseudo_legal_moves is legal
+            if (!temp_board.is_check(color))
+                return false;
+        }
+        return true;
     }
 
     bool Chessboard::is_draw(Color color)
@@ -165,18 +163,17 @@ namespace board
         //check if the game lasts more than 50 turns
         if(last_fifty_turn_ > 50)
             return true;
+
         //first verify that my king is not in check
-        if (!is_check(color))
-        {
-            std::vector<Move> legal_moves = generate_legal_moves();
-            //verify if legal_moves are available.
-            if (!legal_moves.empty())
-                return false;
+        if (is_check(color))
+            return false;
 
-            return true;
-        }
+        std::vector<Move> legal_moves = generate_legal_moves();
+        //verify if legal_moves are available.
+        if (!legal_moves.empty())
+            return false;
 
-        return false;
+        return true;
     }
 
     void Chessboard::do_move(Move& move)
