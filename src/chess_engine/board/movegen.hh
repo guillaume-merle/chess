@@ -13,7 +13,7 @@ namespace board
         MoveGen(Chessboard& board, Color color);
 
         std::vector<Move> get();
-        //
+
         // Maximum number of moves per round
         static const int MAX_MOVES_SIZE = 220;
 

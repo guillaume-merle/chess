@@ -56,6 +56,11 @@ namespace board
         return double_pawn_push_;
     }
 
+    bool Move::is_en_passant()
+    {
+        return en_passant_;
+    }
+
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece)
     {

@@ -38,6 +38,8 @@ namespace board
 
         bool is_double_pawn_push();
 
+        bool is_en_passant();
+
         bool is_capture();
 
     private:

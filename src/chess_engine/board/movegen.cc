@@ -43,7 +43,6 @@ namespace board
         generate_queen_moves(board, color);
 
         // board.set(opposite_color(color), KING, king);
-
     }
 
     void MoveGen::generate_king_moves(Chessboard& board, Color color)
@@ -92,8 +91,8 @@ namespace board
                 {
                     move = Pawn::double_push(bitboard, color);
                     if ((move & all_pieces) == 0)
-                        moves_.emplace_back(
-                            Move(square, bitscan(move), PAWN));
+                        moves_.emplace_back(Move(square, bitscan(move), PAWN,
+                                                 MoveFlag::DOUBLE_PAWN_PUSH));
                 }
             }
 
@@ -102,15 +101,24 @@ namespace board
             while (attacks)
             {
                 Square attacked_square = pop(attacks);
-                if (board.would_capture(1ULL << attacked_square, color))
-                    moves_.emplace_back(
-                            Move(square, attacked_square, PAWN,
-                                 board.get_piece_type(attacked_square,
-                                                      opposite_color(color))
-                                ));
+                Bitboard attacked = 1ULL << attacked_square;
+
+                if (board.would_capture(attacked, color))
+                {
+                    PieceType capture = board.get_piece_type(attacked_square,
+                                                        opposite_color(color));
+
+                    auto move = Move(square, attacked_square, PAWN, capture);
+                    moves_.emplace_back(move);
+                }
+                else if (board.would_capture_en_passant(attacked))
+                {
+                    auto move = Move(square, attacked_square, PAWN, PAWN,
+                                     MoveFlag::EN_PASSANT);
+                    moves_.emplace_back(move);
+                }
             }
         }
-
     }
 
     void MoveGen::generate_rook_moves(Chessboard& board, Color color)
