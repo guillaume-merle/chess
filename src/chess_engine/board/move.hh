@@ -15,7 +15,8 @@ namespace board
         EN_PASSANT = 1 << 1,
         KING_CASTLING = 1 << 2,
         QUEEN_CASTLING = 1 << 3,
-        PROMOTION = 1 << 4
+        PROMOTION = 1 << 4,
+        CAPTURE = 1 << 5
     };
 
     /*
@@ -28,6 +29,9 @@ namespace board
 
         Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
              int flags = 0);
+
+        Move(Bitboard from, Bitboard to, PieceType piece, PieceType promotion,
+             PieceType capture, int flags = 0);
 
         PieceType get_piece();
 
@@ -61,7 +65,7 @@ namespace board
         bool king_castling_;
         bool queen_castling_;
         bool en_passant_;
-        bool promotion_;
+        bool is_promotion_;
 
         void parse_flags(int flags);
     };

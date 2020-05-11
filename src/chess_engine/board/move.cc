@@ -13,7 +13,19 @@ namespace board
     Move::Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
                int flags)
         : from_(from), to_(to), piece_(piece), promotion_(ALL)
-        , capture_(capture), is_capture_(true)
+        , capture_(ALL)
+    {
+        parse_flags(flags);
+        if (is_capture_)
+            capture_ = capture;
+        else
+            promotion_ = capture;
+    }
+
+    Move::Move(Bitboard from, Bitboard to, PieceType piece, PieceType promotion,
+               PieceType capture, int flags)
+        : from_(from), to_(to), piece_(piece), promotion_(promotion)
+        , capture_(capture)
     {
         parse_flags(flags);
     }
@@ -57,6 +69,8 @@ namespace board
         en_passant_ = MoveFlag::EN_PASSANT & flags;
         king_castling_ = MoveFlag::KING_CASTLING & flags;
         queen_castling_ = MoveFlag::QUEEN_CASTLING & flags;
+        is_promotion_ = MoveFlag::PROMOTION & flags;
+        is_capture_ = MoveFlag::CAPTURE & flags;
     }
 
     PieceType Move::get_piece()
