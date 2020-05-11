@@ -44,7 +44,7 @@ namespace board
 
         std::string to_string();
 
-        bool operator==(const Move& rhs);
+        bool operator==(const Move& rhs) const;
 
     private:
         // store the move

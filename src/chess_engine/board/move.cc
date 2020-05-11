@@ -37,7 +37,7 @@ namespace board
         return move_str;
     }
 
-    bool Move::operator==(const Move& rhs)
+    bool Move::operator==(const Move& rhs) const
     {
         return this->from_ == rhs.from_
             && this->to_ == rhs.to_
