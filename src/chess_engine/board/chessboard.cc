@@ -183,7 +183,11 @@ namespace board
 
     void Chessboard::do_move(Move& move)
     {
-        Color color = current_color();
+        do_move(move, current_color());
+    }
+
+    void Chessboard::do_move(Move& move, Color color)
+    {
         PieceType piece = move.get_piece();
 
         // reset en_passant_
