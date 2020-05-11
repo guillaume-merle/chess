@@ -17,9 +17,11 @@ namespace board
     class Chessboard : public ChessboardInterface
     {
     public:
-        Chessboard()
-            : bitboards_{{0}}, white_turn_(true)
-        {}
+        Chessboard();
+
+        Chessboard(const Chessboard&);
+
+        Chessboard& operator=(const Chessboard&);
 
         std::vector<Move> generate_legal_moves();
 

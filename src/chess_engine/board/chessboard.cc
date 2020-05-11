@@ -5,9 +5,41 @@
 #include "utils.hh"
 #include "move.hh"
 #include "attacks.hh"
+#include "movegen.hh"
 
 namespace board
 {
+    Chessboard::Chessboard()
+        : bitboards_{{0}}, white_turn_(true)
+    {}
+
+    Chessboard::Chessboard(const Chessboard& board)
+        : bitboards_{{0}}, white_turn_(board.white_turn_)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < BITBOARDS_NUMBER; j++)
+            {
+                bitboards_[i][j] = board.bitboards_[i][j];
+            }
+        }
+    }
+
+    Chessboard& Chessboard::operator=(const Chessboard& board)
+    {
+        white_turn_ = board.white_turn_;
+
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < BITBOARDS_NUMBER; j++)
+            {
+                bitboards_[i][j] = board.bitboards_[i][j];
+            }
+        }
+
+        return *this;
+    }
+
     Bitboard Chessboard::get(Color color, PieceType piece)
     {
         return bitboards_[color][piece];
@@ -100,4 +132,24 @@ namespace board
 
         return false;
     }
+
+    bool Chessboard::is_checkmate()
+    {
+        return false;
+    }
+
+    void do_move(Move)
+    {
+
+    }
+
+    // std::vector<Move> Chessboard::generate_legal_moves()
+    // {
+        // std::vector<Move> moves = MoveGen(*this).get();
+//
+        // for (const auto& move : moves)
+        // {
+            // Chessboard temp =
+        // }
+    // }
 }
