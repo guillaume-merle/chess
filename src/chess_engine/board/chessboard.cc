@@ -40,12 +40,12 @@ namespace board
         return *this;
     }
 
-    Bitboard Chessboard::get(Color color, PieceType piece)
+    Bitboard Chessboard::get(Color color, PieceType piece) const
     {
         return bitboards_[color][piece];
     }
 
-    Bitboard Chessboard::get(Color color, int piece)
+    Bitboard Chessboard::get(Color color, int piece) const
     {
         return bitboards_[color][piece];
     }
@@ -96,12 +96,6 @@ namespace board
 
         bitboards_[color][piece] = value;
         return true;
-    }
-
-    Chessboard::opt_piece_t
-    Chessboard::operator[](const Position&) const
-    {
-        return std::nullopt;
     }
 
     bool Chessboard::would_collide(Bitboard pos, Color color)
@@ -278,5 +272,27 @@ namespace board
         }
 
         return false;
+    }
+
+    Chessboard::opt_piece_t
+    Chessboard::operator[](const Position& pos) const
+    {
+        Square square = pos.file_get() + pos.rank_get() * 8;
+        Bitboard piece_board = 1ULL << square;
+
+        Color color = WHITE;
+
+        if (piece_board & get(BLACK, ALL))
+            color = BLACK;
+        else if (!(piece_board & get(WHITE, ALL)))
+            return std::nullopt;
+
+        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        {
+            if (piece_board & get(color, i))
+                return std::make_pair(static_cast<PieceType>(i), color);
+        }
+
+        return std::nullopt;
     }
 }

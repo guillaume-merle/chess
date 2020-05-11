@@ -41,9 +41,9 @@ namespace board
 
         bool is_draw(Color color);
 
-        Bitboard get(Color color, PieceType piece);
+        Bitboard get(Color color, PieceType piece) const;
 
-        Bitboard get(Color color, int piece);
+        Bitboard get(Color color, int piece) const;
 
         void update_all_boards();
 
@@ -55,14 +55,14 @@ namespace board
 
         Color current_color();
 
-        virtual opt_piece_t operator[](const Position& position) const;
-
         bool would_collide(Bitboard pos, Color color);
 
         bool would_capture(Bitboard pos, Color color);
 
         // check for en_passant capture
         bool would_capture_en_passant(Bitboard pos);
+
+        opt_piece_t operator[](const Position& position) const override;
 
     private:
         Bitboard bitboards_[2][BITBOARDS_NUMBER];

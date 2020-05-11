@@ -8,9 +8,9 @@ namespace board
 {
     /* The file enum represent the colomns
      * on the board */
-    enum class File
+    enum File
     {
-        A,
+        A = 0,
         B,
         C,
         D,
@@ -22,9 +22,9 @@ namespace board
 
     /* The rank enum represent the lines
      * on the board */
-    enum class Rank
+    enum Rank
     {
-        ONE,
+        ONE = 0,
         TWO,
         THREE,
         FOUR,

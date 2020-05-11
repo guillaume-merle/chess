@@ -165,7 +165,7 @@ namespace board
         while (queen)
         {
             Square square = pop(queen);
-            Bitboard moves = attacks::get_bishop_attacks(square, occupancy);
+            Bitboard moves = attacks::get_queen_attacks(square, occupancy);
 
             add_moves(board, QUEEN, color, square, moves);
         }
