@@ -12,7 +12,7 @@ namespace board
         , capture_(capture), is_capture_(true)
     {}
 
-    PieceType Move::piece_get()
+    PieceType Move::get_piece()
     {
         return piece_;
     }

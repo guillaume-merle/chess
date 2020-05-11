@@ -20,11 +20,14 @@ namespace board
 
         Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture);
 
-        PieceType piece_get();
+        PieceType get_piece();
 
         Bitboard get_from();
+
         Bitboard get_to();
+
         PieceType get_capture();
+
         bool is_capture();
 
     private:

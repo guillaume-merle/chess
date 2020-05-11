@@ -25,7 +25,7 @@ namespace board
 
         std::vector<Move> generate_legal_moves();
 
-        void do_move(Move move);
+        void do_move(Move& move);
 
         bool is_move_legal(Move move);
 
@@ -47,6 +47,8 @@ namespace board
 
         bool is_white_turn();
 
+        Color current_color();
+
         virtual opt_piece_t operator[](const Position& position) const;
 
         bool would_collide(Bitboard pos, Color color);
@@ -64,6 +66,10 @@ namespace board
         //en_passant_; TODO
         unsigned int turn_;
         //last_fifty_turn_; TODO
+
+        void move_piece(Color color, PieceType piece, Square from, Square to);
+
+        void remove_piece(Color color, PieceType piece, Square pos);
     };
 
 } // namespace board

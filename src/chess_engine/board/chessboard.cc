@@ -84,6 +84,11 @@ namespace board
         return white_turn_;
     }
 
+    Color Chessboard::current_color()
+    {
+        return white_turn_ ? WHITE : BLACK;
+    }
+
     bool Chessboard::set(Color color, PieceType piece, Bitboard value)
     {
         if (piece < 0 || piece >= BITBOARDS_NUMBER)
@@ -171,9 +176,38 @@ namespace board
         return false;
     }
 
-    void do_move(Move)
+    void Chessboard::do_move(Move& move)
     {
+        Color color = this->current_color();
 
+        if (move.is_capture())
+        {
+            this->remove_piece(opposite_color(color), move.get_capture(),
+                               move.get_to());
+        }
+
+        this->move_piece(color, move.get_piece(), move.get_from(),
+                         move.get_to());
+    }
+
+    void Chessboard::move_piece(Color color, PieceType piece, Square from,
+                                Square to)
+    {
+        Bitboard from_to = 1ULL << from | 1ULL << to;
+
+        // xor "from" and "to" bits to update position
+        bitboards_[color][piece] ^= from_to;
+        // update all white pieces bitboard as well
+        bitboards_[color][ALL] ^= from_to;
+    }
+
+    void Chessboard::remove_piece(Color color, PieceType piece, Square pos)
+    {
+        Bitboard mask = 1ULL << pos;
+
+        // xor the square bit of the piece to remove it from the board
+        bitboards_[color][piece] ^= mask;
+        bitboards_[color][piece] ^= mask;
     }
 
     // std::vector<Move> Chessboard::generate_legal_moves()
@@ -182,7 +216,8 @@ namespace board
 //
         // for (const auto& move : moves)
         // {
-            // Chessboard temp =
+            // Chessboard temp_board = *this;
+            // temp_board.do_move(move);
         // }
     // }
 }
