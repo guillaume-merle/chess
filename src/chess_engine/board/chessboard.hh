@@ -33,7 +33,7 @@ namespace board
 
         bool is_checkmate(Color color);
 
-        bool is_draw();
+        bool is_draw(Color color);
 
         Bitboard get(Color color, PieceType piece);
 

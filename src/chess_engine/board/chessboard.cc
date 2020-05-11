@@ -151,6 +151,23 @@ namespace board
             }
             return true;
         }
+
+        return false;
+    }
+
+    bool Chessboard::is_draw(Color color)
+    {
+        //first verify that my king is not in check
+        if (!is_check(color))
+        {
+            std::vector<Move> legal_moves = generate_legal_moves();
+            //verify if legal_moves are available.
+            if (!legal_moves.empty())
+                return false;
+
+            return true;
+        }
+
         return false;
     }
 
