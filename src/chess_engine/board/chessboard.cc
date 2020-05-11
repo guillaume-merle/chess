@@ -210,14 +210,22 @@ namespace board
         bitboards_[color][piece] ^= mask;
     }
 
-    // std::vector<Move> Chessboard::generate_legal_moves()
-    // {
-        // std::vector<Move> moves = MoveGen(*this).get();
-//
-        // for (const auto& move : moves)
-        // {
-            // Chessboard temp_board = *this;
-            // temp_board.do_move(move);
-        // }
-    // }
+    std::vector<Move> Chessboard::generate_legal_moves()
+    {
+        std::vector<Move> moves = MoveGen(*this).get();
+
+        std::vector<Move> legal_moves;
+        legal_moves.reserve(MoveGen::MAX_MOVES_SIZE);
+
+        for (auto& move : moves)
+        {
+            Chessboard temp_board = *this;
+            temp_board.do_move(move);
+
+            if (!temp_board.is_check(current_color()))
+                legal_moves.emplace_back(move);
+        }
+
+        return legal_moves;
+    }
 }
