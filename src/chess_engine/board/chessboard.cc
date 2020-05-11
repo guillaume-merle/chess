@@ -184,10 +184,17 @@ namespace board
         Color color = this->current_color();
         PieceType piece = move.get_piece();
 
+        // reset en_passant_
+        en_passant_ = 0;
+
         if (move.is_capture())
         {
             this->remove_piece(opposite_color(color), move.get_capture(),
                                move.get_to());
+        }
+        else if (move.is_double_pawn_push())
+        {
+            en_passant_ = move.get_from() + (color == WHITE ? 8 : -8);
         }
 
         // check if move is capture or a pawn is moving
