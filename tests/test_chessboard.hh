@@ -120,6 +120,24 @@ TEST (Chessboard, is_checkmate)
     EXPECT_TRUE(board.is_checkmate(board::BLACK));
 }
 
+TEST (Chessboard, black_rank_checkmate)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 62;
+    board::Bitboard pawn = 1ULL << 53 | 1ULL << 54 | 1ULL << 55;
+
+    board::Bitboard enemy_rook = 1ULL << 59;
+
+    board.set(board::WHITE, board::ROOK, enemy_rook);
+    board.set(board::WHITE, board::ALL, enemy_rook);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::PAWN, pawn);
+    board.set(board::BLACK, board::ALL, king | pawn);
+
+    EXPECT_TRUE(board.is_checkmate(board::BLACK));
+}
+
 TEST (Chessboard, scholar_checkmate)
 {
     board::Chessboard board;

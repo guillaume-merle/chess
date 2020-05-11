@@ -1,6 +1,7 @@
 #include "movegen.hh"
 #include "attacks.hh"
 #include "pawn.hh"
+#include <iostream>
 
 namespace board
 {
@@ -54,7 +55,7 @@ namespace board
         Square square = bitscan(king);
 
         Bitboard moves = attacks::get_king_attacks(square);
-        add_moves(board, KING, color, king, moves);
+        add_moves(board, KING, color, square, moves);
     }
 
     void MoveGen::generate_knight_moves(Chessboard& board, Color color)

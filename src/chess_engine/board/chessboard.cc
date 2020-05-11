@@ -155,7 +155,7 @@ namespace board
         for(auto& move : pseudo_legal_moves)
         {
             auto temp_board = *this;
-            temp_board.do_move(move);
+            temp_board.do_move(move, color);
             //verify if this pseudo_legal_moves is legal
             if (!temp_board.is_check(color))
                 return false;
