@@ -138,6 +138,46 @@ TEST (Chessboard, black_rank_checkmate)
     EXPECT_TRUE(board.is_checkmate(board::BLACK));
 }
 
+TEST (Chessboard, arabian_checkmate)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1ULL << 63;
+
+    board::Bitboard enemy_rook = 1ULL << 55;
+    board::Bitboard enemy_knight = 1ULL << 45;
+
+    board.set(board::WHITE, board::ROOK, enemy_rook);
+    board.set(board::WHITE, board::KNIGHT, enemy_knight);
+    board.set(board::WHITE, board::ALL, enemy_rook | enemy_knight);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ALL, king);
+
+    EXPECT_TRUE(board.is_checkmate(board::BLACK));
+}
+
+TEST (Chessboard, david_and_goliath_checkmate)
+{
+    board::Chessboard board;
+    board::Bitboard king = 1 << 25;
+    board::Bitboard pawn = 1 << 24 | 1 << 26;
+    board::Bitboard knight = 1 << 17;
+
+    board::Bitboard enemy_rook = 1ULL << 39;
+    board::Bitboard enemy_pawn = 1 << 16 | 1 << 9;
+
+    board.set(board::WHITE, board::ROOK, enemy_rook);
+    board.set(board::WHITE, board::PAWN, enemy_pawn);
+    board.set(board::WHITE, board::ALL, enemy_rook | enemy_pawn);
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::PAWN, pawn);
+    board.set(board::BLACK, board::KNIGHT, knight);
+    board.set(board::BLACK, board::ALL, king | knight | pawn);
+
+    EXPECT_TRUE(board.is_checkmate(board::BLACK));
+}
+
 TEST (Chessboard, scholar_checkmate)
 {
     board::Chessboard board;
