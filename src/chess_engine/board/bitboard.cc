@@ -83,11 +83,15 @@ namespace board
 
     int bitscan(Bitboard board)
     {
+        if (!board)
+            return 0;
         return __builtin_ctzll(board);
     }
 
     int bitscan_reverse(Bitboard board)
     {
+        if (!board)
+            return 0;
         return __builtin_clzll(board);
     }
 

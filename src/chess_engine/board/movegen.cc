@@ -73,7 +73,7 @@ namespace board
 
     void MoveGen::generate_pawn_moves(Chessboard& board, Color color)
     {
-        Bitboard pawns = board.get(WHITE, PAWN);
+        Bitboard pawns = board.get(color, PAWN);
         auto all_pieces = board.get(WHITE, ALL)
                           | board.get(BLACK, ALL);
 
@@ -83,15 +83,16 @@ namespace board
             Bitboard bitboard = 1ULL << square;
 
             auto move = Pawn::single_push(bitboard, color);
-            moves_.emplace_back(Move(square, bitscan(move), PAWN));
 
-            if ((move & all_pieces) == 0)
+            if (move && (move & all_pieces) == 0)
             {
-                if ((color == WHITE && (bitboard & Rank7BB))
-                     || (color == BLACK && (bitboard & Rank2BB)))
+                moves_.emplace_back(Move(square, bitscan(move), PAWN));
+
+                if ((color == WHITE && (bitboard & Rank2BB))
+                     || (color == BLACK && (bitboard & Rank7BB)))
                 {
                     move = Pawn::double_push(bitboard, color);
-                    if ((move & all_pieces) == 0)
+                    if (move && (move & all_pieces) == 0)
                         moves_.emplace_back(Move(square, bitscan(move), PAWN,
                                                  MoveFlag::DOUBLE_PAWN_PUSH));
                 }
