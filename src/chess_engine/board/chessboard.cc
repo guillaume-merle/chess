@@ -147,7 +147,7 @@ namespace board
         if (is_check(color))
         {
             //loop over all possible moves
-            for(const auto& move : pseudo_legal_moves)
+            for(auto& move : pseudo_legal_moves)
             {
                 temp_board.do_move(move);
                 //verify if this pseudo_legal_moves is legal
@@ -162,6 +162,9 @@ namespace board
 
     bool Chessboard::is_draw(Color color)
     {
+        //check if the game lasts more than 50 turns
+        if(last_fifty_turn_ > 50)
+            return true;
         //first verify that my king is not in check
         if (!is_check(color))
         {
@@ -188,6 +191,12 @@ namespace board
 
         this->move_piece(color, move.get_piece(), move.get_from(),
                          move.get_to());
+
+        //check if piece is capture or a pawn is moving
+        if (move.is_capture() || move.get_piece() == PAWN)
+            last_fifty_turn_ = 0;
+        else
+            last_fifty_turn_++;
     }
 
     void Chessboard::move_piece(Color color, PieceType piece, Square from,

@@ -65,7 +65,7 @@ namespace board
         bool black_queen_castling_;
         //en_passant_; TODO
         unsigned int turn_;
-        //last_fifty_turn_; TODO
+        int last_fifty_turn_ = 0;
 
         void move_piece(Color color, PieceType piece, Square from, Square to);
 
