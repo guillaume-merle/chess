@@ -44,6 +44,8 @@ namespace board
 
         std::string to_string();
 
+        bool operator==(const Move& rhs);
+
     private:
         // store the move
         Bitboard from_;

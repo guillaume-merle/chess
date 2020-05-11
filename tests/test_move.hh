@@ -22,3 +22,19 @@ TEST (move, move_to_string_corner2)
 
     EXPECT_EQ("a1h8" ,move.to_string());
 }
+
+TEST (move, move_equal)
+{
+    board::Move lhs(0, 63, board::PieceType::PAWN);
+    board::Move rhs(0, 63, board::PieceType::PAWN);
+
+    EXPECT_TRUE(lhs == rhs);
+}
+
+TEST (move, move_not_equal)
+{
+    board::Move lhs(0, 63, board::PieceType::PAWN);
+    board::Move rhs(0, 63, board::PieceType::KING);
+
+    EXPECT_FALSE(lhs == rhs);
+}

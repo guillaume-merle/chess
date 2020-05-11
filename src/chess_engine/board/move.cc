@@ -37,6 +37,20 @@ namespace board
         return move_str;
     }
 
+    bool Move::operator==(const Move& rhs)
+    {
+        return this->from_ == rhs.from_
+            && this->to_ == rhs.to_
+            && this->piece_ == rhs.piece_
+            && this->promotion_ == rhs.promotion_
+            && this->capture_ == rhs.capture_
+            && this->is_capture_ == rhs.is_capture_
+            && this->double_pawn_push_ == rhs.double_pawn_push_
+            && this->king_castling_ == rhs.king_castling_
+            && this->queen_castling_ == rhs.queen_castling_
+            && this->en_passant_ == rhs.en_passant_;
+    }
+
     void Move::parse_flags(int flags)
     {
         double_pawn_push_ = MoveFlag::DOUBLE_PAWN_PUSH & flags;
