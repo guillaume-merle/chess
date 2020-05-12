@@ -113,6 +113,16 @@ namespace board
         return is_promotion_;
     }
 
+    bool Move::is_king_side_castling()
+    {
+        return king_castling_;
+    }
+
+    bool Move::is_queen_side_castling()
+    {
+        return queen_castling_;
+    }
+
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece)
     {

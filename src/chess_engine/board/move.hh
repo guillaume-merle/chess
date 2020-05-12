@@ -49,6 +49,10 @@ namespace board
 
         bool is_promotion();
 
+        bool is_king_side_castling();
+
+        bool is_queen_side_castling();
+
         std::string to_string();
 
         bool operator==(const Move& rhs) const;

@@ -223,69 +223,6 @@ namespace board
         return true;
     }
 
-    bool Chessboard::can_king_side_castling(Color color)
-    {
-        //first verify if i'm not currently in check
-        if (is_check(color))
-            return false;
-
-        Bitboard movement_squares = 0;
-        Bitboard attacked = 0;
-
-        if (color == WHITE)
-        {
-            if (!white_king_side_castling_)
-                return false;
-
-            // then verify that the rook never moves
-            Bitboard rook_pos = 1 << 7;
-            if (!(get(WHITE, ROOK) & rook_pos))
-            {
-                white_king_side_castling_ = false;
-                return false;
-            }
-
-            // then verify that the king never moves
-            Bitboard king_pos = 1 << 4;
-            if (!(get(WHITE, KING) & king_pos))
-            {
-                white_king_side_castling_ = false;
-                return false;
-            }
-
-            movement_squares= 1 << 5 | 1 << 6;
-            attacked = square_attacks(color, 5) | square_attacks(color, 6);
-        }
-        else
-        {
-            if (!black_king_side_castling_)
-                return false;
-
-            // then verify that the rook never moves
-            Bitboard rook_pos = 1ULL << 63;
-            if (!(get(BLACK, ROOK) & rook_pos))
-            {
-                black_king_side_castling_ = false;
-                return false;
-            }
-
-            // then verify that the king never moves
-            Bitboard king_pos = 1ULL << 60;
-            if (!(get(BLACK, KING) & king_pos))
-            {
-                black_king_side_castling_ = false;
-                return false;
-            }
-
-            movement_squares= 1ULL << 61 | 1ULL << 62;
-            attacked = square_attacks(color, 61) | square_attacks(color, 62);
-        }
-
-        Bitboard occupied = movement_squares & get_all();
-
-        return !occupied && !attacked;
-    }
-
     void Chessboard::do_move(Move& move)
     {
         do_move(move, current_color());
@@ -314,6 +251,16 @@ namespace board
             else
                 remove_piece(WHITE, move.get_capture(), move.get_to() + 8);
         }
+        else if (move.is_king_side_castling())
+        {
+            Square rook_from = color == WHITE ? 7 : 63;
+            move_piece(color, ROOK, rook_from, rook_from - 2);
+        }
+        else if (move.is_queen_side_castling())
+        {
+            Square rook_from = color == WHITE ? 0 : 56;
+            move_piece(color, ROOK, rook_from, rook_from + 3);
+        }
 
         // check if move is capture or a pawn is moving
         if (move.is_capture() || move.get_piece() == PAWN)
@@ -340,6 +287,35 @@ namespace board
         bitboards_[color][piece] |= mask;
     }
 
+    void Chessboard::update_castling_abilities(Color color, PieceType piece,
+                                               Square from)
+    {
+        if (piece == KING)
+        {
+            if (color == WHITE)
+            {
+                white_king_side_castling_ = false;
+                white_queen_side_castling_ = false;
+            }
+            else
+            {
+                black_king_side_castling_ = false;
+                black_queen_side_castling_ = false;
+            }
+        }
+        else if (piece == ROOK)
+        {
+            if (from == 0)
+                white_queen_side_castling_ = false;
+            if (from == 7)
+                white_king_side_castling_ = false;
+            if (from == 56)
+                black_queen_side_castling_ = false;
+            if (from == 63)
+                black_king_side_castling_ = false;
+        }
+    }
+
     void Chessboard::move_piece(Color color, PieceType piece, Square from,
                                 Square to)
     {
@@ -349,6 +325,9 @@ namespace board
         bitboards_[color][piece] ^= from_to;
         // update all white pieces bitboard as well
         bitboards_[color][ALL] ^= from_to;
+
+        update_castling_abilities(color, piece, from);
+
     }
 
     void Chessboard::remove_piece(Color color, PieceType piece, Square pos)
@@ -404,7 +383,56 @@ namespace board
         return false;
     }
 
-    bool Chessboard::can_queen_side_caslting(Color color)
+    bool Chessboard::can_king_side_castling(Color color)
+    {
+        if (is_check(color))
+            return false;
+
+        Bitboard movement_squares = 0;
+        Bitboard attacked = 0;
+
+        if (color == WHITE)
+        {
+            if (!white_king_side_castling_)
+                return false;
+
+            Bitboard rook = 1 << 7;
+            Bitboard king = 1 << 4;
+
+            if (!(get(WHITE, ROOK) & rook) && !(get(WHITE, KING) & king))
+            {
+                white_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1 << 5 | 1 << 6;
+            attacked = square_attacks(color, 5) | square_attacks(color, 6);
+        }
+        else
+        {
+            if (!black_king_side_castling_)
+                return false;
+
+            Bitboard rook = 1ULL << 63;
+            Bitboard king = 1ULL << 60;
+
+            // check that the king and the rook are at the start pos
+            if (!(get(BLACK, ROOK) & rook) && !(get(BLACK, KING) & king))
+            {
+                black_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1ULL << 61 | 1ULL << 62;
+            attacked = square_attacks(color, 61) | square_attacks(color, 62);
+        }
+
+        Bitboard occupied = movement_squares & get_all();
+
+        return !occupied && !attacked;
+    }
+
+    bool Chessboard::can_queen_side_castling(Color color)
     {
         if (is_check(color))
             return false;
@@ -420,6 +448,7 @@ namespace board
             Bitboard rook = 1;
             Bitboard king = 1 << 4;
 
+            // check that the king and the rook are at the start pos
             if (!(get(WHITE, ROOK) & rook) && !(get(WHITE, KING) & king))
             {
                 white_queen_side_castling_ = false;

@@ -66,7 +66,7 @@ namespace board
         // check for en_passant capture
         bool would_capture_en_passant(Bitboard pos);
 
-        bool can_queen_side_caslting(Color color);
+        bool can_queen_side_castling(Color color);
 
         bool can_king_side_castling(Color color);
 
@@ -78,13 +78,21 @@ namespace board
         bool white_turn_;
 
         bool white_king_side_castling_;
+
         bool white_queen_side_castling_;
+
         bool black_king_side_castling_;
+
         bool black_queen_side_castling_;
 
         Square en_passant_;
+
         unsigned int turn_;
+
         int last_fifty_turn_ = 0;
+
+        void update_castling_abilities(Color color, PieceType piece,
+                                       Square from);
 
         void move_piece(Color color, PieceType piece, Square from, Square to);
 
