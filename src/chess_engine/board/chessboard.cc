@@ -50,6 +50,11 @@ namespace board
         return bitboards_[color][piece];
     }
 
+    Bitboard Chessboard::get_all()
+    {
+        return bitboards_[WHITE][ALL] | bitboards_[BLACK][ALL];
+    }
+
     void Chessboard::update_all_boards()
     {
         Bitboard all_white = 0;
@@ -113,26 +118,39 @@ namespace board
         return (pos & (1ULL << en_passant_));
     }
 
+    bool Chessboard::square_attacks(Color color, Square square)
+    {
+        Bitboard all_pieces = get_all();
+        Color them = opposite_color(color);
+
+        Bitboard attackers = 0;
+
+        attackers |= attacks::get_king_attacks(square)
+                     & get(them, KING);
+        attackers |= attacks::get_knight_attacks(square)
+                     & get(them, KNIGHT);
+        attackers |= attacks::get_pawn_attacks(square, color)
+                     & get(them, PAWN);
+        attackers |= attacks::get_bishop_attacks(square, all_pieces)
+                     & get(them, BISHOP);
+        attackers |= attacks::get_rook_attacks(square, all_pieces)
+                     & get(them, ROOK);
+        attackers |= attacks::get_queen_attacks(square, all_pieces)
+                     & get(them, QUEEN);
+
+        return attackers;
+    }
+
     bool Chessboard::is_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
         if (king_square > 63)
             return false;
 
-        Bitboard all_pieces = get(WHITE, ALL) | get(BLACK, ALL);
-        Color them = opposite_color(color);
+        Bitboard attackers = square_attacks(color, king_square);
 
-        Bitboard attackers = 0;
-        attackers |= attacks::get_knight_attacks(king_square)
-                     & get(them, KNIGHT);
-        attackers |= attacks::get_pawn_attacks(king_square, color)
-                     & get(them, PAWN);
-        attackers |= attacks::get_bishop_attacks(king_square, all_pieces)
-                     & get(them, BISHOP);
-        attackers |= attacks::get_rook_attacks(king_square, all_pieces)
-                     & get(them, ROOK);
-        attackers |= attacks::get_queen_attacks(king_square, all_pieces)
-                     & get(them, QUEEN);
+        // remove opposite king attacks as they are not permitted
+        attackers &= ~get(opposite_color(color), KING);
 
         if (attackers)
             return true;
@@ -286,8 +304,6 @@ namespace board
             Chessboard temp_board = *this;
             temp_board.do_move(move, color);
 
-            std::cout << "Move: " << move.get_from() << " to " << move.get_to() << "\n";
-
             //check if the piece is in check and if it's not a bad check (king)
             if (!temp_board.is_check(color))
             {
@@ -313,6 +329,54 @@ namespace board
         }
 
         return false;
+    }
+
+    bool Chessboard::can_queen_side_caslting(Color color)
+    {
+        if (is_check(color))
+            return false;
+
+        Bitboard movement_squares = 0;
+        Bitboard attacked = 0;
+
+        if (color == WHITE)
+        {
+            if (!white_queen_side_castling_)
+                return false;
+
+            Bitboard rook = 1;
+            Bitboard king = 1 << 4;
+
+            if (!(get(WHITE, ROOK) & rook) && !(get(WHITE, KING) & king))
+            {
+                white_queen_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares = 1 << 3 | 1 << 2 | 1 << 1;
+            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+        }
+        else
+        {
+            if (!black_queen_side_castling_)
+                return false;
+
+            Bitboard rook = 1UL << 56;
+            Bitboard king = 1ULL << 60;
+
+            if (!(get(BLACK, ROOK) & rook) && !(get(BLACK, KING) & king))
+            {
+                black_queen_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
+            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+        }
+
+        Bitboard occupied = movement_squares & get_all();
+
+        return !occupied && !attacked;
     }
 
     Chessboard::opt_piece_t

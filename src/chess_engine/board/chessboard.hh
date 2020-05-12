@@ -35,6 +35,8 @@ namespace board
 
         bool is_check(Color color);
 
+        bool square_attacks(Color color, Square square);
+
         bool illegal_king_check(Color color);
 
         bool is_checkmate(Color color);
@@ -44,6 +46,8 @@ namespace board
         Bitboard get(Color color, PieceType piece) const;
 
         Bitboard get(Color color, int piece) const;
+
+        Bitboard get_all();
 
         void update_all_boards();
 
@@ -62,16 +66,20 @@ namespace board
         // check for en_passant capture
         bool would_capture_en_passant(Bitboard pos);
 
+        bool can_queen_side_caslting(Color color);
+
         opt_piece_t operator[](const Position& position) const override;
 
     private:
         Bitboard bitboards_[2][BITBOARDS_NUMBER];
 
         bool white_turn_;
-        bool white_king_castling_;
-        bool white_queen_castling_;
-        bool black_king_castling_;
-        bool black_queen_castling_;
+
+        bool white_king_side_castling_;
+        bool white_queen_side_castling_;
+        bool black_king_side_castling_;
+        bool black_queen_side_castling_;
+
         Square en_passant_;
         unsigned int turn_;
         int last_fifty_turn_ = 0;
