@@ -1,8 +1,6 @@
 #include "gtest/gtest.h"
 #include "movegen.hh"
 
-#include "king.hh"
-
 TEST (King, generate_moves)
 {
     board::Bitboard king = 1 << 9;

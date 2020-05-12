@@ -1,6 +1,4 @@
 #include "gtest/gtest.h"
-
-#include "bishop.hh"
 #include "movegen.hh"
 
 TEST (Bishop, generate_moves)

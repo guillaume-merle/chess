@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "chessboard.hh"
-#include "rule.hh"
 #include "utils.hh"
 #include "move.hh"
 #include "attacks.hh"

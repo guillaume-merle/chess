@@ -61,8 +61,8 @@ namespace board
 
     private:
         // store the move
-        Bitboard from_;
-        Bitboard to_;
+        Square from_;
+        Square to_;
 
         PieceType piece_;
         PieceType promotion_;

@@ -15,16 +15,12 @@ set(SRC_ENGINE
     src/chess_engine/ai/uci.hh
     src/chess_engine/board/attacks.cc
     src/chess_engine/board/attacks.hh
-    src/chess_engine/board/bishop.cc
-    src/chess_engine/board/bishop.hh
     src/chess_engine/board/bitboard.cc
     src/chess_engine/board/bitboard.hh
     src/chess_engine/board/chessboard-interface.hh
     src/chess_engine/board/chessboard.cc
     src/chess_engine/board/chessboard.hh
     src/chess_engine/board/color.hh
-    src/chess_engine/board/king.cc
-    src/chess_engine/board/king.hh
     src/chess_engine/board/knight.cc
     src/chess_engine/board/knight.hh
     src/chess_engine/board/magic.cc
@@ -36,12 +32,6 @@ set(SRC_ENGINE
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
-    src/chess_engine/board/queen.cc
-    src/chess_engine/board/queen.hh
-    src/chess_engine/board/rook.cc
-    src/chess_engine/board/rook.hh
-    src/chess_engine/board/rule.cc
-    src/chess_engine/board/rule.hh
     src/chess_engine/board/movegen.cc
     src/chess_engine/board/movegen.hh
     src/parsing/report-type.hh

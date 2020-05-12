@@ -1,8 +1,6 @@
 #include "gtest/gtest.h"
 #include "movegen.hh"
 
-#include "queen.hh"
-
 // Only 1 test since the queen is based on the bishop and the rook
 
 TEST (Queen, generate_moves)

@@ -1,8 +1,6 @@
 #include "gtest/gtest.h"
 #include "movegen.hh"
 
-#include "rook.hh"
-
 TEST (Rook, generate_moves)
 {
     board::Chessboard board;
@@ -74,10 +72,10 @@ TEST (Rook, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard rook = 1;
     board::Chessboard board;
-    board.set(board::WHITE, board::ALL, 1 << 3);
+    board.set(board::WHITE, board::ROOK, rook);
+    board.set(board::WHITE, board::ALL, 1 << 3 | rook);
 
-    std::vector<board::Move> moves;
-    board::Rook::generate_moves(moves, rook, board, board::Color::WHITE);
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(9, moves.size());
 }
