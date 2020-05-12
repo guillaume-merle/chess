@@ -41,6 +41,11 @@ namespace board
         Chessboard& operator=(const Chessboard& board);
 
         /**
+         * @brief Reset all the bitboards
+         */
+        void clear();
+
+        /**
          * @brief Generate all legal moves for the current color and board.
          *
          * @return a vector of moves.

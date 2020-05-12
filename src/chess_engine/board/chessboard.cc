@@ -60,6 +60,17 @@ namespace board
         return *this;
     }
 
+    void Chessboard::clear()
+    {
+        for (size_t i = 0; i < 2; i++)
+        {
+            for (size_t j = 0; j < BITBOARDS_NUMBER; j++)
+            {
+                bitboards_[i][j] = 0;
+            }
+        }
+    }
+
     Bitboard Chessboard::get(Color color, PieceType piece) const
     {
         return bitboards_[color][piece];
