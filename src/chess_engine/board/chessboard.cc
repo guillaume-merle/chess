@@ -323,8 +323,21 @@ namespace board
 
         move_piece(color, piece, move.get_from(), move.get_to());
 
+        if (move.is_promotion())
+        {
+            remove_piece(color, PieceType::PAWN, move.get_to());
+            add_piece(color, PieceType::QUEEN, move.get_to());
+        }
+
         // set next turn
         white_turn_ = !white_turn_;
+    }
+
+    void Chessboard::add_piece(Color color, PieceType piece, Square pos)
+    {
+        Bitboard mask = 1ULL << pos;
+
+        bitboards_[color][piece] |= mask;
     }
 
     void Chessboard::move_piece(Color color, PieceType piece, Square from,

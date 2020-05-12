@@ -89,6 +89,8 @@ namespace board
         void move_piece(Color color, PieceType piece, Square from, Square to);
 
         void remove_piece(Color color, PieceType piece, Square pos);
+
+        void add_piece(Color color, PieceType piece, Square pos);
     };
 
 } // namespace board
