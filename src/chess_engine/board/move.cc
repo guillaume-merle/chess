@@ -168,7 +168,7 @@ namespace board
         Bitboard all_moves = 0;
         for (auto& move : moves)
         {
-            all_moves |= move.get_to();
+            all_moves |= 1ULL << move.get_to();
         }
 
         return all_moves;
