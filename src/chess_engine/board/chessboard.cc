@@ -10,10 +10,24 @@ namespace board
 {
     Chessboard::Chessboard()
         : bitboards_{{0}}, white_turn_(true)
+        , white_king_side_castling_(true)
+        , white_queen_side_castling_(true)
+        , black_king_side_castling_(true)
+        , black_queen_side_castling_(true)
+        , en_passant_(0)
+        , turn_(0)
+        , last_fifty_turns_(0)
     {}
 
     Chessboard::Chessboard(const Chessboard& board)
         : bitboards_{{0}}, white_turn_(board.white_turn_)
+        , white_king_side_castling_(board.white_king_side_castling_)
+        , white_queen_side_castling_(board.white_queen_side_castling_)
+        , black_king_side_castling_(board.black_king_side_castling_)
+        , black_queen_side_castling_(board.black_queen_side_castling_)
+        , en_passant_(board.en_passant_)
+        , turn_(board.turn_)
+        , last_fifty_turns_(board.last_fifty_turns_)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -27,6 +41,13 @@ namespace board
     Chessboard& Chessboard::operator=(const Chessboard& board)
     {
         white_turn_ = board.white_turn_;
+        white_queen_side_castling_ = board.white_queen_side_castling_;
+        white_king_side_castling_ = board.white_king_side_castling_;
+        black_queen_side_castling_ = board.black_queen_side_castling_;
+        black_king_side_castling_ = board.black_king_side_castling_;
+        en_passant_ = board.en_passant_;
+        turn_ = board.turn_;
+        last_fifty_turns_ = board.last_fifty_turns_;
 
         for (int i = 0; i < 2; i++)
         {
