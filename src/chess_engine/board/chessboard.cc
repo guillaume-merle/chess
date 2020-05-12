@@ -399,7 +399,7 @@ namespace board
             Bitboard rook = 1 << 7;
             Bitboard king = 1 << 4;
 
-            if (!(get(WHITE, ROOK) & rook) && !(get(WHITE, KING) & king))
+            if (!(get(WHITE, ROOK) & rook) || !(get(WHITE, KING) & king))
             {
                 white_king_side_castling_ = false;
                 return false;
@@ -417,7 +417,7 @@ namespace board
             Bitboard king = 1ULL << 60;
 
             // check that the king and the rook are at the start pos
-            if (!(get(BLACK, ROOK) & rook) && !(get(BLACK, KING) & king))
+            if (!(get(BLACK, ROOK) & rook) || !(get(BLACK, KING) & king))
             {
                 black_king_side_castling_ = false;
                 return false;
@@ -449,7 +449,7 @@ namespace board
             Bitboard king = 1 << 4;
 
             // check that the king and the rook are at the start pos
-            if (!(get(WHITE, ROOK) & rook) && !(get(WHITE, KING) & king))
+            if (!(get(WHITE, ROOK) & rook) || !(get(WHITE, KING) & king))
             {
                 white_queen_side_castling_ = false;
                 return false;
@@ -466,7 +466,7 @@ namespace board
             Bitboard rook = 1UL << 56;
             Bitboard king = 1ULL << 60;
 
-            if (!(get(BLACK, ROOK) & rook) && !(get(BLACK, KING) & king))
+            if (!(get(BLACK, ROOK) & rook) || !(get(BLACK, KING) & king))
             {
                 black_queen_side_castling_ = false;
                 return false;
