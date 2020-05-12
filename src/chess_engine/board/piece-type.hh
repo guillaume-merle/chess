@@ -9,8 +9,9 @@ namespace board
      * piece type present on the board. The char associated
      * with each value is the ascii char representing the
      * piece on the board */
-    enum class PieceType
+    enum PieceType
     {
+        ALL = 0,
         QUEEN,
         ROOK,
         BISHOP,
@@ -42,6 +43,8 @@ namespace board
             return PieceType::QUEEN;
         case 'K':
             return PieceType::KING;
+        case 'A':
+            return PieceType::ALL;
         default:
             throw std::invalid_argument("Unknown piece");
         }
