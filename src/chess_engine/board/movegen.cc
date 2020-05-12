@@ -132,11 +132,12 @@ namespace board
                 {
                     PieceType capture = board.get_piece_type(attacked_square,
                                                         opposite_color(color));
-                    if ((color == WHITE && (move & Rank8BB) != 0)
-                        || (color == BLACK && (move & Rank1BB) != 0))
+                    if ((color == WHITE && (attacked & Rank8BB) != 0)
+                        || (color == BLACK && (attacked & Rank1BB) != 0))
                     {
-                        moves_.emplace_back(Move(square, attacked_square, QUEEN,
-                            capture, MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                      QUEEN, capture,
+                                      MoveFlag::PROMOTION | MoveFlag::CAPTURE));
                     }
                     else
                     {

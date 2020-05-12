@@ -55,6 +55,52 @@ TEST (Pawn, white_promotion)
     EXPECT_EQ(1ULL << 59, queen);
 }
 
+TEST (Pawn, generate_white_promotion)
+{
+    board::Chessboard board;
+
+    board.set(board::WHITE, board::PAWN, 1ULL << 51);
+
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
+
+    EXPECT_EQ(1, moves.size());
+
+    board.do_move(moves.at(0), board::Color::WHITE);
+
+    board::Bitboard queen = board.get(board::Color::WHITE,
+        board::PieceType::QUEEN);
+
+    EXPECT_EQ(1ULL << 59, queen);
+}
+
+TEST (Pawn, generate_white_attack_promotion)
+{
+    board::Chessboard board;
+    board.set(board::WHITE, board::PAWN, 1ULL << 51);
+    board.set(board::BLACK, board::PAWN, 1ULL << 58);
+
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
+
+    EXPECT_EQ(2, moves.size());
+
+    auto move = moves.at(1);
+
+    EXPECT_TRUE(move.is_capture());
+    EXPECT_TRUE(move.is_promotion());
+    EXPECT_EQ(board::PieceType::QUEEN, move.get_promotion());
+
+    board.do_move(move, board::Color::WHITE);
+
+    board::Bitboard queen = board.get(board::Color::WHITE,
+        board::PieceType::QUEEN);
+
+    board::print_bitboard(queen);
+
+    EXPECT_EQ(1ULL << 58, queen);
+}
+
 TEST (Pawn, black_promotion)
 {
     board::Chessboard board;
