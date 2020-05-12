@@ -5,6 +5,7 @@
 namespace board
 {
     using Bitboard = uint64_t;
+    using Square = int;
 
     constexpr Bitboard FileABB = 0x0101010101010101ULL;
     constexpr Bitboard FileBBB = FileABB << 1;
@@ -37,6 +38,11 @@ namespace board
     Bitboard southwest(Bitboard bitboard, unsigned number = 1);
     Bitboard east(Bitboard bitboard, unsigned number = 1);
     Bitboard west(Bitboard bitboard, unsigned number = 1);
+
+    int bitscan(Bitboard board);
+    int bitscan_reverse(Bitboard board);
+    int pop(Bitboard& board);
+    int popcount(Bitboard board);
 
     void print_bitboard(Bitboard bitboard);
 }

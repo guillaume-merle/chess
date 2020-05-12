@@ -1,29 +1,32 @@
 #include "gtest/gtest.h"
 
 #include "bishop.hh"
-
+#include "movegen.hh"
 
 TEST (Bishop, generate_moves)
 {
-    board::Bitboard bishop = 1 << 28;
-    std::vector<board::Move> moves;
-    board::Bishop::generate_moves(moves, bishop);
+    board::Chessboard board;
+    board.set(board::WHITE, board::BISHOP, 1 << 28);
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(13, moves.size());
 }
 
 TEST (Bishop, generate_moves_northwest)
 {
-    board::Bitboard bishop = 1ULL << 56;
-    std::vector<board::Move> moves;
-    board::Bishop::generate_moves(moves, bishop);
+    board::Chessboard board;
+    board.set(board::WHITE, board::BISHOP, 1ULL << 56);
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(7, moves.size());
-    auto pos = bishop;
+
+    int pos = 7;
     for (auto& move : moves)
     {
-        pos = board::southeast(pos);
         EXPECT_EQ(pos, move.get_to());
+        pos += 7;
     }
 }
 
@@ -76,7 +79,7 @@ TEST (Bishop, generate_moves_with_chessboard_none_blocking)
 {
     board::Bitboard bishop = 1;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1 << 1);
+    board.set(board::WHITE, board::ALL, 1 << 1);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -88,7 +91,7 @@ TEST (Bishop, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard bishop = 1;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1 << 27);
+    board.set(board::WHITE, board::ALL, 1 << 27);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -100,7 +103,7 @@ TEST (Bishop, generate_moves_with_chessboard_no_move_possible)
 {
     board::Bitboard bishop = 1 << 27;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+    board.set(board::WHITE, board::ALL, board::FullBB);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -114,8 +117,8 @@ TEST (Bishop, generate_moves_with_chessboard_capture)
     board::Chessboard board;
 
     board::Bitboard pawns = 1 << 27;
-    board.set(board::BitboardType::BLACKPAWN, pawns);
-    board.set(board::BitboardType::ALLBLACK, pawns);
+    board.set(board::BLACK, board::PAWN, pawns);
+    board.set(board::BLACK, board::ALL, pawns);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);
@@ -132,8 +135,8 @@ TEST (Bishop, generate_moves_with_chessboard_capture_multiple)
     board::Chessboard board;
 
     board::Bitboard pawns = 1 | 1 << 2 | 1 << 16 | 1 << 18;
-    board.set(board::BitboardType::BLACKPAWN, pawns);
-    board.set(board::BitboardType::ALLBLACK, pawns);
+    board.set(board::BLACK, board::PAWN, pawns);
+    board.set(board::BLACK, board::ALL, pawns);
 
     std::vector<board::Move> moves;
     board::Bishop::generate_moves(moves, bishop, board, board::Color::WHITE);

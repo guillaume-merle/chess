@@ -77,7 +77,7 @@ TEST (King, generate_moves_with_chessboard_none_blocking)
 {
     board::Bitboard king = 1 << 9;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1ULL << 63);
+    board.set(board::WHITE, board::ALL, 1ULL << 63);
 
     std::vector<board::Move> moves;
     board::King::generate_moves(moves, king, board, board::Color::WHITE);
@@ -89,7 +89,7 @@ TEST (King, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard king = 1 << 9;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, 1);
+    board.set(board::WHITE, board::ALL, 1);
 
     std::vector<board::Move> moves;
     board::King::generate_moves(moves, king, board, board::Color::WHITE);
@@ -101,7 +101,7 @@ TEST (King, generate_moves_with_chessboard_no_move_possible)
 {
     board::Bitboard king = 1 << 9;
     board::Chessboard board;
-    board.set(board::BitboardType::ALLWHITE, board::FullBB);
+    board.set(board::WHITE, board::ALL, board::FullBB);
 
     std::vector<board::Move> moves;
     board::King::generate_moves(moves, king, board, board::Color::WHITE);
@@ -114,8 +114,8 @@ TEST (King, generate_moves_with_chessboard_capture)
     board::Bitboard king = 1;
     board::Chessboard board;
 
-    board.set(board::BitboardType::ALLBLACK, 1 << 1);
-    board.set(board::BitboardType::BLACKROOK, 1 << 1);
+    board.set(board::BLACK, board::ALL, 1 << 1);
+    board.set(board::BLACK, board::ROOK, 1 << 1);
 
     std::vector<board::Move> moves;
     board::King::generate_moves(moves, king, board, board::Color::WHITE);

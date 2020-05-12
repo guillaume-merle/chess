@@ -14,82 +14,11 @@
 #include "knight.hh"
 #include "rook.hh"
 #include "queen.hh"
+#include "magic.hh"
+#include "attacks.hh"
 
 int main(int argc, char** argv)
 {
-    // auto chessboard = board::Chessboard();
-//
-    // chessboard.bitboards_[2] = board::Rank2BB;
-//
-    // std::cout << "\nMOVES:\n";
-    // std::vector<board::Move> moves = generate_pawn_moves(chessboard);
-//
-    // for (auto& move : moves)
-    // {
-        // std::cout << "\nFrom:\n";
-        // board::print_bitboard(move.get_from());
-        // std::cout << "To:\n";
-        // board::print_bitboard(move.get_to());
-    // }
-    //
-    option_parser::parse_options(argc, argv); 
-
-    /*std::cout << "BISHOP:\n";
-
-    board::Bitboard bishop = 1ULL << 28;
-    std::vector<board::Move> moves;
-    moves = board::Bishop::generate_moves(moves, bishop);
-
-    board::Bitboard all_moves = bishop;
-
-    for (auto& move : moves)
-    {
-        all_moves |= move.get_to();
-    }
-
-    board::print_bitboard(all_moves);
-
-    std::cout << "\nROOK:\n";
-
-    board::Bitboard rook = 1ULL << 19;
-    moves.clear();
-    moves = board::Rook::generate_moves(moves, rook);
-
-    all_moves = rook;
-    for (auto& move : moves)
-    {
-        all_moves |= move.get_to();
-    }
-
-    board::print_bitboard(all_moves);
-
-    std::cout << "\nQUEEN:\n";
-
-    board::Bitboard queen = 1ULL << 19;
-    moves.clear();
-    moves = board::Queen::generate_moves(moves, queen);
-
-    all_moves = queen;
-    for (auto& move : moves)
-    {
-        all_moves |= move.get_to();
-    }
-
-    board::print_bitboard(all_moves);
-
-    std::cout << "\nKNIGHT:\n";
-
-    board::Bitboard knight = 1ULL << 19;
-    moves.clear();
-    moves = board::Knight::generate_moves(moves, knight);
-
-    all_moves = knight;
-    for (auto& move : moves)
-    {
-        all_moves |= move.get_to();
-    }
-
-    board::print_bitboard(all_moves);*/
-
-    return 0;
+    board::attacks::init();
+    ai::init("Jean-Charles");
 }

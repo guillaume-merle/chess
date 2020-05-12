@@ -6,10 +6,14 @@
 #include "test_rook.hh"
 #include "test_queen.hh"
 #include "test_chessboard.hh"
+#include "test_attacks.hh"
+#include "test_move.hh"
 
 #include "gtest/gtest.h"
 
 int main(int argc, char **argv) {
+    board::attacks::init();
+
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
