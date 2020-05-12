@@ -39,7 +39,7 @@ namespace perft_parser
 
         //side to move
         board::Color side_to_move;
-        
+
         if (splited_input[1][0] == 'w')
             side_to_move = board::Color::WHITE;
         else
@@ -48,7 +48,7 @@ namespace perft_parser
 
         //castling ability
         std::vector<char> castling;
-        
+
         for (size_t i = 0; i < splited_input[2].size(); ++i)
         {
             castling.push_back(splited_input[2][i]);
@@ -56,7 +56,7 @@ namespace perft_parser
 
 
         //en passant target square
-        
+
         board::File file;
         board::Rank rank;
 

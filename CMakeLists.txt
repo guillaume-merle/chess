@@ -27,13 +27,15 @@ set(SRC_ENGINE
     src/chess_engine/board/magic.hh
     src/chess_engine/board/move.cc
     src/chess_engine/board/move.hh
+    src/chess_engine/board/movegen.cc
+    src/chess_engine/board/movegen.hh
     src/chess_engine/board/pawn.cc
     src/chess_engine/board/pawn.hh
+    src/chess_engine/board/perft.cc
+    src/chess_engine/board/perft.hh
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
-    src/chess_engine/board/movegen.cc
-    src/chess_engine/board/movegen.hh
     src/parsing/report-type.hh
     src/parsing/pgn-exception.cc
     src/parsing/pgn-exception.hh

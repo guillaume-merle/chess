@@ -11,26 +11,6 @@
 
 namespace option_parser
 {
-    /*board::Bitboard perft(int depth)
-    {
-        if (depth == 0)
-            return 1;
-
-        std::vector<board::Move> moves = board::Chessboard::generate_legal_moves();
-        size_t n_moves = moves.size();
-        board::Bitboard nodes = 0;
-        
-        for (size_t i = 0; i < n_moves; ++i)
-        {
-            board::Chessboard::do_move(moves.at(i));
-            if (!board::Chessboard::is_check())
-                nodes += perft(depth - 1);
-            board::Chessboard::undo_move(moves.at(i));
-        }
-        return nodes;
-    }*/
-
-
     namespace po = boost::program_options;
 
     void parse_options(int argc, char** argv)
@@ -68,7 +48,8 @@ namespace option_parser
             }
 
             //run listeners
-            listener::ListenerManager listenerManager = listener::ListenerManager(listeners_paths);
+            listener::ListenerManager listenerManager =
+                                     listener::ListenerManager(listeners_paths);
             listenerManager.close_listeners();
         }
 
