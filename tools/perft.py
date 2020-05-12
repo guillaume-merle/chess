@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
-
-from chess import Board
+import argparse
 import sys
+from chess import Board
 
 
 def perft(depth, board):
@@ -18,10 +17,10 @@ def perft(depth, board):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"usage: {sys.argv[0]} [PERFT_FILE]")
-        sys.exit(2)
-    with open(sys.argv[1]) as f:
+    parser = argparse.ArgumentParser(description="Compute perft value for a given perft file.")
+    parser.add_argument("perft_file", type=str, help="Path to the perft file")
+    args = parser.parse_args()
+    with open(args.perft_file) as f:
         perft_line = str.strip(f.readline())
         fen, depth = ' '.join(perft_line.split()[:-1]), perft_line.split()[-1]
         board = Board(fen)
