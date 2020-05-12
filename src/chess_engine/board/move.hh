@@ -47,6 +47,8 @@ namespace board
 
         bool is_capture();
 
+        bool is_promotion();
+
         std::string to_string();
 
         bool operator==(const Move& rhs) const;

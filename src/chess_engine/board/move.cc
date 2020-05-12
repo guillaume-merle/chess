@@ -108,6 +108,11 @@ namespace board
         return en_passant_;
     }
 
+    bool Move::is_promotion()
+    {
+        return is_promotion_;
+    }
+
     bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
                   PieceType piece)
     {
