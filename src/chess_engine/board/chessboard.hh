@@ -68,6 +68,8 @@ namespace board
 
         bool can_queen_side_caslting(Color color);
 
+        bool can_king_side_castling(Color color);
+
         opt_piece_t operator[](const Position& position) const override;
 
     private:

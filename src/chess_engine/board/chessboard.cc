@@ -167,9 +167,6 @@ namespace board
 
         Color them = opposite_color(color);
 
-        std::cout << "ILLEGAL KING CHECK:\n";
-        print_bitboard(attacks::get_king_attacks(king_square));
-
         if (attacks::get_king_attacks(king_square) & get(them, KING))
             return true;
 
@@ -224,6 +221,69 @@ namespace board
             return false;
 
         return true;
+    }
+
+    bool Chessboard::can_king_side_castling(Color color)
+    {
+        //first verify if i'm not currently in check
+        if (is_check(color))
+            return false;
+
+        Bitboard movement_squares = 0;
+        Bitboard attacked = 0;
+
+        if (color == WHITE)
+        {
+            if (!white_king_side_castling_)
+                return false;
+
+            // then verify that the rook never moves
+            Bitboard rook_pos = 1 << 7;
+            if (!(get(WHITE, ROOK) & rook_pos))
+            {
+                white_king_side_castling_ = false;
+                return false;
+            }
+
+            // then verify that the king never moves
+            Bitboard king_pos = 1 << 4;
+            if (!(get(WHITE, KING) & king_pos))
+            {
+                white_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1 << 5 | 1 << 6;
+            attacked = square_attacks(color, 5) | square_attacks(color, 6);
+        }
+        else
+        {
+            if (!black_king_side_castling_)
+                return false;
+
+            // then verify that the rook never moves
+            Bitboard rook_pos = 1ULL << 63;
+            if (!(get(BLACK, ROOK) & rook_pos))
+            {
+                black_king_side_castling_ = false;
+                return false;
+            }
+
+            // then verify that the king never moves
+            Bitboard king_pos = 1ULL << 60;
+            if (!(get(BLACK, KING) & king_pos))
+            {
+                black_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1ULL << 61 | 1ULL << 62;
+            attacked = square_attacks(color, 61) | square_attacks(color, 62);
+        }
+
+        Bitboard occupied = movement_squares & get_all();
+
+        return !occupied && !attacked;
     }
 
     void Chessboard::do_move(Move& move)
