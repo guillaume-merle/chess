@@ -36,7 +36,7 @@ TEST (Pawn, double_push_black)
     EXPECT_EQ(1ULL << 32, move);
 }
 
-TEST (Pawn, promotion)
+TEST (Pawn, white_promotion)
 {
     board::Chessboard board;
 
@@ -54,6 +54,26 @@ TEST (Pawn, promotion)
 
     EXPECT_EQ(1ULL << 59, queen);
 }
+
+TEST (Pawn, black_promotion)
+{
+    board::Chessboard board;
+
+    board.set(board::BLACK, board::PAWN, 1ULL << 12);
+
+    board.update_all_boards();
+
+    board::Move move(12, 4, board::PieceType::PAWN, board::PieceType::QUEEN,
+                     board::MoveFlag::PROMOTION);
+
+    board.do_move(move, board::Color::BLACK);
+
+    board::Bitboard queen = board.get(board::Color::BLACK,
+        board::PieceType::QUEEN);
+
+    EXPECT_EQ(1ULL << 4, queen);
+}
+
 
 TEST (Pawn, generate_white_moves_single)
 {
