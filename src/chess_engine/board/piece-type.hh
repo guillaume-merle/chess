@@ -33,15 +33,27 @@ namespace board
         {
         case 'P':
             return PieceType::PAWN;
+        case 'p':
+            return PieceType::PAWN;
         case 'N':
+            return PieceType::KNIGHT;
+        case 'n':
             return PieceType::KNIGHT;
         case 'B':
             return PieceType::BISHOP;
+        case 'b':
+            return PieceType::BISHOP;
         case 'R':
+            return PieceType::ROOK;
+        case 'r':
             return PieceType::ROOK;
         case 'Q':
             return PieceType::QUEEN;
+        case 'q':
+            return PieceType::QUEEN;
         case 'K':
+            return PieceType::KING;
+        case 'k':
             return PieceType::KING;
         case 'A':
             return PieceType::ALL;

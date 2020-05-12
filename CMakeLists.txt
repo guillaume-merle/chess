@@ -51,12 +51,20 @@ set(SRC_ENGINE
     src/parsing/pgn-move.hh
     src/parsing/pgn-parser.cc
     src/parsing/pgn-parser.hh
+    src/parsing/fen-object.cc
     src/parsing/fen-object.hh
+    src/parsing/fen-rank.cc
     src/parsing/fen-rank.hh
+    src/parsing/option-parser.cc
     src/parsing/option-parser.hh
+    src/parsing/perft-object.cc
     src/parsing/perft-object.hh
+    src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
     src/listener/listener.hh
+    #src/listener/chessboard-listener.cc
+    #src/listener/chessboard-listener.hh
+    src/listener/listener-manager.cc
     src/listener/listener-manager.hh
     src/utils/utype.hh
     src/utils/utils.hh
@@ -151,4 +159,3 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     target_sources(chessengine-static PRIVATE "src/main.cc" ${SRC_ENGINE})
     target_link_libraries(chessengine-static PRIVATE ${LIBRARIES} -static)
 endif()
-

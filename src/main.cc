@@ -1,4 +1,5 @@
 #include <iostream>
+#include <dlfcn.h>
 
 #include "chessboard.hh"
 #include "pgn-parser.hh"
@@ -16,7 +17,7 @@
 #include "magic.hh"
 #include "attacks.hh"
 
-int main()
+int main(int argc, char** argv)
 {
     board::attacks::init();
     ai::init("Jean-Charles");
