@@ -11,7 +11,7 @@ namespace board
             {
                 //black
                 Color color = Color::BLACK;
-                PieceType piece = char_to_piece(rank[i]);
+                PieceType piece = char_to_black_piece(rank[i]);
                 side_piece_t side_piece = std::make_pair(piece, color);
                 pieces_.push_back(side_piece);
             }

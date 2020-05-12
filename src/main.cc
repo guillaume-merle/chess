@@ -19,6 +19,8 @@
 
 int main(int argc, char** argv)
 {
-    board::attacks::init();
-    ai::init("Jean-Charles");
+    option_parser::parse_options(argc, argv);
+
+    /*board::attacks::init();
+    ai::init("Jean-Charles");*/
 }

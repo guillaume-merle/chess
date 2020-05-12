@@ -33,29 +33,40 @@ namespace board
         {
         case 'P':
             return PieceType::PAWN;
-        case 'p':
-            return PieceType::PAWN;
         case 'N':
-            return PieceType::KNIGHT;
-        case 'n':
             return PieceType::KNIGHT;
         case 'B':
             return PieceType::BISHOP;
-        case 'b':
-            return PieceType::BISHOP;
         case 'R':
-            return PieceType::ROOK;
-        case 'r':
             return PieceType::ROOK;
         case 'Q':
             return PieceType::QUEEN;
-        case 'q':
-            return PieceType::QUEEN;
         case 'K':
             return PieceType::KING;
+        case 'A':
+            return PieceType::ALL;
+        default:
+            throw std::invalid_argument("Unknown piece");
+        }
+    }
+
+    inline PieceType char_to_black_piece(const char c)
+    {
+        switch (c)
+        {
+        case 'p':
+            return PieceType::PAWN;
+        case 'n':
+            return PieceType::KNIGHT;
+        case 'b':
+            return PieceType::BISHOP;
+        case 'r':
+            return PieceType::ROOK;
+        case 'q':
+            return PieceType::QUEEN;
         case 'k':
             return PieceType::KING;
-        case 'A':
+        case 'a':
             return PieceType::ALL;
         default:
             throw std::invalid_argument("Unknown piece");
