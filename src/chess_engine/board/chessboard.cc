@@ -273,7 +273,7 @@ namespace board
         if (move.is_promotion())
         {
             remove_piece(color, PieceType::PAWN, move.get_to());
-            add_piece(color, PieceType::QUEEN, move.get_to());
+            add_piece(color, move.get_promotion(), move.get_to());
         }
 
         // set next turn

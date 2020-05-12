@@ -93,6 +93,11 @@ namespace board
         return capture_;
     }
 
+    PieceType Move::get_promotion()
+    {
+        return promotion_;
+    }
+
     bool Move::is_capture()
     {
         return is_capture_;

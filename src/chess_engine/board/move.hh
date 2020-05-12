@@ -41,6 +41,8 @@ namespace board
 
         PieceType get_capture();
 
+        PieceType get_promotion();
+
         bool is_double_pawn_push();
 
         bool is_en_passant();
