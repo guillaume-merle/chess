@@ -56,6 +56,20 @@ namespace board
 
         Bitboard moves = attacks::get_king_attacks(square);
         add_moves(board, KING, color, square, moves);
+
+        Square from = color == WHITE ? 4 : 60;
+
+        if (board.can_king_side_castling(color))
+        {
+            Square to = from + 2;
+            moves_.emplace_back(Move(from, to, KING, MoveFlag::KING_CASTLING));
+        }
+
+        if (board.can_queen_side_castling(color))
+        {
+            Square to = from - 2;
+            moves_.emplace_back(Move(from, to, KING, MoveFlag::QUEEN_CASTLING));
+        }
     }
 
     void MoveGen::generate_knight_moves(Chessboard& board, Color color)
@@ -89,7 +103,7 @@ namespace board
                 if ((color == WHITE && (move & Rank8BB) != 0)
                     || (color == BLACK && (move & Rank1BB) != 0))
                 {
-                    moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN, 
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN,
                                              MoveFlag::PROMOTION));
                 }
                 else
@@ -118,11 +132,12 @@ namespace board
                 {
                     PieceType capture = board.get_piece_type(attacked_square,
                                                         opposite_color(color));
-                    if ((color == WHITE && (move & Rank8BB) != 0)
-                        || (color == BLACK && (move & Rank1BB) != 0))
+                    if ((color == WHITE && (attacked & Rank8BB) != 0)
+                        || (color == BLACK && (attacked & Rank1BB) != 0))
                     {
-                        moves_.emplace_back(Move(square, attacked_square, QUEEN,
-                            capture, MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                      QUEEN, capture,
+                                      MoveFlag::PROMOTION | MoveFlag::CAPTURE));
                     }
                     else
                     {

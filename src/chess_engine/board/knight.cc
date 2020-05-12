@@ -41,42 +41,4 @@ namespace board
     {
         return southeast(south(bitboard, 1), 1);
     }
-
-    std::vector<Move>
-    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard)
-    {
-        Chessboard board = Chessboard();
-        return generate_moves(moves, bitboard, board);
-    }
-
-    std::vector<Move>
-    Knight::generate_moves(std::vector<Move>& moves, Bitboard bitboard,
-                           Chessboard& board, Color color)
-    {
-        add_move(moves, bitboard, northnorthwest(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, northnortheast(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, southsouthwest(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, southsoutheast(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, northwestwest(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, northeasteast(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, southwestwest(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        add_move(moves, bitboard, southeasteast(bitboard), PieceType::KNIGHT,
-                 color, board);
-
-        return moves;
-    }
 }

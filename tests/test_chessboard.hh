@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "rule.hh"
 #include "move.hh"
 #include "chessboard.hh"
 
