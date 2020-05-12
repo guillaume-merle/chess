@@ -117,7 +117,7 @@ namespace board
         return (pos & (1ULL << en_passant_));
     }
 
-    bool Chessboard::square_attacks(Color color, Square square)
+    Bitboard Chessboard::square_attacks(Color color, Square square)
     {
         Bitboard all_pieces = get_all();
         Color them = opposite_color(color);
@@ -160,7 +160,6 @@ namespace board
     bool Chessboard::illegal_king_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
-
         if (king_square > 63)
             return false;
 
@@ -207,7 +206,7 @@ namespace board
         }
 
         //check if the game lasts more than 50 turns
-        if (last_fifty_turn_ > 50)
+        if (last_fifty_turns_ > 50)
             return true;
 
         //first verify that my king is not in check
@@ -263,9 +262,9 @@ namespace board
 
         // check if move is capture or a pawn is moving
         if (move.is_capture() || move.get_piece() == PAWN)
-            last_fifty_turn_ = 0;
+            last_fifty_turns_ = 0;
         else
-            last_fifty_turn_++;
+            last_fifty_turns_++;
 
         move_piece(color, piece, move.get_from(), move.get_to());
 
@@ -277,6 +276,7 @@ namespace board
 
         // set next turn
         white_turn_ = !white_turn_;
+        turn_ += 1;
     }
 
     void Chessboard::add_piece(Color color, PieceType piece, Square pos)
