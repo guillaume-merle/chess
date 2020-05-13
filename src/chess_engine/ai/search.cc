@@ -34,7 +34,6 @@ namespace board
         std::vector<Move> moves = board.generate_legal_moves();
         Move best_move = moves[0];
 
-       
         for (Move move: moves)
         {
             Chessboard new_board = Chessboard(board);
