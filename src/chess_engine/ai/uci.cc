@@ -99,7 +99,6 @@ namespace ai
             board.set_from_fen(perft_obj.fen_get());
 
         }
-        puts("here");
         while (is >> token)
         {
             if (token == "moves")
@@ -118,7 +117,6 @@ namespace ai
                 }
             }
         }
-        puts("here");
     }
 
 } // namespace ai
