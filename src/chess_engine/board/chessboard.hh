@@ -5,6 +5,7 @@
 #include "chessboard-interface.hh"
 #include "bitboard.hh"
 #include "move.hh"
+#include "fen-object.hh"
 
 namespace board
 {
@@ -44,6 +45,13 @@ namespace board
          * @brief Reset all the bitboards
          */
         void clear();
+
+        /**
+         * @brief Set all the bitboard with the field of the fen object
+         *
+         * @param the FenObject with all the information about the game
+         */
+        void set_from_fen(FenObject fen);
 
         /**
          * @brief Generate all legal moves for the current color and board.

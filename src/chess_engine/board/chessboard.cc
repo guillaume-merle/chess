@@ -134,6 +134,11 @@ namespace board
         return true;
     }
 
+    void Chessboard::set_from_fen(FenObject fen)
+    {
+        
+    }
+
     bool Chessboard::would_collide(Bitboard pos, Color color)
     {
         return (pos & get(color, ALL));
