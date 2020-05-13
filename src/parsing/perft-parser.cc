@@ -19,7 +19,8 @@ namespace perft_parser
         {
             splited_input.push_back(line);
         }
-        return board::PerftObject(parse_fen(splited_input), 0); //TODO depth
+        return board::PerftObject(parse_fen(splited_input),
+                                            std::stoi(splited_input.back()));
     }
 
     board::FenObject parse_fen(std::vector<std::string> splited_input)

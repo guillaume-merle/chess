@@ -13,7 +13,7 @@ namespace option_parser
 {
     namespace po = boost::program_options;
 
-    void parse_options(int argc, char** argv)
+    Options parse_options(int argc, char** argv)
     {
         // Declare the supported options.
         po::options_description desc("Allowed options");
@@ -53,20 +53,22 @@ namespace option_parser
             listenerManager.close_listeners();
         }
 
+        Options options;
+
         if (vm.count("pgn"))
         {
-            std::vector<board::PgnMove> pgn_vect = pgn_parser::parse_pgn(
+            options.pgn_vect_ = pgn_parser::parse_pgn(
                     vm["pgn"].as<std::string>());
-            //run pgn
+            options.pgn_ = true;
         }
 
         if (vm.count("perft"))
         {
-            board::PerftObject perft_obj = perft_parser::parse_perft(
-                    vm["perft"].as<std::string>());
-            //run perft
+            options.perft_obj_ = perft_parser::parse_perft(
+                                    vm["perft"].as<std::string>());
+            options.perft_ = true;
         }
 
-        //run ai
+        return options;
     }
 } // namespace option_parser

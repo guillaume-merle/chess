@@ -11,7 +11,6 @@ namespace board
     class FenObject
     {
     public:
-
         FenObject(std::vector<FenRank> ranks, Color side_to_move,
                   std::vector<char> castling, Position en_passant_target)
             : ranks_(ranks), side_to_move_(side_to_move),
@@ -19,7 +18,7 @@ namespace board
         {};
 
         //operator[] TODO
-        
+
         Color side_to_move_get();
 
         std::vector<char> castling_get();
@@ -27,7 +26,6 @@ namespace board
         Position en_passant_target_get();
 
     private:
-        
         std::vector<FenRank> ranks_;
         Color side_to_move_;
         std::vector<char> castling_;
