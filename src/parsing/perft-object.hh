@@ -10,7 +10,6 @@ namespace board
     class PerftObject
     {
     public:
-        
         PerftObject(FenObject fen, int depth)
             : fen_(fen), depth_(depth)
         {};
@@ -20,7 +19,6 @@ namespace board
         int depth_get();
 
     private:
-    
         FenObject fen_;
         int depth_;
     };

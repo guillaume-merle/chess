@@ -10,10 +10,24 @@ namespace board
 {
     Chessboard::Chessboard()
         : bitboards_{{0}}, white_turn_(true)
+        , white_king_side_castling_(true)
+        , white_queen_side_castling_(true)
+        , black_king_side_castling_(true)
+        , black_queen_side_castling_(true)
+        , en_passant_(0)
+        , turn_(0)
+        , last_fifty_turns_(0)
     {}
 
     Chessboard::Chessboard(const Chessboard& board)
         : bitboards_{{0}}, white_turn_(board.white_turn_)
+        , white_king_side_castling_(board.white_king_side_castling_)
+        , white_queen_side_castling_(board.white_queen_side_castling_)
+        , black_king_side_castling_(board.black_king_side_castling_)
+        , black_queen_side_castling_(board.black_queen_side_castling_)
+        , en_passant_(board.en_passant_)
+        , turn_(board.turn_)
+        , last_fifty_turns_(board.last_fifty_turns_)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -27,6 +41,13 @@ namespace board
     Chessboard& Chessboard::operator=(const Chessboard& board)
     {
         white_turn_ = board.white_turn_;
+        white_queen_side_castling_ = board.white_queen_side_castling_;
+        white_king_side_castling_ = board.white_king_side_castling_;
+        black_queen_side_castling_ = board.black_queen_side_castling_;
+        black_king_side_castling_ = board.black_king_side_castling_;
+        en_passant_ = board.en_passant_;
+        turn_ = board.turn_;
+        last_fifty_turns_ = board.last_fifty_turns_;
 
         for (int i = 0; i < 2; i++)
         {
@@ -100,6 +121,43 @@ namespace board
 
         bitboards_[color][piece] = value;
         return true;
+    }
+
+    void Chessboard::set_from_fen(FenObject fen)
+    {
+        for (size_t i = 0; i < fen.size(); i++)
+        {
+            for (size_t j = 0; j < fen[i].size(); j ++)
+            {
+                FenRank::side_piece_t piece = fen[i][j];
+                if (piece.first != ALL)
+                    bitboards_[piece.second][piece.first]
+                        |= 1ULL << ((7 - i) * 8 + j);
+            }
+        }
+
+        update_all_boards();
+
+        white_turn_ = fen.side_to_move_get() == WHITE;
+        Position en_passant_pos = fen.en_passant_target_get();
+        en_passant_ = en_passant_pos.rank_get() * 8 + en_passant_pos.file_get();
+
+        white_king_side_castling_ = false;
+        white_queen_side_castling_ = false;
+        black_king_side_castling_ = false;
+        black_queen_side_castling_ = false;
+
+        for (auto castling : fen.castling_get())
+        {
+            if (castling == 'K')
+                white_king_side_castling_ = true;
+            else if (castling == 'Q')
+                white_queen_side_castling_ = true;
+            else if (castling == 'k')
+                black_king_side_castling_ = true;
+            else if (castling == 'q')
+                black_queen_side_castling_ = true;
+        }
     }
 
     bool Chessboard::would_collide(Bitboard pos, Color color)
