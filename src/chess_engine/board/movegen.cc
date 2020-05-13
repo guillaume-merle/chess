@@ -169,7 +169,7 @@ namespace board
                 else if (board.would_capture_en_passant(attacked))
                 {
                     auto move = Move(square, attacked_square, PAWN, PAWN,
-                                     MoveFlag::EN_PASSANT | MoveFlag::CAPTURE);
+                                     MoveFlag::EN_PASSANT);
                     moves_.emplace_back(move);
                 }
             }

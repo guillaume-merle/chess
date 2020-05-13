@@ -17,7 +17,7 @@ namespace board
         , capture_(ALL)
     {
         parse_flags(flags);
-        if (is_capture_)
+        if (is_capture_ || en_passant_)
             capture_ = capture;
         else
             promotion_ = capture;
