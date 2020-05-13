@@ -10,13 +10,11 @@ namespace board
         if (depth == 0)
             return 1;
 
-        std::vector<Move> moves = board::MoveGen(board).get();
+        std::vector<Move> moves = board.generate_legal_moves();
         size_t nodes = 0;
 
         for (auto& move : moves)
         {
-            std::cout << "MOVE: " << move.get_from() << " to " << move.get_to() << "\n";
-
             Chessboard temp_board = board;
             temp_board.do_move(move);
 
@@ -30,20 +28,6 @@ namespace board
     {
         Chessboard board;
         board.set_from_fen(perft_obj.fen_get());
-
-        // std::cout << "WHITE:\n";
-        // for (int j = 0; j < 7; j++)
-        // {
-            // std::cout << j << "\n";
-            // print_bitboard(board.get(WHITE, j));
-        // }
-//
-        // std::cout << "BLACK:\n";
-        // for (int j = 0; j < 7; j++)
-        // {
-            // std::cout << j << "\n";
-            // print_bitboard(board.get(BLACK, j));
-        // }
 
         size_t leaves = _perft(board, perft_obj.depth_get());
         std::cout << leaves << "\n";
