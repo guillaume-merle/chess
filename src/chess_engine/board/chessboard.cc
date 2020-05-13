@@ -530,7 +530,7 @@ namespace board
             }
 
             movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
-            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+            attacked = square_attacks(color, 59) | square_attacks(color, 58);
         }
 
         Bitboard occupied = movement_squares & get_all();
