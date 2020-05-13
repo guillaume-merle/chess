@@ -1,5 +1,3 @@
-#pragma once
-
 #include <limits>
 
 #include "evaluation.hh"
@@ -7,18 +5,19 @@
 
 namespace board
 {
-    int negaMax(Chessboard board, int depth, int color)
+    int negaMax(Chessboard board, int depth)
     {
         if (depth == 0)
-            return evaluate(board) * color;
+            return evaluate(board);
         int max = std::numeric_limits<int>::max();
         const std::vector<Move> moves = board.generate_legal_moves();
+
         for (Move move: moves)
         {
             Chessboard new_board = Chessboard(board);
-            newBoard.do_move(move);
+            new_board.do_move(move);
 
-            score = negaMax(new_board, depth - 1, color * -1);
+            int score = -negaMax(new_board, depth - 1);
 
             if (score > max)
                 max = score;
@@ -27,27 +26,21 @@ namespace board
     }
 
 
-    Move search(Chessboard board)
+    Move search_move(Chessboard board)
     {
-        int color;
         int score;
         int depth = 1;
         int max = std::numeric_limits<int>::max();
-        const std::vector<Move> moves = board.generate_legal_moves();
-        Move best_move;
-
-        if (board.white_turn)
-            color = 1;
-        else
-            color = -1;
+        std::vector<Move> moves = board.generate_legal_moves();
+        Move best_move = moves[0];
 
        
         for (Move move: moves)
         {
             Chessboard new_board = Chessboard(board);
-            newBoard.do_move(move);
+            new_board.do_move(move);
 
-            score = negaMax(new_board, depth - 1, color);
+            score = negaMax(new_board, depth - 1);
 
             if (score > max)
             {

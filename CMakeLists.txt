@@ -11,6 +11,10 @@ set(OPT_FLAGS
 # SOURCES : FIXME
 # Put all your sources here EXCEPT YOUR MAIN.CC
 set(SRC_ENGINE
+    src/chess_engine/ai/evaluation.cc
+    src/chess_engine/ai/evaluation.hh
+    src/chess_engine/ai/search.cc
+    src/chess_engine/ai/search.hh
     src/chess_engine/ai/uci.cc
     src/chess_engine/ai/uci.hh
     src/chess_engine/board/attacks.cc
