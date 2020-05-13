@@ -380,7 +380,7 @@ namespace board
 
         // xor "from" and "to" bits to update position
         bitboards_[color][piece] ^= from_to;
-        // update all white pieces bitboard as well
+        // update the all bitboard as well
         bitboards_[color][ALL] ^= from_to;
 
         update_castling_abilities(color, piece, from);
@@ -393,7 +393,7 @@ namespace board
 
         // xor the square bit of the piece to remove it from the board
         bitboards_[color][piece] ^= mask;
-        bitboards_[color][piece] ^= mask;
+        bitboards_[color][ALL] ^= mask;
     }
 
     std::vector<Move> Chessboard::generate_legal_moves()
@@ -558,5 +558,10 @@ namespace board
         }
 
         return std::nullopt;
+    }
+
+    void Chessboard::set_turn(Color color)
+    {
+        white_turn_ = color == WHITE;
     }
 }
