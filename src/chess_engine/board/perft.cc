@@ -2,7 +2,7 @@
 
 namespace board
 {
-    size_t perft(int depth, Chessboard board)
+    size_t _perft(Chessboard board, int depth)
     {
         if (depth == 0)
             return 1;
@@ -15,9 +15,16 @@ namespace board
             Chessboard temp_board = board;
             temp_board.do_move(move);
 
-            nodes += perft(depth - 1, temp_board);
+            nodes += _perft(temp_board, depth - 1);
         }
 
         return nodes;
+    }
+
+    size_t perft(PerftObject& perft_obj)
+    {
+        Chessboard board;
+        // board.set_from_fen(perft_obj.fen_get());
+        return _perft(board, perft_obj.depth_get());
     }
 }
