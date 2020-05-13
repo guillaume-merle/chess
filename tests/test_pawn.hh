@@ -64,7 +64,7 @@ TEST (Pawn, generate_white_promotion)
     board.update_all_boards();
     std::vector<board::Move> moves = board::MoveGen(board).get();
 
-    EXPECT_EQ(1, moves.size());
+    EXPECT_EQ(4, moves.size());
 
     board.do_move(moves.at(0), board::Color::WHITE);
 
@@ -83,22 +83,20 @@ TEST (Pawn, generate_white_attack_promotion)
     board.update_all_boards();
     std::vector<board::Move> moves = board::MoveGen(board).get();
 
-    EXPECT_EQ(2, moves.size());
+    EXPECT_EQ(8, moves.size());
 
-    auto move = moves.at(1);
+    auto move = moves.at(5);
 
     EXPECT_TRUE(move.is_capture());
     EXPECT_TRUE(move.is_promotion());
-    EXPECT_EQ(board::PieceType::QUEEN, move.get_promotion());
+    EXPECT_EQ(board::PieceType::KNIGHT, move.get_promotion());
 
     board.do_move(move, board::Color::WHITE);
 
-    board::Bitboard queen = board.get(board::Color::WHITE,
-        board::PieceType::QUEEN);
+    board::Bitboard knight = board.get(board::Color::WHITE,
+        board::PieceType::KNIGHT);
 
-    board::print_bitboard(queen);
-
-    EXPECT_EQ(1ULL << 58, queen);
+    EXPECT_EQ(1ULL << 58, knight);
 }
 
 TEST (Pawn, black_promotion)
