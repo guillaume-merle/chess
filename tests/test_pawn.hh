@@ -328,7 +328,7 @@ TEST (Pawn, en_passant_capture_2)
     EXPECT_TRUE(moves.at(1).is_en_passant());
 }
 
-TEST (Pawn, capture_)
+TEST (Pawn, capture_removed_from_board)
 {
     board::Chessboard board;
     board.set_turn(board::BLACK);
