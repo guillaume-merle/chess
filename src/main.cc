@@ -11,6 +11,7 @@
 #include "pawn.hh"
 #include "attacks.hh"
 #include "perft.hh"
+#include "search.hh"
 
 int main(int argc, char** argv)
 {
@@ -37,5 +38,18 @@ int main(int argc, char** argv)
     else
     {
         ai::init("Jean-Charles");
+        board::Chessboard board;
+        board::PerftObject perft_obj = perft_parser::parse_perft(ai::get_board());
+        board.set_from_fen(perft_obj.fen_get());
+        board::Move move = board::search_move(board);
+        ai::play_move(move.to_string());
+
+        for (std::string curr_str = ai::get_board(); !board.is_checkmate(board.current_color());)
+        {
+            board::PerftObject perft_obj = perft_parser::parse_perft(curr_str);
+            board.set_from_fen(perft_obj.fen_get());
+            board::Move move = board::search_move(board);
+            ai::play_move(move.to_string());
+        }
     }
 }
