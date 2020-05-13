@@ -2,9 +2,15 @@
 
 namespace board
 {
-    //FenObject(); //TODO
+    FenRank FenObject::operator[](int rank)
+    {
+        return ranks_.at(rank);
+    }
 
-    //operator[] TODO
+    size_t FenObject::size()
+    {
+        return ranks_.size();
+    }
 
     Color FenObject::side_to_move_get()
     {

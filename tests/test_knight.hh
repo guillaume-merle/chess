@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "movegen.hh"
 
 #include "knight.hh"
 
@@ -117,8 +118,11 @@ TEST (Knight, southwestwest_out)
 TEST (Knight, generate_moves)
 {
     board::Bitboard knight = 1 << 9;
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight);
+
+    board::Chessboard board;
+    board.set(board::WHITE, board::KNIGHT, knight);
+
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(4, moves.size());
 
@@ -130,10 +134,13 @@ TEST (Knight, generate_moves)
 TEST (Knight, generate_moves2)
 {
     board::Bitboard knight = 1ULL << 54;
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight);
+    board::Chessboard board;
+    board.set(board::WHITE, board::KNIGHT, knight);
+
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(4, moves.size());
+
 
     board::Bitboard expected_moves = 1ULL << 37 | 1ULL << 60 | 1ULL << 39
                                      | 1ULL << 44;
@@ -145,10 +152,10 @@ TEST (Knight, generate_moves_with_chessboard_none_blocking)
 {
     board::Bitboard knight = 1 << 28;
     board::Chessboard board;
-    board.set(board::WHITE, board::ALL, 1ULL << 63);
+    board.set(board::WHITE, board::ALL, 1ULL << 63 | knight);
+    board.set(board::WHITE, board::KNIGHT, knight);
 
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(8, moves.size());
 }
@@ -157,10 +164,10 @@ TEST (Knight, generate_moves_with_chessboard_one_blocking)
 {
     board::Bitboard knight = 1 << 9;
     board::Chessboard board;
-    board.set(board::WHITE, board::ALL, 1 << 24);
+    board.set(board::WHITE, board::ALL, 1 << 24 | knight);
+    board.set(board::WHITE, board::KNIGHT, knight);
 
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(3, moves.size());
 }
@@ -171,9 +178,9 @@ TEST (Knight, generate_moves_with_chessboard_three_blocking)
     board::Chessboard board;
     board::Bitboard blocker = 1Ull << 32 | 1ULL << 52 | 1ULL << 25;
     board.set(board::WHITE, board::ALL, blocker);
+    board.set(board::WHITE, board::KNIGHT, knight);
 
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(5, moves.size());
 }
@@ -183,9 +190,9 @@ TEST (Knight, generate_moves_with_chessboard_no_move_possible)
     board::Bitboard knight = 1 << 19;
     board::Chessboard board;
     board.set(board::WHITE, board::ALL, board::FullBB);
+    board.set(board::WHITE, board::KNIGHT, knight);
 
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight, board, board::Color::WHITE);
+    std::vector<board::Move> moves = board::MoveGen(board).get();
 
     EXPECT_EQ(0, moves.size());
 }
@@ -195,11 +202,11 @@ TEST (Knight, generate_moves_with_chessboard_capture)
     board::Bitboard knight = 1 << 20;
     board::Chessboard board;
 
-    board.set(board::WHITE, board::ALL, 1ULL << 35 );
     board.set(board::WHITE, board::BISHOP, 1ULL << 35);
+    board.set(board::BLACK, board::KNIGHT, knight);
+    board.update_all_boards();
 
-    std::vector<board::Move> moves;
-    board::Knight::generate_moves(moves, knight, board, board::Color::BLACK);
+    std::vector<board::Move> moves = board::MoveGen(board, board::BLACK).get();
 
     EXPECT_EQ(8, moves.size());
     EXPECT_TRUE(moves.at(0).is_capture());

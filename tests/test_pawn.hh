@@ -36,6 +36,89 @@ TEST (Pawn, double_push_black)
     EXPECT_EQ(1ULL << 32, move);
 }
 
+TEST (Pawn, white_promotion)
+{
+    board::Chessboard board;
+
+    board.set(board::WHITE, board::PAWN, 1ULL << 51);
+
+    board.update_all_boards();
+
+    board::Move move(51, 59, board::PieceType::PAWN, board::PieceType::QUEEN,
+                     board::MoveFlag::PROMOTION);
+
+    board.do_move(move, board::Color::WHITE);
+
+    board::Bitboard queen = board.get(board::Color::WHITE,
+        board::PieceType::QUEEN);
+
+    EXPECT_EQ(1ULL << 59, queen);
+}
+
+TEST (Pawn, generate_white_promotion)
+{
+    board::Chessboard board;
+
+    board.set(board::WHITE, board::PAWN, 1ULL << 51);
+
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
+
+    EXPECT_EQ(4, moves.size());
+
+    board.do_move(moves.at(0), board::Color::WHITE);
+
+    board::Bitboard queen = board.get(board::Color::WHITE,
+        board::PieceType::QUEEN);
+
+    EXPECT_EQ(1ULL << 59, queen);
+}
+
+TEST (Pawn, generate_white_attack_promotion)
+{
+    board::Chessboard board;
+    board.set(board::WHITE, board::PAWN, 1ULL << 51);
+    board.set(board::BLACK, board::PAWN, 1ULL << 58);
+
+    board.update_all_boards();
+    std::vector<board::Move> moves = board::MoveGen(board).get();
+
+    EXPECT_EQ(8, moves.size());
+
+    auto move = moves.at(5);
+
+    EXPECT_TRUE(move.is_capture());
+    EXPECT_TRUE(move.is_promotion());
+    EXPECT_EQ(board::PieceType::KNIGHT, move.get_promotion());
+
+    board.do_move(move, board::Color::WHITE);
+
+    board::Bitboard knight = board.get(board::Color::WHITE,
+        board::PieceType::KNIGHT);
+
+    EXPECT_EQ(1ULL << 58, knight);
+}
+
+TEST (Pawn, black_promotion)
+{
+    board::Chessboard board;
+
+    board.set(board::BLACK, board::PAWN, 1ULL << 12);
+
+    board.update_all_boards();
+
+    board::Move move(12, 4, board::PieceType::PAWN, board::PieceType::QUEEN,
+                     board::MoveFlag::PROMOTION);
+
+    board.do_move(move, board::Color::BLACK);
+
+    board::Bitboard queen = board.get(board::Color::BLACK,
+        board::PieceType::QUEEN);
+
+    EXPECT_EQ(1ULL << 4, queen);
+}
+
+
 TEST (Pawn, generate_white_moves_single)
 {
     board::Chessboard board;

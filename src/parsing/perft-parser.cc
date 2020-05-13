@@ -12,14 +12,14 @@ namespace perft_parser
         std::ifstream file(input);
         if (!file.is_open())
         {
-            std::cerr << "Failed to open" << std::endl;
-            //TODO error
+            throw std::invalid_argument("Failed to open perft file.");
         }
         for(std::string line; getline(file, line, ' ');)
         {
             splited_input.push_back(line);
         }
-        return board::PerftObject(parse_fen(splited_input), 0); //TODO depth
+        return board::PerftObject(parse_fen(splited_input),
+                                            std::stoi(splited_input.back()));
     }
 
     board::FenObject parse_fen(std::vector<std::string> splited_input)
@@ -37,18 +37,19 @@ namespace perft_parser
             placement.erase(0, pos + 1);
         }
 
+        ranks.push_back(board::FenRank(placement));
+
         //side to move
         board::Color side_to_move;
-        
+
         if (splited_input[1][0] == 'w')
             side_to_move = board::Color::WHITE;
         else
             side_to_move = board::Color::BLACK;
 
-
         //castling ability
         std::vector<char> castling;
-        
+
         for (size_t i = 0; i < splited_input[2].size(); ++i)
         {
             castling.push_back(splited_input[2][i]);
@@ -56,7 +57,7 @@ namespace perft_parser
 
 
         //en passant target square
-        
+
         board::File file;
         board::Rank rank;
 

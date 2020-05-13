@@ -5,7 +5,6 @@
 #include "piece-type.hh"
 #include "bitboard.hh"
 #include "color.hh"
-#include "chessboard.hh"
 
 namespace board
 {
@@ -41,11 +40,19 @@ namespace board
 
         PieceType get_capture();
 
+        PieceType get_promotion();
+
         bool is_double_pawn_push();
 
         bool is_en_passant();
 
         bool is_capture();
+
+        bool is_promotion();
+
+        bool is_king_side_castling();
+
+        bool is_queen_side_castling();
 
         std::string to_string();
 
@@ -53,8 +60,8 @@ namespace board
 
     private:
         // store the move
-        Bitboard from_;
-        Bitboard to_;
+        Square from_;
+        Square to_;
 
         PieceType piece_;
         PieceType promotion_;
@@ -69,12 +76,6 @@ namespace board
 
         void parse_flags(int flags);
     };
-
-    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-                  PieceType piece);
-
-    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-                  PieceType piece, Color color, Chessboard& board);
 
     Bitboard combine_moves(std::vector<Move>& moves);
 

@@ -1,5 +1,6 @@
-#include "move.hh"
 #include <iostream>
+
+#include "move.hh"
 
 namespace board
 {
@@ -93,6 +94,11 @@ namespace board
         return capture_;
     }
 
+    PieceType Move::get_promotion()
+    {
+        return promotion_;
+    }
+
     bool Move::is_capture()
     {
         return is_capture_;
@@ -108,44 +114,19 @@ namespace board
         return en_passant_;
     }
 
-    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-                  PieceType piece)
+    bool Move::is_promotion()
     {
-        if (to == 0)
-            return false;
-
-        moves.emplace_back(Move(from, to, piece));
-        return true;
+        return is_promotion_;
     }
 
-    bool add_move(std::vector<Move>& moves, Bitboard from, Bitboard to,
-                  PieceType piece, Color color, Chessboard& board)
+    bool Move::is_king_side_castling()
     {
-        // if there is an opponant piece to capture on the square
-        if (board.would_capture(to, color))
-        {
-            PieceType start = PieceType::QUEEN;
+        return king_castling_;
+    }
 
-            for (int i = start; i < BITBOARDS_NUMBER; i++)
-            {
-                if (to & board.get(opposite_color(color), i))
-                {
-                    PieceType capture = static_cast<PieceType>(i);
-                    moves.emplace_back(Move(from, to, piece, capture));
-
-                    // return false to stop sliding pieces movements
-                    return false;
-                }
-            }
-
-            throw std::runtime_error("add_move: invalid bitboards");
-        }
-        // else if there is an ally piece on the square
-        else if (board.would_collide(to, color))
-            return false;
-
-        // the square is free
-        return add_move(moves, from, to, piece);
+    bool Move::is_queen_side_castling()
+    {
+        return queen_castling_;
     }
 
     Bitboard combine_moves(std::vector<Move>& moves)
@@ -153,7 +134,7 @@ namespace board
         Bitboard all_moves = 0;
         for (auto& move : moves)
         {
-            all_moves |= move.get_to();
+            all_moves |= 1ULL << move.get_to();
         }
 
         return all_moves;

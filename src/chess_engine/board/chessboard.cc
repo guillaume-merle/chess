@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "chessboard.hh"
-#include "rule.hh"
 #include "utils.hh"
 #include "move.hh"
 #include "attacks.hh"
@@ -11,10 +10,24 @@ namespace board
 {
     Chessboard::Chessboard()
         : bitboards_{{0}}, white_turn_(true)
+        , white_king_side_castling_(true)
+        , white_queen_side_castling_(true)
+        , black_king_side_castling_(true)
+        , black_queen_side_castling_(true)
+        , en_passant_(0)
+        , turn_(0)
+        , last_fifty_turns_(0)
     {}
 
     Chessboard::Chessboard(const Chessboard& board)
         : bitboards_{{0}}, white_turn_(board.white_turn_)
+        , white_king_side_castling_(board.white_king_side_castling_)
+        , white_queen_side_castling_(board.white_queen_side_castling_)
+        , black_king_side_castling_(board.black_king_side_castling_)
+        , black_queen_side_castling_(board.black_queen_side_castling_)
+        , en_passant_(board.en_passant_)
+        , turn_(board.turn_)
+        , last_fifty_turns_(board.last_fifty_turns_)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -28,6 +41,13 @@ namespace board
     Chessboard& Chessboard::operator=(const Chessboard& board)
     {
         white_turn_ = board.white_turn_;
+        white_queen_side_castling_ = board.white_queen_side_castling_;
+        white_king_side_castling_ = board.white_king_side_castling_;
+        black_queen_side_castling_ = board.black_queen_side_castling_;
+        black_king_side_castling_ = board.black_king_side_castling_;
+        en_passant_ = board.en_passant_;
+        turn_ = board.turn_;
+        last_fifty_turns_ = board.last_fifty_turns_;
 
         for (int i = 0; i < 2; i++)
         {
@@ -48,6 +68,11 @@ namespace board
     Bitboard Chessboard::get(Color color, int piece) const
     {
         return bitboards_[color][piece];
+    }
+
+    Bitboard Chessboard::get_all()
+    {
+        return bitboards_[WHITE][ALL] | bitboards_[BLACK][ALL];
     }
 
     void Chessboard::update_all_boards()
@@ -98,6 +123,43 @@ namespace board
         return true;
     }
 
+    void Chessboard::set_from_fen(FenObject fen)
+    {
+        for (size_t i = 0; i < fen.size(); i++)
+        {
+            for (size_t j = 0; j < fen[i].size(); j ++)
+            {
+                FenRank::side_piece_t piece = fen[i][j];
+                if (piece.first != ALL)
+                    bitboards_[piece.second][piece.first]
+                        |= 1ULL << ((7 - i) * 8 + j);
+            }
+        }
+
+        update_all_boards();
+
+        white_turn_ = fen.side_to_move_get() == WHITE;
+        Position en_passant_pos = fen.en_passant_target_get();
+        en_passant_ = en_passant_pos.rank_get() * 8 + en_passant_pos.file_get();
+
+        white_king_side_castling_ = false;
+        white_queen_side_castling_ = false;
+        black_king_side_castling_ = false;
+        black_queen_side_castling_ = false;
+
+        for (auto castling : fen.castling_get())
+        {
+            if (castling == 'K')
+                white_king_side_castling_ = true;
+            else if (castling == 'Q')
+                white_queen_side_castling_ = true;
+            else if (castling == 'k')
+                black_king_side_castling_ = true;
+            else if (castling == 'q')
+                black_queen_side_castling_ = true;
+        }
+    }
+
     bool Chessboard::would_collide(Bitboard pos, Color color)
     {
         return (pos & get(color, ALL));
@@ -113,26 +175,39 @@ namespace board
         return (pos & (1ULL << en_passant_));
     }
 
+    Bitboard Chessboard::square_attacks(Color color, Square square)
+    {
+        Bitboard all_pieces = get_all();
+        Color them = opposite_color(color);
+
+        Bitboard attackers = 0;
+
+        attackers |= attacks::get_king_attacks(square)
+                     & get(them, KING);
+        attackers |= attacks::get_knight_attacks(square)
+                     & get(them, KNIGHT);
+        attackers |= attacks::get_pawn_attacks(square, color)
+                     & get(them, PAWN);
+        attackers |= attacks::get_bishop_attacks(square, all_pieces)
+                     & get(them, BISHOP);
+        attackers |= attacks::get_rook_attacks(square, all_pieces)
+                     & get(them, ROOK);
+        attackers |= attacks::get_queen_attacks(square, all_pieces)
+                     & get(them, QUEEN);
+
+        return attackers;
+    }
+
     bool Chessboard::is_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
         if (king_square > 63)
             return false;
 
-        Bitboard all_pieces = get(WHITE, ALL) | get(BLACK, ALL);
-        Color them = opposite_color(color);
+        Bitboard attackers = square_attacks(color, king_square);
 
-        Bitboard attackers = 0;
-        attackers |= attacks::get_knight_attacks(king_square)
-                     & get(them, KNIGHT);
-        attackers |= attacks::get_pawn_attacks(king_square, color)
-                     & get(them, PAWN);
-        attackers |= attacks::get_bishop_attacks(king_square, all_pieces)
-                     & get(them, BISHOP);
-        attackers |= attacks::get_rook_attacks(king_square, all_pieces)
-                     & get(them, ROOK);
-        attackers |= attacks::get_queen_attacks(king_square, all_pieces)
-                     & get(them, QUEEN);
+        // remove opposite king attacks as they are not permitted
+        attackers &= ~get(opposite_color(color), KING);
 
         if (attackers)
             return true;
@@ -143,14 +218,10 @@ namespace board
     bool Chessboard::illegal_king_check(Color color)
     {
         Square king_square = bitscan(get(color, KING));
-
         if (king_square > 63)
             return false;
 
         Color them = opposite_color(color);
-
-        std::cout << "ILLEGAL KING CHECK:\n";
-        print_bitboard(attacks::get_king_attacks(king_square));
 
         if (attacks::get_king_attacks(king_square) & get(them, KING))
             return true;
@@ -193,7 +264,7 @@ namespace board
         }
 
         //check if the game lasts more than 50 turns
-        if (last_fifty_turn_ > 50)
+        if (last_fifty_turns_ > 50)
             return true;
 
         //first verify that my king is not in check
@@ -236,17 +307,70 @@ namespace board
             else
                 remove_piece(WHITE, move.get_capture(), move.get_to() + 8);
         }
+        else if (move.is_king_side_castling())
+        {
+            Square rook_from = color == WHITE ? 7 : 63;
+            move_piece(color, ROOK, rook_from, rook_from - 2);
+        }
+        else if (move.is_queen_side_castling())
+        {
+            Square rook_from = color == WHITE ? 0 : 56;
+            move_piece(color, ROOK, rook_from, rook_from + 3);
+        }
 
         // check if move is capture or a pawn is moving
         if (move.is_capture() || move.get_piece() == PAWN)
-            last_fifty_turn_ = 0;
+            last_fifty_turns_ = 0;
         else
-            last_fifty_turn_++;
+            last_fifty_turns_++;
 
         move_piece(color, piece, move.get_from(), move.get_to());
 
+        if (move.is_promotion())
+        {
+            remove_piece(color, PieceType::PAWN, move.get_to());
+            add_piece(color, move.get_promotion(), move.get_to());
+        }
+
         // set next turn
         white_turn_ = !white_turn_;
+        turn_ += 1;
+    }
+
+    void Chessboard::add_piece(Color color, PieceType piece, Square pos)
+    {
+        Bitboard mask = 1ULL << pos;
+
+        bitboards_[color][piece] |= mask;
+    }
+
+    void Chessboard::update_castling_abilities(Color color, PieceType piece,
+                                               Square from)
+    {
+        if (piece == KING)
+        {
+            if (color == WHITE)
+            {
+                white_king_side_castling_ = false;
+                white_queen_side_castling_ = false;
+            }
+            else
+            {
+                black_king_side_castling_ = false;
+                black_queen_side_castling_ = false;
+            }
+        }
+        else if (piece == ROOK)
+        {
+            if (from == 0)
+                white_queen_side_castling_ = false;
+            if (from == 7)
+                white_king_side_castling_ = false;
+            if (from == 56)
+                black_queen_side_castling_ = false;
+            if (from == 63)
+                black_king_side_castling_ = false;
+        }
     }
 
     void Chessboard::move_piece(Color color, PieceType piece, Square from,
@@ -258,6 +382,9 @@ namespace board
         bitboards_[color][piece] ^= from_to;
         // update all white pieces bitboard as well
         bitboards_[color][ALL] ^= from_to;
+
+        update_castling_abilities(color, piece, from);
+
     }
 
     void Chessboard::remove_piece(Color color, PieceType piece, Square pos)
@@ -286,8 +413,6 @@ namespace board
             Chessboard temp_board = *this;
             temp_board.do_move(move, color);
 
-            std::cout << "Move: " << move.get_from() << " to " << move.get_to() << "\n";
-
             //check if the piece is in check and if it's not a bad check (king)
             if (!temp_board.is_check(color))
             {
@@ -313,6 +438,104 @@ namespace board
         }
 
         return false;
+    }
+
+    bool Chessboard::can_king_side_castling(Color color)
+    {
+        if (is_check(color))
+            return false;
+
+        Bitboard movement_squares = 0;
+        Bitboard attacked = 0;
+
+        if (color == WHITE)
+        {
+            if (!white_king_side_castling_)
+                return false;
+
+            Bitboard rook = 1 << 7;
+            Bitboard king = 1 << 4;
+
+            if (!(get(WHITE, ROOK) & rook) || !(get(WHITE, KING) & king))
+            {
+                white_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1 << 5 | 1 << 6;
+            attacked = square_attacks(color, 5) | square_attacks(color, 6);
+        }
+        else
+        {
+            if (!black_king_side_castling_)
+                return false;
+
+            Bitboard rook = 1ULL << 63;
+            Bitboard king = 1ULL << 60;
+
+            // check that the king and the rook are at the start pos
+            if (!(get(BLACK, ROOK) & rook) || !(get(BLACK, KING) & king))
+            {
+                black_king_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares= 1ULL << 61 | 1ULL << 62;
+            attacked = square_attacks(color, 61) | square_attacks(color, 62);
+        }
+
+        Bitboard occupied = movement_squares & get_all();
+
+        return !occupied && !attacked;
+    }
+
+    bool Chessboard::can_queen_side_castling(Color color)
+    {
+        if (is_check(color))
+            return false;
+
+        Bitboard movement_squares = 0;
+        Bitboard attacked = 0;
+
+        if (color == WHITE)
+        {
+            if (!white_queen_side_castling_)
+                return false;
+
+            Bitboard rook = 1;
+            Bitboard king = 1 << 4;
+
+            // check that the king and the rook are at the start pos
+            if (!(get(WHITE, ROOK) & rook) || !(get(WHITE, KING) & king))
+            {
+                white_queen_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares = 1 << 3 | 1 << 2 | 1 << 1;
+            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+        }
+        else
+        {
+            if (!black_queen_side_castling_)
+                return false;
+
+            Bitboard rook = 1UL << 56;
+            Bitboard king = 1ULL << 60;
+
+            if (!(get(BLACK, ROOK) & rook) || !(get(BLACK, KING) & king))
+            {
+                black_queen_side_castling_ = false;
+                return false;
+            }
+
+            movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
+            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+        }
+
+        Bitboard occupied = movement_squares & get_all();
+
+        return !occupied && !attacked;
     }
 
     Chessboard::opt_piece_t

@@ -19,12 +19,5 @@ namespace board
         static Bitboard double_push(Bitboard bitboard, Color color);
         static Bitboard left_attack(Bitboard bitboard, Color color);
         static Bitboard right_attack(Bitboard bitboard, Color color);
-
-        static std::vector<Move>
-        generate_moves(std::vector<Move>& moves, Bitboard bitboard,
-                       Color color);
-        static std::vector<Move>
-        generate_moves(std::vector<Move>& moves, Bitboard bitboard,
-                       Color color, Chessboard& board);
     };
 }

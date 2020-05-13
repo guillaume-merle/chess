@@ -227,7 +227,7 @@ namespace pgn_parser
         return moves_;
     }
 
-    const std::vector<board::PgnMove> parse_pgn(const std::string& file)
+    std::vector<board::PgnMove> parse_pgn(const std::string& file)
     {
         std::ifstream pgn(file);
         parse_header(pgn);

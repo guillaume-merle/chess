@@ -9,7 +9,7 @@
 namespace pgn_parser
 {
     // parse a PGN file into a list of moves
-    const std::vector<board::PgnMove> parse_pgn(const std::string& file);
+    std::vector<board::PgnMove> parse_pgn(const std::string& file);
 
     /*
     ** Functor class used to parse the pgn part associated with
