@@ -12,8 +12,7 @@ namespace perft_parser
         std::ifstream file(input);
         if (!file.is_open())
         {
-            std::cerr << "Failed to open" << std::endl;
-            //TODO error
+            throw std::invalid_argument("Failed to open perft file.");
         }
         for(std::string line; getline(file, line, ' ');)
         {
@@ -38,6 +37,8 @@ namespace perft_parser
             placement.erase(0, pos + 1);
         }
 
+        ranks.push_back(board::FenRank(placement));
+
         //side to move
         board::Color side_to_move;
 
@@ -45,7 +46,6 @@ namespace perft_parser
             side_to_move = board::Color::WHITE;
         else
             side_to_move = board::Color::BLACK;
-
 
         //castling ability
         std::vector<char> castling;

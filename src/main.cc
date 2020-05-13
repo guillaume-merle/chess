@@ -14,7 +14,15 @@
 
 int main(int argc, char** argv)
 {
-    option_parser::Options options = option_parser::parse_options(argc, argv);
+    option_parser::Options options;
+    try {
+        options = option_parser::parse_options(argc, argv);
+    }
+    catch (std::invalid_argument& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
 
     if (options.pgn_)
     {

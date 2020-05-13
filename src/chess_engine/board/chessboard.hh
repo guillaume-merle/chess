@@ -42,11 +42,6 @@ namespace board
         Chessboard& operator=(const Chessboard& board);
 
         /**
-         * @brief Reset all the bitboards
-         */
-        void clear();
-
-        /**
          * @brief Set all the bitboard with the field of the fen object
          *
          * @param the FenObject with all the information about the game

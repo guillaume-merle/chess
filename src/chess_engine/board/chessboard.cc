@@ -60,17 +60,6 @@ namespace board
         return *this;
     }
 
-    void Chessboard::clear()
-    {
-        for (size_t i = 0; i < 2; i++)
-        {
-            for (size_t j = 0; j < BITBOARDS_NUMBER; j++)
-            {
-                bitboards_[i][j] = 0;
-            }
-        }
-    }
-
     Bitboard Chessboard::get(Color color, PieceType piece) const
     {
         return bitboards_[color][piece];
@@ -136,7 +125,39 @@ namespace board
 
     void Chessboard::set_from_fen(FenObject fen)
     {
-        
+        for (size_t i = 0; i < fen.size(); i++)
+        {
+            for (size_t j = 0; j < fen[i].size(); j ++)
+            {
+                FenRank::side_piece_t piece = fen[i][j];
+                if (piece.first != ALL)
+                    bitboards_[piece.second][piece.first]
+                        |= 1ULL << ((7 - i) * 8 + j);
+            }
+        }
+
+        update_all_boards();
+
+        white_turn_ = fen.side_to_move_get() == WHITE;
+        Position en_passant_pos = fen.en_passant_target_get();
+        en_passant_ = en_passant_pos.rank_get() * 8 + en_passant_pos.file_get();
+
+        white_king_side_castling_ = false;
+        white_queen_side_castling_ = false;
+        black_king_side_castling_ = false;
+        black_queen_side_castling_ = false;
+
+        for (auto castling : fen.castling_get())
+        {
+            if (castling == 'K')
+                white_king_side_castling_ = true;
+            else if (castling == 'Q')
+                white_queen_side_castling_ = true;
+            else if (castling == 'k')
+                black_king_side_castling_ = true;
+            else if (castling == 'q')
+                black_queen_side_castling_ = true;
+        }
     }
 
     bool Chessboard::would_collide(Bitboard pos, Color color)

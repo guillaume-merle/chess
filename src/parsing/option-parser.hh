@@ -9,8 +9,8 @@ namespace option_parser
 {
     struct Options
     {
-        bool perft_;
-        bool pgn_;
+        bool perft_ = false;
+        bool pgn_ = false;
         std::vector<board::PgnMove> pgn_vect_;
         std::optional<board::PerftObject> perft_obj_;
     };
