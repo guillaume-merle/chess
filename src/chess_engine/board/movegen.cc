@@ -105,6 +105,15 @@ namespace board
                 {
                     moves_.emplace_back(Move(square, bitscan(move), PAWN, QUEEN,
                                              MoveFlag::PROMOTION));
+
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN,
+                                             KNIGHT, MoveFlag::PROMOTION));
+
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN,
+                                             BISHOP, MoveFlag::PROMOTION));
+
+                    moves_.emplace_back(Move(square, bitscan(move), PAWN,
+                                             ROOK, MoveFlag::PROMOTION));
                 }
                 else
                 {
@@ -137,6 +146,18 @@ namespace board
                     {
                         moves_.emplace_back(Move(square, attacked_square, PAWN,
                                       QUEEN, capture,
+                                      MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                      KNIGHT, capture,
+                                      MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                      BISHOP, capture,
+                                      MoveFlag::PROMOTION | MoveFlag::CAPTURE));
+
+                        moves_.emplace_back(Move(square, attacked_square, PAWN,
+                                      ROOK, capture,
                                       MoveFlag::PROMOTION | MoveFlag::CAPTURE));
                     }
                     else
