@@ -2,6 +2,9 @@
 
 #include <fnmatch.h>
 #include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
 
 namespace ai
 {
@@ -44,4 +47,78 @@ namespace ai
         get_input("go *"); // Wait for a go from GUI
         return board;
     }
+
+    board::PerftObject parse_uci_perft(std::string input)
+    {
+        std::stringstream ss(input);
+        std::istream_iterator<std::string> begin(ss);
+        std::istream_iterator<std::string> end;
+        std::vector<std::string> vstrings(begin, end);
+        
+       /* size_t pos = 0;
+        std::string placement = splited_input[0];
+        std::string token;
+        while ((pos = placement.find('/')) != std::string::npos)
+        {
+            token = placement.substr(0, pos);
+            ranks.push_back(board::FenRank(token));
+            placement.erase(0, pos + 1);
+        }
+        std::vector<std::string> splited_input;
+
+        for(std::string line; getline(input, line, ' ');)
+        {
+            splited_input.push_back(line);
+        }*/
+        return board::PerftObject(perft_parser::parse_fen(vstrings), 0);
+    }
+
+    void parse_uci_position(std::string input, board::Chessboard board)
+    {
+        std::string token;
+        std::istringstream is(input);
+        is >> token;
+        is >> token;
+
+        if (token == "startpos")
+        {
+            board::PerftObject perft_obj = parse_uci_perft(
+                    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board.set_from_fen(perft_obj.fen_get());
+        }   
+        else
+        {
+            std::string fen;
+
+            while (is >> token && token != "moves")
+            {
+                fen += token + " ";
+            }
+
+            board::PerftObject perft_obj = parse_uci_perft(fen);
+            board.set_from_fen(perft_obj.fen_get());
+
+        }
+        puts("here");
+        while (is >> token)
+        {
+            if (token == "moves")
+            {
+                continue;
+            }
+
+            std::vector<board::Move> moves = board.generate_legal_moves();
+
+            for (board::Move move : moves)
+            {
+                if (move.to_string() == token)
+                {
+                    board.do_move(move);
+                    break;
+                }
+            }
+        }
+        puts("here");
+    }
+
 } // namespace ai
