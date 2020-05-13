@@ -234,10 +234,17 @@ namespace board
         /**
          * @brief get a piece type and color from a position on the board.
          *
-         * @param position a Position object
-         * @return the piece type and color or std::nullopt
+         * @param position a Position object.
+         * @return the piece type and color or std::nullopt.
          */
         opt_piece_t operator[](const Position& position) const override;
+
+        /**
+         * @brief set the turn color.
+         *
+         * @param color to set the turn to.
+         */
+        void set_turn(Color color);
 
     private:
         /**

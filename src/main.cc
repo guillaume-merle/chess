@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     }
     else if (options.perft_)
     {
-        board::perft(options.perft_obj_.value());
+        board::divide(options.perft_obj_.value());
     }
     else
     {
