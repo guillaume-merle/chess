@@ -100,7 +100,7 @@ namespace board
                 return static_cast<PieceType>(i);
         }
 
-        throw std::runtime_error("get_piece_type: the given square doesn't"
+        throw std::runtime_error("get_piece_type: the given square doesn't "
                                  "match a piece.");
     }
 
@@ -342,6 +342,7 @@ namespace board
         Bitboard mask = 1ULL << pos;
 
         bitboards_[color][piece] |= mask;
+        bitboards_[color][ALL] |= mask;
     }
 
     void Chessboard::update_castling_abilities(Color color, PieceType piece,
