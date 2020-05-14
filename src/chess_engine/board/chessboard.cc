@@ -20,7 +20,7 @@ namespace board
         , last_fifty_turns_(0)
     {}
 
-    Chessboard::Chessboard(std::string& fen)
+    Chessboard::Chessboard(std::string fen)
         : bitboards_{{0}}, white_turn_(true)
         , white_king_side_castling_(true)
         , white_queen_side_castling_(true)
