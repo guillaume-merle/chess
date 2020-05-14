@@ -5,6 +5,7 @@
 #include "move.hh"
 #include "attacks.hh"
 #include "movegen.hh"
+#include "perft-parser.hh"
 
 namespace board
 {
@@ -18,6 +19,19 @@ namespace board
         , turn_(0)
         , last_fifty_turns_(0)
     {}
+
+    Chessboard::Chessboard(std::string& fen)
+        : bitboards_{{0}}, white_turn_(true)
+        , white_king_side_castling_(true)
+        , white_queen_side_castling_(true)
+        , black_king_side_castling_(true)
+        , black_queen_side_castling_(true)
+        , en_passant_(0)
+        , turn_(0)
+        , last_fifty_turns_(0)
+    {
+        set_from_fen(perft_parser::parse_fen(fen));
+    }
 
     Chessboard::Chessboard(const Chessboard& board)
         : bitboards_{{0}}, white_turn_(board.white_turn_)
