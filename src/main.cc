@@ -12,6 +12,8 @@
 #include "attacks.hh"
 #include "perft.hh"
 
+listener::ListenerManager listener::listener_manager;
+
 int main(int argc, char** argv)
 {
     board::attacks::init();
@@ -36,6 +38,8 @@ int main(int argc, char** argv)
     }
     else
     {
-        ai::init("Jean-Charles");
+        ai::init("Chesse James");
     }
+
+    listener::listener_manager.close_listeners();
 }

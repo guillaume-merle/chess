@@ -32,6 +32,16 @@ namespace listener
         }
     }
 
+    void ListenerManager::register_board(board::Chessboard& board)
+    {
+        chessboard_ = board;
+
+        for (auto listener : listeners_)
+        {
+            listener->register_board(board);
+        }
+    }
+
     void ListenerManager::notify(void (Listener::*func)())
     {
         for (auto listener : listeners_)

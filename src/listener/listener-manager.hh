@@ -23,6 +23,8 @@ namespace listener
 
         void notify(void (Listener::*func)());
 
+        void register_board(board::Chessboard& board);
+
     private:
         std::vector<Listener*> listeners_;
 
