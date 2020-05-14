@@ -41,14 +41,14 @@ namespace ai
         // Send the computed move
         std::cout << "bestmove " << move << std::endl;
     }
-    
+
     std::string get_board()
     {
         auto board = get_input("position *"); // Get the board
         get_input("go *"); // Wait for a go from GUI
         return board;
     }
-    
+
     void start()
     {
         board::Chessboard board;
@@ -97,11 +97,12 @@ namespace ai
 
         if (token == "startpos")
         {
-            std::string startpos = 
+            std::string startpos =
                 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             board::PerftObject perft_obj = parse_uci_perft(startpos);
             board.set_from_fen(perft_obj.fen_get());
-        }   
+        }
+
         else
         {
             // remove token fen

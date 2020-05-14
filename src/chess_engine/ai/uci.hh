@@ -39,7 +39,7 @@ namespace ai
      * @brief: principal function of the uci, call start after init.
      */
     void start();
-    
+
     /**
      * @brief: parse the return's string of get_board function, and apply
      * the modifications to our board.
