@@ -31,7 +31,7 @@ namespace ai
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';
         std::cout << "uciok" << std::endl;
-        get_input("input_streamready");
+        get_input("isready");
         std::cout << "readyok" << std::endl;
     }
 
@@ -67,7 +67,10 @@ namespace ai
     {
         std::string token;
         std::istringstream input_stream(input);
+        
+        // remove token position
         input_stream >> token;
+
         input_stream >> token;
 
         if (token == "startpos")
@@ -78,6 +81,9 @@ namespace ai
         }   
         else
         {
+            // remove token fen
+            input_stream >> token;
+
             std::string fen;
 
             while (input_stream >> token && token != "moves")
