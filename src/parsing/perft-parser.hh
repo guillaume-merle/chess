@@ -9,5 +9,5 @@ namespace perft_parser
 {
     board::PerftObject parse_perft(std::string input);
 
-    board::FenObject parse_fen(std::vector<std::string> splited_input);
+    board::FenObject parse_fen(std::string fen);
 } // namespace perft_parser

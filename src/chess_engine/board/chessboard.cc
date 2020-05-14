@@ -5,6 +5,7 @@
 #include "move.hh"
 #include "attacks.hh"
 #include "movegen.hh"
+#include "perft-parser.hh"
 
 namespace board
 {
@@ -18,6 +19,19 @@ namespace board
         , turn_(0)
         , last_fifty_turns_(0)
     {}
+
+    Chessboard::Chessboard(std::string fen)
+        : bitboards_{{0}}, white_turn_(true)
+        , white_king_side_castling_(true)
+        , white_queen_side_castling_(true)
+        , black_king_side_castling_(true)
+        , black_queen_side_castling_(true)
+        , en_passant_(0)
+        , turn_(0)
+        , last_fifty_turns_(0)
+    {
+        set_from_fen(perft_parser::parse_fen(fen));
+    }
 
     Chessboard::Chessboard(const Chessboard& board)
         : bitboards_{{0}}, white_turn_(board.white_turn_)
@@ -100,7 +114,7 @@ namespace board
                 return static_cast<PieceType>(i);
         }
 
-        throw std::runtime_error("get_piece_type: the given square doesn't"
+        throw std::runtime_error("get_piece_type: the given square doesn't "
                                  "match a piece.");
     }
 
@@ -342,6 +356,7 @@ namespace board
         Bitboard mask = 1ULL << pos;
 
         bitboards_[color][piece] |= mask;
+        bitboards_[color][ALL] |= mask;
     }
 
     void Chessboard::update_castling_abilities(Color color, PieceType piece,
@@ -380,7 +395,7 @@ namespace board
 
         // xor "from" and "to" bits to update position
         bitboards_[color][piece] ^= from_to;
-        // update all white pieces bitboard as well
+        // update the all bitboard as well
         bitboards_[color][ALL] ^= from_to;
 
         update_castling_abilities(color, piece, from);
@@ -393,7 +408,7 @@ namespace board
 
         // xor the square bit of the piece to remove it from the board
         bitboards_[color][piece] ^= mask;
-        bitboards_[color][piece] ^= mask;
+        bitboards_[color][ALL] ^= mask;
     }
 
     std::vector<Move> Chessboard::generate_legal_moves()
@@ -512,7 +527,7 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1 << 3 | 1 << 2 | 1 << 1;
+            movement_squares = 1 << 3 | 1 << 2;
             attacked = square_attacks(color, 2) | square_attacks(color, 3);
         }
         else
@@ -529,8 +544,8 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
-            attacked = square_attacks(color, 2) | square_attacks(color, 3);
+            movement_squares = 1ULL << 59 | 1ULL << 58;
+            attacked = square_attacks(color, 59) | square_attacks(color, 58);
         }
 
         Bitboard occupied = movement_squares & get_all();
@@ -558,5 +573,10 @@ namespace board
         }
 
         return std::nullopt;
+    }
+
+    void Chessboard::set_turn(Color color)
+    {
+        white_turn_ = color == WHITE;
     }
 }

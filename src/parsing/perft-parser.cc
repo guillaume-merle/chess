@@ -1,28 +1,14 @@
 #include <fstream>
 #include <iostream>
+#include <istream>
+#include <sstream>
+#include <iterator>
 
 #include "perft-parser.hh"
 
 namespace perft_parser
 {
-    board::PerftObject parse_perft(std::string input)
-    {
-        std::vector<std::string> splited_input;
-
-        std::ifstream file(input);
-        if (!file.is_open())
-        {
-            throw std::invalid_argument("Failed to open perft file.");
-        }
-        for(std::string line; getline(file, line, ' ');)
-        {
-            splited_input.push_back(line);
-        }
-        return board::PerftObject(parse_fen(splited_input),
-                                            std::stoi(splited_input.back()));
-    }
-
-    board::FenObject parse_fen(std::vector<std::string> splited_input)
+    static board::FenObject parse_fen(std::vector<std::string> splited_input)
     {
         //piece placement
         std::vector<board::FenRank> ranks;
@@ -54,7 +40,6 @@ namespace perft_parser
         {
             castling.push_back(splited_input[2][i]);
         }
-
 
         //en passant target square
 
@@ -108,4 +93,33 @@ namespace perft_parser
 
         return board::FenObject(ranks, side_to_move, castling, en_passant_target);
     }
+
+    board::FenObject parse_fen(std::string fen)
+    {
+        std::istringstream iss(fen);
+        std::vector<std::string> splited((
+                    std::istream_iterator<std::string>(iss)),
+                    std::istream_iterator<std::string>());
+
+        return parse_fen(splited);
+    }
+
+
+    board::PerftObject parse_perft(std::string input)
+    {
+        std::vector<std::string> splited_input;
+
+        std::ifstream file(input);
+        if (!file.is_open())
+        {
+            throw std::invalid_argument("Failed to open perft file.");
+        }
+        for(std::string line; getline(file, line, ' ');)
+        {
+            splited_input.push_back(line);
+        }
+        return board::PerftObject(parse_fen(splited_input),
+                                            std::stoi(splited_input.back()));
+    }
+
 } // namespace perft_parser

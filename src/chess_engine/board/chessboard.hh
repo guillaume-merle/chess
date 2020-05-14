@@ -10,6 +10,8 @@
 namespace board
 {
     constexpr int BITBOARDS_NUMBER = 7;
+    const std::string START_POS =
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     /**
      * @brief Class representing a chessboard.
@@ -23,9 +25,14 @@ namespace board
     {
     public:
         /**
-         * @brief Construct a new chessboard.
+         * @brief Construct a new blank chessboard.
          */
         Chessboard();
+
+        /**
+         * @brief Construct a new chessboard and set it the the given position.
+         */
+        Chessboard(std::string fen);
 
         /**
          * @brief Construct a new chessboard from an existing board.
@@ -234,10 +241,17 @@ namespace board
         /**
          * @brief get a piece type and color from a position on the board.
          *
-         * @param position a Position object
-         * @return the piece type and color or std::nullopt
+         * @param position a Position object.
+         * @return the piece type and color or std::nullopt.
          */
         opt_piece_t operator[](const Position& position) const override;
+
+        /**
+         * @brief set the turn color.
+         *
+         * @param color to set the turn to.
+         */
+        void set_turn(Color color);
 
     private:
         /**

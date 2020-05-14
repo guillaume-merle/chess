@@ -32,3 +32,5 @@ build/
 
 *.pdf
 tags
+__pycache__
+venv/

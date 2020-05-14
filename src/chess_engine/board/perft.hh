@@ -11,5 +11,7 @@ namespace board
      * The perft value corresponds to number of leaves at a certain depth
      * in the tree of legal moves.
      */
-    size_t perft(PerftObject& perft_obj);
+    void perft(PerftObject& perft_obj);
+
+    void divide(PerftObject& perft_obj);
 }
