@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        ai::init("Jean-Charles");
+        ai::init("Chesse James \"There can only be one ai in this town\"");
         board::Chessboard board;
         ai::parse_uci_position(ai::get_board(), board);
 
