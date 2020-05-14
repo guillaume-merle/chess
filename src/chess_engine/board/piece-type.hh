@@ -11,13 +11,13 @@ namespace board
      * piece on the board */
     enum PieceType
     {
-        ALL = 0,
-        QUEEN,
+        QUEEN = 0,
         ROOK,
         BISHOP,
         KNIGHT,
         PAWN,
         KING, // Last position allows better optimization (order-move)
+        ALL,
     };
 
     using opt_piecetype_t = std::optional<PieceType>;
