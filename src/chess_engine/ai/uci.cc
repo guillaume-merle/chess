@@ -31,7 +31,7 @@ namespace ai
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';
         std::cout << "uciok" << std::endl;
-        get_input("isready");
+        get_input("input_streamready");
         std::cout << "readyok" << std::endl;
     }
 
@@ -66,9 +66,9 @@ namespace ai
     void parse_uci_position(std::string input, board::Chessboard board)
     {
         std::string token;
-        std::istringstream is(input);
-        is >> token;
-        is >> token;
+        std::istringstream input_stream(input);
+        input_stream >> token;
+        input_stream >> token;
 
         if (token == "startpos")
         {
@@ -80,7 +80,7 @@ namespace ai
         {
             std::string fen;
 
-            while (is >> token && token != "moves")
+            while (input_stream >> token && token != "moves")
             {
                 fen += token + " ";
             }
@@ -89,7 +89,7 @@ namespace ai
             board.set_from_fen(perft_obj.fen_get());
 
         }
-        while (is >> token)
+        while (input_stream >> token)
         {
             if (token == "moves")
             {
