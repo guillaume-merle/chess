@@ -3,8 +3,11 @@
 
 #include "listener-manager.hh"
 
+
 namespace listener
 {
+    ListenerManager listener_manager;
+
     ListenerManager::ListenerManager(std::vector<std::string> paths)
     {
         for (auto path = paths.begin(); path != paths.end(); ++path)
@@ -42,11 +45,45 @@ namespace listener
         }
     }
 
+    void ListenerManager::notify(void (Listener::*func)(board::Color),
+                                 board::Color color)
+    {
+        for (auto listener : listeners_)
+        {
+            (listener->*func)(color);
+        }
+    }
+
     void ListenerManager::notify(void (Listener::*func)())
     {
         for (auto listener : listeners_)
         {
             (listener->*func)();
+        }
+    }
+
+    void ListenerManager::notify(void (Listener::*func)(const board::PieceType,
+                                                        const board::Position&,
+                                                        const board::Position&),
+                                 const board::PieceType& piece,
+                                 const board::Position& from,
+                                 const board::Position& to)
+    {
+
+        for (auto listener : listeners_)
+        {
+            (listener->*func)(piece, from, to);
+        }
+    }
+
+    void ListenerManager::notify(void (Listener::*func)(const board::PieceType,
+                const board::Position&),
+            const board::PieceType& piece,
+            const board::Position& at)
+    {
+        for (auto listener : listeners_)
+        {
+            (listener->*func)(piece, at);
         }
     }
 } // namespace listener

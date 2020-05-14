@@ -11,8 +11,7 @@
 #include "pawn.hh"
 #include "attacks.hh"
 #include "perft.hh"
-
-listener::ListenerManager listener::listener_manager;
+#include "pgn.hh"
 
 int main(int argc, char** argv)
 {
@@ -30,7 +29,7 @@ int main(int argc, char** argv)
 
     if (options.pgn_)
     {
-        ; // run with pgn
+        board::pgn(options.pgn_vect_);
     }
     else if (options.perft_)
     {
@@ -42,4 +41,6 @@ int main(int argc, char** argv)
     }
 
     listener::listener_manager.close_listeners();
+
+    return 0;
 }

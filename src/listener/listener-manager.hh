@@ -21,7 +21,21 @@ namespace listener
 
         void close_listeners();
 
+        void notify(void (Listener::*func)(board::Color), board::Color color);
+
         void notify(void (Listener::*func)());
+
+        void notify(void (Listener::*func)(const board::PieceType,
+                                           const board::Position&,
+                                           const board::Position&),
+                    const board::PieceType& piece,
+                    const board::Position& from,
+                    const board::Position& to);
+
+        void notify(void (Listener::*func)(const board::PieceType,
+                                           const board::Position&),
+                    const board::PieceType& piece,
+                    const board::Position& at);
 
         void register_board(board::Chessboard& board);
 
