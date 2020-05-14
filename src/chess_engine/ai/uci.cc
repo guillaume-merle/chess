@@ -50,27 +50,17 @@ namespace ai
 
     board::PerftObject parse_uci_perft(std::string input)
     {
-        std::stringstream ss(input);
-        std::istream_iterator<std::string> begin(ss);
-        std::istream_iterator<std::string> end;
-        std::vector<std::string> vstrings(begin, end);
-        
-       /* size_t pos = 0;
-        std::string placement = splited_input[0];
-        std::string token;
-        while ((pos = placement.find('/')) != std::string::npos)
-        {
-            token = placement.substr(0, pos);
-            ranks.push_back(board::FenRank(token));
-            placement.erase(0, pos + 1);
-        }
+        std::istringstream input_stream(input);
         std::vector<std::string> splited_input;
+        std::string token;
 
-        for(std::string line; getline(input, line, ' ');)
+        while (input_stream >> token)
         {
-            splited_input.push_back(line);
-        }*/
-        return board::PerftObject(perft_parser::parse_fen(vstrings), 0);
+            splited_input.emplace_back(token);
+        }
+        
+        return board::PerftObject(perft_parser::parse_fen(splited_input),
+                std::stoi(splited_input.back()));
     }
 
     void parse_uci_position(std::string input, board::Chessboard board)
