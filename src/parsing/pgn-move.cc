@@ -86,7 +86,7 @@ namespace board
             return false;
 
         return start_.to_square()
-                    == end_.to_square() + (color == WHITE ? 2 : -2);
+                    == end_.to_square() + (color == WHITE ? -16 : +16);
     }
 
     Move PgnMove::to_move(Chessboard& board)
