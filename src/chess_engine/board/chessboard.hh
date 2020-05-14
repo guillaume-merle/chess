@@ -32,7 +32,7 @@ namespace board
         /**
          * @brief Construct a new chessboard and set it the the given position.
          */
-        Chessboard(std::string& fen);
+        Chessboard(std::string fen);
 
         /**
          * @brief Construct a new chessboard from an existing board.
