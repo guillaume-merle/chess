@@ -206,11 +206,6 @@ TEST (King, impossible_black_queen_side_castling)
 
     std::vector<board::Move> moves = board::MoveGen(board, board::BLACK).get();
 
-    for (auto& move : moves)
-    {
-        std::cout << "MOVE: " << move.get_from() << " to " << move.get_to() << "\n";
-    }
-
     // king moves + rook
     EXPECT_EQ(13, moves.size());
     EXPECT_FALSE(moves.at(5).is_queen_side_castling());
