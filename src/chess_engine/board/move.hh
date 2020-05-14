@@ -24,6 +24,8 @@ namespace board
     class Move
     {
     public:
+        Move() = default;
+
         Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
 
         Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,

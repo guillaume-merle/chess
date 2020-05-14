@@ -6,6 +6,7 @@
 #include "piece-type.hh"
 #include "position.hh"
 #include "report-type.hh"
+#include "chessboard.hh"
 
 namespace board
 {
@@ -27,6 +28,13 @@ namespace board
 
         void report_set(ReportType report);
 
+        bool is_queen_side_castling(Color color);
+
+        bool is_king_side_castling(Color color);
+
+        bool is_double_pawn_push(Color color);
+
+        Move to_move(Chessboard& board);
 
     private:
         // The original position of the piece
@@ -47,4 +55,5 @@ namespace board
         // type of report given by the pgn file
         ReportType report_;
     };
+
 } // namespace board
