@@ -35,5 +35,5 @@ namespace ai
      */
     std::string get_board();
 
-    void parse_uci_position(std::string input, board::Chessboard board);
+    void parse_uci_position(std::string& input, board::Chessboard& board);
 } // namespace ai

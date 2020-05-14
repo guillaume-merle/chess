@@ -48,7 +48,7 @@ namespace ai
         return board;
     }
 
-    board::PerftObject parse_uci_perft(std::string input)
+    board::PerftObject parse_uci_perft(std::string& input)
     {
         std::istringstream input_stream(input);
         std::vector<std::string> splited_input;
@@ -63,7 +63,7 @@ namespace ai
                 std::stoi(splited_input.back()));
     }
 
-    void parse_uci_position(std::string input, board::Chessboard board)
+    void parse_uci_position(std::string& input, board::Chessboard& board)
     {
         std::string token;
         std::istringstream input_stream(input);
@@ -75,8 +75,9 @@ namespace ai
 
         if (token == "startpos")
         {
-            board::PerftObject perft_obj = parse_uci_perft(
-                    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            std::string startpos = 
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+            board::PerftObject perft_obj = parse_uci_perft(startpos);
             board.set_from_fen(perft_obj.fen_get());
         }   
         else

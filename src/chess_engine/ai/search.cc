@@ -5,7 +5,7 @@
 
 namespace board
 {
-    int negaMax(Chessboard board, int depth)
+    int negaMax(Chessboard& board, int depth)
     {
         if (depth == 0)
             return evaluate(board);
@@ -26,7 +26,7 @@ namespace board
     }
 
 
-    Move search_move(Chessboard board)
+    Move search_move(Chessboard& board)
     {
         int score;
         int depth = 1;

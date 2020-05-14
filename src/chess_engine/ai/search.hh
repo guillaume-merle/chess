@@ -5,6 +5,6 @@
 
 namespace board
 {
-    Move search_move(Chessboard board);
+    Move search_move(Chessboard& board);
 
 } // namespace board
