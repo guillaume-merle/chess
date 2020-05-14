@@ -194,6 +194,28 @@ TEST (King, black_queen_side_castling)
     EXPECT_TRUE(moves.at(5).is_queen_side_castling());
 }
 
+TEST (King, impossible_black_queen_side_castling)
+{
+    board::Bitboard king = 1ULL << 60;
+    board::Chessboard board;
+
+    board.set(board::BLACK, board::KING, king);
+    board.set(board::BLACK, board::ROOK, 1ULL << 56);
+    board.set(board::WHITE, board::BISHOP, 1ULL << 57);
+    board.update_all_boards();
+
+    std::vector<board::Move> moves = board::MoveGen(board, board::BLACK).get();
+
+    for (auto& move : moves)
+    {
+        std::cout << "MOVE: " << move.get_from() << " to " << move.get_to() << "\n";
+    }
+
+    // king moves + rook
+    EXPECT_EQ(13, moves.size());
+    EXPECT_FALSE(moves.at(5).is_queen_side_castling());
+}
+
 TEST (King, white_double_castling)
 {
     board::Bitboard king = 1 << 4;

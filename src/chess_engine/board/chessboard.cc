@@ -513,7 +513,7 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1 << 3 | 1 << 2;
+            movement_squares = 1 << 3 | 1 << 2 | 1 << 1;
             attacked = square_attacks(color, 2) | square_attacks(color, 3);
         }
         else
@@ -530,7 +530,7 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1ULL << 59 | 1ULL << 58;
+            movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
             attacked = square_attacks(color, 59) | square_attacks(color, 58);
         }
 
