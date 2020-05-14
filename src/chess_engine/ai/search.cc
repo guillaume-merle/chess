@@ -30,7 +30,7 @@ namespace board
     {
         int score;
         int depth = 1;
-        int max = std::numeric_limits<int>::max();
+        int max = 0;
         std::vector<Move> moves = board.generate_legal_moves();
         Move best_move = moves[0];
 

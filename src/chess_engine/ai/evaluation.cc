@@ -4,7 +4,7 @@ namespace board
 {
     int evaluate(Chessboard)
     {
-        return 1;
+        return rand() % 100;
     }
 
 } // namespace board
