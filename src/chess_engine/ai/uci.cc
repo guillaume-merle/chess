@@ -1,3 +1,4 @@
+#include "search.hh"
 #include "uci.hh"
 
 #include <fnmatch.h>
@@ -40,13 +41,34 @@ namespace ai
         // Send the computed move
         std::cout << "bestmove " << move << std::endl;
     }
-
+    
     std::string get_board()
     {
         auto board = get_input("position *"); // Get the board
         get_input("go *"); // Wait for a go from GUI
         return board;
     }
+    
+    void start()
+    {
+        board::Chessboard board;
+
+        std::string input_position = get_board();
+        parse_uci_position(input_position, board);
+        board::Move move = board::search_move(board);
+        play_move(move.to_string());
+        board.do_move(move);
+
+        while (!board.is_checkmate(board.current_color()))
+        {
+            std::string input_position = get_board();
+            parse_uci_position(input_position, board);
+            board::Move move = board::search_move(board);
+            play_move(move.to_string());
+            board.do_move(move);
+        }
+    }
+
 
     board::PerftObject parse_uci_perft(std::string& input)
     {
@@ -58,7 +80,7 @@ namespace ai
         {
             splited_input.emplace_back(token);
         }
-        
+
         return board::PerftObject(perft_parser::parse_fen(splited_input),
                 std::stoi(splited_input.back()));
     }
@@ -67,7 +89,7 @@ namespace ai
     {
         std::string token;
         std::istringstream input_stream(input);
-        
+
         // remove token position
         input_stream >> token;
 

@@ -38,16 +38,6 @@ int main(int argc, char** argv)
     else
     {
         ai::init("Chesse James \"There can only be one ai in this town\"");
-        board::Chessboard board;
-        std::string input_position = ai::get_board();
-        ai::parse_uci_position(input_position, board);
-
-        while (!board.is_checkmate(board.current_color()))
-        {
-            board::Move move = board::search_move(board);
-            ai::play_move(move.to_string());
-            board.do_move(move);
-            //ai::parse_uci_position(ai::get_board(), board);
-        }
+        ai::start();
     }
 }
