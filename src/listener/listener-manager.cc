@@ -32,4 +32,11 @@ namespace listener
         }
     }
 
+    void ListenerManager::notify(void (Listener::*func)())
+    {
+        for (auto listener : listeners_)
+        {
+            (listener->*func)();
+        }
+    }
 } // namespace listener
