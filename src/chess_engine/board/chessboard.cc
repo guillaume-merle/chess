@@ -139,6 +139,7 @@ namespace board
 
     void Chessboard::set_from_fen(FenObject fen)
     {
+        clear();
         for (size_t i = 0; i < fen.size(); i++)
         {
             for (size_t j = 0; j < fen[i].size(); j ++)
@@ -171,6 +172,17 @@ namespace board
                 black_king_side_castling_ = true;
             else if (castling == 'q')
                 black_queen_side_castling_ = true;
+        }
+    }
+
+    void Chessboard::clear()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < BITBOARDS_NUMBER; j++)
+            {
+                bitboards_[i][j] = 0;
+            }
         }
     }
 

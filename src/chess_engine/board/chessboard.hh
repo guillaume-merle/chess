@@ -55,6 +55,12 @@ namespace board
          */
         void set_from_fen(FenObject fen);
 
+         /**
+         * @brief clear all the bitboards
+         */
+        void clear();
+
+
         /**
          * @brief Generate all legal moves for the current color and board.
          *
