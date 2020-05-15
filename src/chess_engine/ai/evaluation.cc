@@ -2,10 +2,10 @@
 
 namespace board
 {
-    int evaluate(Chessboard)
+    int evaluate(Chessboard& board)
     {
-        //return rand() % 100;
-        return 0;
+        int remaining = popcount(board.get(board.current_color(), ALL));
+        return -remaining;
     }
 
 } // namespace board

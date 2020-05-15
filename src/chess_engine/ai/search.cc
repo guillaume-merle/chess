@@ -5,10 +5,10 @@
 
 namespace board
 {
-    int negaMax(Chessboard& board, int depth)
+    int negaMax(Chessboard& board, int depth, int color)
     {
         if (depth == 0)
-            return evaluate(board);
+            return color * evaluate(board);
         int max = std::numeric_limits<int>::max();
         const std::vector<Move> moves = board.generate_legal_moves();
 
@@ -17,7 +17,7 @@ namespace board
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            int score = -negaMax(new_board, depth - 1);
+            int score = -negaMax(new_board, depth - 1, -color);
 
             if (score > max)
                 max = score;
@@ -29,7 +29,7 @@ namespace board
     Move search_move(Chessboard& board)
     {
         int score;
-        int depth = 1;
+        int depth = 4;
         int max = 0;
         std::vector<Move> moves = board.generate_legal_moves();
         Move best_move = moves[0];
@@ -39,7 +39,7 @@ namespace board
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            score = negaMax(new_board, depth - 1);
+            score = negaMax(new_board, depth - 1, 1);
 
             if (score > max)
             {
