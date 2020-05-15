@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "piece-type.hh"
 #include "bitboard.hh"

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <optional>
+#include <iostream>
 
 namespace board
 {
