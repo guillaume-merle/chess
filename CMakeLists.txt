@@ -28,7 +28,6 @@ set(SRC_ENGINE
     src/chess_engine/board/move.hh
     src/chess_engine/board/movegen.cc
     src/chess_engine/board/movegen.hh
-    src/chess_engine/board/pawn.cc
     src/chess_engine/board/pawn.hh
     src/chess_engine/board/perft.cc
     src/chess_engine/board/perft.hh

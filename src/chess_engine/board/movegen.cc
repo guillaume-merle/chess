@@ -96,7 +96,7 @@ namespace board
             Square square = pop(pawns);
             Bitboard bitboard = 1ULL << square;
 
-            auto move = Pawn::single_push(bitboard, color);
+            auto move = single_push(bitboard, color);
 
             if (move && (move & all_pieces) == 0)
             {
@@ -123,7 +123,7 @@ namespace board
                 if ((color == WHITE && (bitboard & Rank2BB))
                      || (color == BLACK && (bitboard & Rank7BB)))
                 {
-                    move = Pawn::double_push(bitboard, color);
+                    move = double_push(bitboard, color);
                     if (move && (move & all_pieces) == 0)
                         moves_.emplace_back(Move(square, bitscan(move), PAWN,
                                                  MoveFlag::DOUBLE_PAWN_PUSH));
