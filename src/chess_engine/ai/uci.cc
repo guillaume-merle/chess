@@ -88,9 +88,6 @@ namespace ai
 
         else
         {
-            // remove token fen
-            input_stream >> token;
-
             std::string fen;
 
             while (input_stream >> token && token != "moves")
@@ -100,7 +97,6 @@ namespace ai
 
             board::FenObject fen_obj = perft_parser::parse_fen(fen);
             board.set_from_fen(fen_obj);
-
         }
         while (input_stream >> token)
         {
