@@ -57,7 +57,7 @@ namespace board
 
     void attacks::init_knight_attacks()
     {
-        for (int i = 0; i < 64; i++)
+        for (int i = 64; i--;)
         {
             Bitboard pos = 1ULL << i;
             Bitboard attacks =
@@ -72,7 +72,7 @@ namespace board
 
     void attacks::init_king_attacks()
     {
-        for (int i = 0; i < 64; i++)
+        for (int i = 64; i--;)
         {
             Bitboard pos = 1ULL << i;
             Bitboard attacks =
@@ -85,7 +85,7 @@ namespace board
 
     void attacks::init_pawn_attacks()
     {
-        for (int i = 0; i < 64; i++)
+        for (int i = 64; i--;)
         {
             Bitboard pos = 1ULL << i;
             Bitboard white_attacks = northwest(pos) | northeast(pos);
