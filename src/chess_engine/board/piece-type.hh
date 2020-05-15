@@ -2,6 +2,7 @@
 
 #include <array>
 #include <optional>
+#include <iostream>
 
 namespace board
 {
@@ -9,22 +10,18 @@ namespace board
      * piece type present on the board. The char associated
      * with each value is the ascii char representing the
      * piece on the board */
-    enum class PieceType
+    enum PieceType
     {
-        QUEEN,
+        QUEEN = 0,
         ROOK,
         BISHOP,
         KNIGHT,
         PAWN,
         KING, // Last position allows better optimization (order-move)
+        ALL,
     };
 
     using opt_piecetype_t = std::optional<PieceType>;
-
-    /* Can be useful to iterate over PieceTypes */
-    constexpr std::array<PieceType, 6> piecetype_array{
-        PieceType::QUEEN,  PieceType::ROOK, PieceType::BISHOP,
-        PieceType::KNIGHT, PieceType::PAWN, PieceType::KING};
 
     inline PieceType char_to_piece(const char c)
     {
@@ -42,6 +39,31 @@ namespace board
             return PieceType::QUEEN;
         case 'K':
             return PieceType::KING;
+        case 'A':
+            return PieceType::ALL;
+        default:
+            throw std::invalid_argument("Unknown piece");
+        }
+    }
+
+    inline PieceType char_to_black_piece(const char c)
+    {
+        switch (c)
+        {
+        case 'p':
+            return PieceType::PAWN;
+        case 'n':
+            return PieceType::KNIGHT;
+        case 'b':
+            return PieceType::BISHOP;
+        case 'r':
+            return PieceType::ROOK;
+        case 'q':
+            return PieceType::QUEEN;
+        case 'k':
+            return PieceType::KING;
+        case 'a':
+            return PieceType::ALL;
         default:
             throw std::invalid_argument("Unknown piece");
         }

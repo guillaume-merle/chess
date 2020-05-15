@@ -3,14 +3,15 @@
 #include <utility>
 
 #include "utype.hh"
+#include "bitboard.hh"
 
 namespace board
 {
     /* The file enum represent the colomns
      * on the board */
-    enum class File
+    enum File
     {
-        A,
+        A = 0,
         B,
         C,
         D,
@@ -22,9 +23,9 @@ namespace board
 
     /* The rank enum represent the lines
      * on the board */
-    enum class Rank
+    enum Rank
     {
-        ONE,
+        ONE = 0,
         TWO,
         THREE,
         FOUR,
@@ -39,13 +40,18 @@ namespace board
     class Position final
     {
     public:
+        Position() = default;
+
         Position(File file, Rank rank);
 
         File file_get() const;
         Rank rank_get() const;
 
         bool operator==(const Position& pos) const;
+
         bool operator!=(const Position& pos) const;
+
+        Square to_square() const;
 
     private:
         File file_;

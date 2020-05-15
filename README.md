@@ -5,4 +5,4 @@
 * Alexandre Deiss
 * Guillaume Merle
 * Marc Demoustier
-* Valentin Demoustier
+* Valentin Grussenmeyer

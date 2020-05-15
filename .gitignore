@@ -31,3 +31,6 @@ build/
 # other
 
 *.pdf
+tags
+__pycache__
+venv/
