@@ -12,6 +12,7 @@
 #include "attacks.hh"
 #include "perft.hh"
 #include "pgn.hh"
+#include "search.hh"
 
 int main(int argc, char** argv)
 {
@@ -38,6 +39,7 @@ int main(int argc, char** argv)
     else
     {
         ai::init("Chesse James");
+        ai::start();
     }
 
     listener::listener_manager.close_listeners();
