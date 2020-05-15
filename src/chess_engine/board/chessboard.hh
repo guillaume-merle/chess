@@ -27,12 +27,12 @@ namespace board
         /**
          * @brief Construct a new blank chessboard.
          */
-        Chessboard();
+        explicit Chessboard();
 
         /**
          * @brief Construct a new chessboard and set it the the given position.
          */
-        Chessboard(std::string fen);
+        explicit Chessboard(std::string fen);
 
         /**
          * @brief Construct a new chessboard from an existing board.

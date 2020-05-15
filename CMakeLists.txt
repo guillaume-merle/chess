@@ -25,7 +25,6 @@ set(SRC_ENGINE
     src/chess_engine/board/chessboard.cc
     src/chess_engine/board/chessboard.hh
     src/chess_engine/board/color.hh
-    src/chess_engine/board/knight.cc
     src/chess_engine/board/knight.hh
     src/chess_engine/board/magic.cc
     src/chess_engine/board/magic.hh
@@ -33,7 +32,6 @@ set(SRC_ENGINE
     src/chess_engine/board/move.hh
     src/chess_engine/board/movegen.cc
     src/chess_engine/board/movegen.hh
-    src/chess_engine/board/pawn.cc
     src/chess_engine/board/pawn.hh
     src/chess_engine/board/perft.cc
     src/chess_engine/board/perft.hh
@@ -60,8 +58,6 @@ set(SRC_ENGINE
     src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
     src/listener/listener.hh
-    #src/listener/chessboard-listener.cc
-    #src/listener/chessboard-listener.hh
     src/listener/listener-manager.cc
     src/listener/listener-manager.hh
     src/utils/utype.hh

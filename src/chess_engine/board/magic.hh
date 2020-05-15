@@ -7,36 +7,57 @@
 
 namespace board
 {
-    namespace magic
+    /**
+     * @brief Class containing the magic moves of the bishop and rook.
+     *
+     * Magic numbers and shifts are used to store moves corresponding
+     * to the different occupancies.
+     *
+     */
+    class Magic
     {
-        extern const Bitboard magicmoves_r_magics[64];
-        extern const Bitboard magicmoves_r_mask[64];
-        extern const Bitboard magicmoves_b_magics[64];
-        extern const Bitboard magicmoves_b_mask[64];
-        extern const unsigned int magicmoves_b_shift[64];
-        extern const unsigned int magicmoves_r_shift[64];
-        extern Bitboard* magicmoves_b_indices[64];
-        extern Bitboard* magicmoves_r_indices[64];
+    public:
+        /**
+         * @brief Initialize magic moves.
+         */
+        Magic();
 
-        static inline Bitboard BmagicNOMASK(const unsigned int square,
-                                            const Bitboard occupancy)
-        {
-            return *(magicmoves_b_indices[square]+(((occupancy)*magicmoves_b_magics[square])>>magicmoves_b_shift[square]));
-        }
+        /**
+         * @brief Initialize magic moves.
+         */
+        Bitboard get_bishop_moves(Square square, Bitboard occupancy) const;
 
-        static inline Bitboard RmagicNOMASK(const unsigned int square,
-                                            const Bitboard occupancy)
-        {
-            return *(magicmoves_r_indices[square]+(((occupancy)*magicmoves_r_magics[square])>>magicmoves_r_shift[square]));
-        }
+        /**
+         * @brief Initialize magic moves.
+         */
+        Bitboard get_rook_moves(Square square, Bitboard occupancy) const;
 
-        static inline Bitboard QmagicNOMASK(const unsigned int square,
-                                            const Bitboard occupancy)
-        {
-            return BmagicNOMASK(square,occupancy)
-                   | RmagicNOMASK(square,occupancy);
-        }
+    private:
+        /**
+         * @brief All possible bishop moves.
+         */
+        Bitboard bishop_moves_[5248];
 
-        void init(void);
-    }
-}
+        /**
+         * @brief All possible rook moves.
+         */
+        Bitboard rook_moves_[102400];
+
+        /**
+         * @brief Initialize magic moves.
+         */
+        void init();
+
+        /**
+         * @brief Set a Bitboard of moves for the rook.
+         */
+        void set_rook_move(int square, Bitboard occupancy, Bitboard move);
+
+        /**
+         * @brief Set a Bitboard of moves for the bishop.
+         */
+        void set_bishop_move(int square, Bitboard occupancy, Bitboard move);
+    };
+
+    extern Magic magic;
+} // namespace board

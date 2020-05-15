@@ -8,9 +8,9 @@ namespace board
     class MoveGen
     {
     public:
-        MoveGen(Chessboard& board);
+        explicit MoveGen(Chessboard& board);
 
-        MoveGen(Chessboard& board, Color color);
+        explicit MoveGen(Chessboard& board, Color color);
 
         std::vector<Move> get();
 

@@ -111,7 +111,7 @@ namespace board
         for (int i = QUEEN; i < BITBOARDS_NUMBER - 1; i++)
         {
             if (piece & get(color, i))
-                return static_cast<PieceType>(i);
+                return PieceType(i);
         }
 
         throw std::runtime_error("get_piece_type: the given square doesn't "
@@ -208,17 +208,17 @@ namespace board
 
         Bitboard attackers = 0;
 
-        attackers |= attacks::get_king_attacks(square)
+        attackers |= attacks_g.get_king_attacks(square)
                      & get(them, KING);
-        attackers |= attacks::get_knight_attacks(square)
+        attackers |= attacks_g.get_knight_attacks(square)
                      & get(them, KNIGHT);
-        attackers |= attacks::get_pawn_attacks(square, color)
+        attackers |= attacks_g.get_pawn_attacks(square, color)
                      & get(them, PAWN);
-        attackers |= attacks::get_bishop_attacks(square, all_pieces)
+        attackers |= attacks_g.get_bishop_attacks(square, all_pieces)
                      & get(them, BISHOP);
-        attackers |= attacks::get_rook_attacks(square, all_pieces)
+        attackers |= attacks_g.get_rook_attacks(square, all_pieces)
                      & get(them, ROOK);
-        attackers |= attacks::get_queen_attacks(square, all_pieces)
+        attackers |= attacks_g.get_queen_attacks(square, all_pieces)
                      & get(them, QUEEN);
 
         return attackers;
@@ -249,7 +249,7 @@ namespace board
 
         Color them = opposite_color(color);
 
-        if (attacks::get_king_attacks(king_square) & get(them, KING))
+        if (attacks_g.get_king_attacks(king_square) & get(them, KING))
             return true;
 
         return false;
@@ -586,7 +586,7 @@ namespace board
         for (int i = QUEEN; i < BITBOARDS_NUMBER - 1; i++)
         {
             if (piece_board & get(color, i))
-                return std::make_pair(static_cast<PieceType>(i), color);
+                return std::make_pair(PieceType(i), color);
         }
 
         return std::nullopt;

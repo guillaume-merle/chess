@@ -3,74 +3,66 @@
 
 namespace board
 {
-    Bitboard attacks::_knight_attacks[64] = {0};
-    Bitboard attacks::_king_attacks[64] = {0};
-    Bitboard attacks::_pawn_attacks[2][64] = {{0}};
+    board::Attacks attacks_g;
 
-    void attacks::init()
+    Attacks::Attacks()
     {
-        magic::init();
-        attacks::init_knight_attacks();
-        attacks::init_king_attacks();
-        attacks::init_pawn_attacks();
+        init_knight_attacks();
+        init_king_attacks();
+        init_pawn_attacks();
     }
 
-    Bitboard attacks::get_bishop_attacks(const unsigned int square,
-                                         const Bitboard occupancy)
+    Bitboard Attacks::get_bishop_attacks(const Square square,
+                                         const Bitboard occupancy) const
     {
-        return *(magic::magicmoves_b_indices[square] +
-                (((occupancy & magic::magicmoves_b_mask[square])
-                  * magic::magicmoves_b_magics[square])
-                 >> magic::magicmoves_b_shift[square]));
+        return magic_.get_bishop_moves(square, occupancy);
     }
 
-    Bitboard attacks::get_rook_attacks(const unsigned int square,
-                                       const Bitboard occupancy)
+    Bitboard Attacks::get_rook_attacks(const Square square,
+                                       const Bitboard occupancy) const
     {
-        return *(magic::magicmoves_r_indices[square] +
-                (((occupancy & magic::magicmoves_r_mask[square])
-                  * magic::magicmoves_r_magics[square])
-                 >> magic::magicmoves_r_shift[square]));
+        return magic_.get_rook_moves(square, occupancy);
     }
 
-    Bitboard attacks::get_queen_attacks(const unsigned int square,
-                                        const Bitboard occupancy)
+    Bitboard Attacks::get_queen_attacks(const Square square,
+                                        const Bitboard occupancy) const
     {
         return get_bishop_attacks(square, occupancy)
-            | get_rook_attacks(square, occupancy);
+               | get_rook_attacks(square, occupancy);
     }
 
-    Bitboard attacks::get_knight_attacks(const unsigned int square)
+    Bitboard Attacks::get_knight_attacks(const Square square) const
     {
-        return _knight_attacks[square];
+        return knight_attacks_[square];
     }
 
-    Bitboard attacks::get_king_attacks(const unsigned int square)
+    Bitboard Attacks::get_king_attacks(const Square square) const
     {
-        return _king_attacks[square];
+        return king_attacks_[square];
     }
 
-    Bitboard attacks::get_pawn_attacks(const unsigned int square, Color color)
+    Bitboard
+    Attacks::get_pawn_attacks(const Square square, Color color) const
     {
-        return _pawn_attacks[color][square];
+        return pawn_attacks_[color][square];
     }
 
-    void attacks::init_knight_attacks()
+    void Attacks::init_knight_attacks()
     {
         for (int i = 0; i < 64; i++)
         {
             Bitboard pos = 1ULL << i;
             Bitboard attacks =
-                Knight::northwestwest(pos) | Knight::northeasteast(pos)
-                | Knight::southwestwest(pos) | Knight::southeasteast(pos)
-                | Knight::northnorthwest(pos) | Knight::northnortheast(pos)
-                | Knight::southsouthwest(pos) | Knight::southsoutheast(pos);
+                northwestwest(pos) | northeasteast(pos)
+                | southwestwest(pos) | southeasteast(pos)
+                | northnorthwest(pos) | northnortheast(pos)
+                | southsouthwest(pos) | southsoutheast(pos);
 
-            _knight_attacks[i] = attacks;
+            knight_attacks_[i] = attacks;
         }
     }
 
-    void attacks::init_king_attacks()
+    void Attacks::init_king_attacks()
     {
         for (int i = 0; i < 64; i++)
         {
@@ -79,11 +71,11 @@ namespace board
                 north(pos) | northeast(pos) | east(pos) | southeast(pos)
                 | south(pos) | southwest(pos) | west(pos) | northwest(pos);
 
-            _king_attacks[i] = attacks;
+            king_attacks_[i] = attacks;
         }
     }
 
-    void attacks::init_pawn_attacks()
+    void Attacks::init_pawn_attacks()
     {
         for (int i = 0; i < 64; i++)
         {
@@ -91,8 +83,8 @@ namespace board
             Bitboard white_attacks = northwest(pos) | northeast(pos);
             Bitboard black_attacks = southwest(pos) | southeast(pos);
 
-            _pawn_attacks[WHITE][i] = white_attacks;
-            _pawn_attacks[BLACK][i] = black_attacks;
+            pawn_attacks_[WHITE][i] = white_attacks;
+            pawn_attacks_[BLACK][i] = black_attacks;
         }
     }
 }

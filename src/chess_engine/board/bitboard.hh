@@ -7,37 +7,86 @@ namespace board
     using Bitboard = uint64_t;
     using Square = int;
 
-    constexpr Bitboard FileABB = 0x0101010101010101ULL;
-    constexpr Bitboard FileBBB = FileABB << 1;
-    constexpr Bitboard FileCBB = FileABB << 2;
-    constexpr Bitboard FileDBB = FileABB << 3;
-    constexpr Bitboard FileEBB = FileABB << 4;
-    constexpr Bitboard FileFBB = FileABB << 5;
-    constexpr Bitboard FileGBB = FileABB << 6;
-    constexpr Bitboard FileHBB = FileABB << 7;
+    const Bitboard FileABB = 0x0101010101010101ULL;
+    const Bitboard FileBBB = FileABB << 1;
+    const Bitboard FileCBB = FileABB << 2;
+    const Bitboard FileDBB = FileABB << 3;
+    const Bitboard FileEBB = FileABB << 4;
+    const Bitboard FileFBB = FileABB << 5;
+    const Bitboard FileGBB = FileABB << 6;
+    const Bitboard FileHBB = FileABB << 7;
 
-    constexpr Bitboard Rank1BB = 0xFF;
-    constexpr Bitboard Rank2BB = Rank1BB << (8 * 1);
-    constexpr Bitboard Rank3BB = Rank1BB << (8 * 2);
-    constexpr Bitboard Rank4BB = Rank1BB << (8 * 3);
-    constexpr Bitboard Rank5BB = Rank1BB << (8 * 4);
-    constexpr Bitboard Rank6BB = Rank1BB << (8 * 5);
-    constexpr Bitboard Rank7BB = Rank1BB << (8 * 6);
-    constexpr Bitboard Rank8BB = Rank1BB << (8 * 7);
+    const Bitboard Rank1BB = 0xFF;
+    const Bitboard Rank2BB = Rank1BB << (8 * 1);
+    const Bitboard Rank3BB = Rank1BB << (8 * 2);
+    const Bitboard Rank4BB = Rank1BB << (8 * 3);
+    const Bitboard Rank5BB = Rank1BB << (8 * 4);
+    const Bitboard Rank6BB = Rank1BB << (8 * 5);
+    const Bitboard Rank7BB = Rank1BB << (8 * 6);
+    const Bitboard Rank8BB = Rank1BB << (8 * 7);
 
-    constexpr Bitboard EmptyFileABB = 0xFEFEFEFEFEFEFEFE;
-    constexpr Bitboard EmptyFileHBB = 0x7F7F7F7F7F7F7F7F;
+    const Bitboard EmptyFileABB = 0xFEFEFEFEFEFEFEFE;
+    const Bitboard EmptyFileHBB = 0x7F7F7F7F7F7F7F7F;
 
-    constexpr Bitboard FullBB = 0xFFFFFFFFFFFFFFFF;
+    const Bitboard FullBB = 0xFFFFFFFFFFFFFFFF;
 
-    Bitboard north(Bitboard bitboard, unsigned number = 1);
-    Bitboard northeast(Bitboard bitboard, unsigned number = 1);
-    Bitboard northwest(Bitboard bitboard, unsigned number = 1);
-    Bitboard south(Bitboard bitboard, unsigned number = 1);
-    Bitboard southeast(Bitboard bitboard, unsigned number = 1);
-    Bitboard southwest(Bitboard bitboard, unsigned number = 1);
-    Bitboard east(Bitboard bitboard, unsigned number = 1);
-    Bitboard west(Bitboard bitboard, unsigned number = 1);
+    inline Bitboard north(Bitboard bitboard, unsigned number = 1)
+    {
+        return bitboard << 8 * number;
+    }
+
+    inline Bitboard south(Bitboard bitboard, unsigned number = 1)
+    {
+        return bitboard >> 8 * number;
+    }
+
+    inline Bitboard northeast(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileH col
+        if (bitboard << (9 * (number - 1)) & FileHBB)
+            return 0;
+        return bitboard << 9 * number;
+    }
+
+    inline Bitboard northwest(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileA col
+        if (bitboard << (7 * (number - 1)) & FileABB)
+            return 0;
+        return bitboard << 7 * number;
+    }
+
+    inline Bitboard southeast(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileH col
+        if (bitboard  >> (7 * (number - 1))& FileHBB)
+            return 0;
+        return bitboard >> 7 * number;
+    }
+
+    inline Bitboard southwest(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileA col
+        if (bitboard >> (9 * (number - 1)) & FileABB)
+            return 0;
+        return bitboard >> 9 * number;
+    }
+
+    inline Bitboard east(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileH col
+        if (bitboard << (number - 1) & FileHBB)
+            return 0;
+        return bitboard << number;
+    }
+
+    inline Bitboard west(Bitboard bitboard, unsigned number = 1)
+    {
+        // if piece is on FileA col
+        if (bitboard >> (number - 1) & FileABB)
+            return 0;
+        return bitboard >> number;
+    }
 
     int bitscan(Bitboard board);
     int bitscan_reverse(Bitboard board);
