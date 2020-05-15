@@ -9,16 +9,43 @@
 
 namespace board
 {
-    class Knight
+    inline Bitboard northwestwest(Bitboard bitboard)
     {
-    public:
-        static Bitboard northwestwest(Bitboard bitboard);
-        static Bitboard northeasteast(Bitboard bitboard);
-        static Bitboard southwestwest(Bitboard bitboard);
-        static Bitboard southeasteast(Bitboard bitboard);
-        static Bitboard northnorthwest(Bitboard bitboard);
-        static Bitboard northnortheast(Bitboard bitboard);
-        static Bitboard southsouthwest(Bitboard bitboard);
-        static Bitboard southsoutheast(Bitboard bitboard);
-    };
+        return northwest(west(bitboard, 1), 1);
+    }
+
+    inline Bitboard northeasteast(Bitboard bitboard)
+    {
+        return northeast(east(bitboard, 1), 1);
+    }
+
+    inline Bitboard northnorthwest(Bitboard bitboard)
+    {
+        return northwest(north(bitboard, 1), 1);
+    }
+
+    inline Bitboard northnortheast(Bitboard bitboard)
+    {
+        return northeast(north(bitboard, 1), 1);
+    }
+
+    inline Bitboard southwestwest(Bitboard bitboard)
+    {
+        return southwest(west(bitboard, 1), 1);
+    }
+
+    inline Bitboard southeasteast(Bitboard bitboard)
+    {
+        return southeast(east(bitboard, 1), 1);
+    }
+
+    inline Bitboard southsouthwest(Bitboard bitboard)
+    {
+        return southwest(south(bitboard, 1), 1);
+    }
+
+    inline Bitboard southsoutheast(Bitboard bitboard)
+    {
+        return southeast(south(bitboard, 1), 1);
+    }
 }
