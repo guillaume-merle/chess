@@ -196,17 +196,17 @@ namespace board
 
         Bitboard attackers = 0;
 
-        attackers |= attacks::get_king_attacks(square)
+        attackers |= attacks_g.get_king_attacks(square)
                      & get(them, KING);
-        attackers |= attacks::get_knight_attacks(square)
+        attackers |= attacks_g.get_knight_attacks(square)
                      & get(them, KNIGHT);
-        attackers |= attacks::get_pawn_attacks(square, color)
+        attackers |= attacks_g.get_pawn_attacks(square, color)
                      & get(them, PAWN);
-        attackers |= attacks::get_bishop_attacks(square, all_pieces)
+        attackers |= attacks_g.get_bishop_attacks(square, all_pieces)
                      & get(them, BISHOP);
-        attackers |= attacks::get_rook_attacks(square, all_pieces)
+        attackers |= attacks_g.get_rook_attacks(square, all_pieces)
                      & get(them, ROOK);
-        attackers |= attacks::get_queen_attacks(square, all_pieces)
+        attackers |= attacks_g.get_queen_attacks(square, all_pieces)
                      & get(them, QUEEN);
 
         return attackers;
@@ -237,7 +237,7 @@ namespace board
 
         Color them = opposite_color(color);
 
-        if (attacks::get_king_attacks(king_square) & get(them, KING))
+        if (attacks_g.get_king_attacks(king_square) & get(them, KING))
             return true;
 
         return false;

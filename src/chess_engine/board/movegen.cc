@@ -33,17 +33,9 @@ namespace board
         generate_pawn_moves(board, color);
         generate_knight_moves(board, color);
         generate_king_moves(board, color);
-
-        // ignore the opposite king for sliding pieces attacks, to avoid false
-        // check evasions
-        // Bitboard king = board.get(opposite_color(color), KING);
-        // board.set(opposite_color(color), KING, 0);
-
         generate_rook_moves(board, color);
         generate_bishop_moves(board, color);
         generate_queen_moves(board, color);
-
-        // board.set(opposite_color(color), KING, king);
     }
 
     void MoveGen::generate_king_moves(Chessboard& board, Color color)
@@ -54,7 +46,7 @@ namespace board
 
         Square square = bitscan(king);
 
-        Bitboard moves = attacks::get_king_attacks(square);
+        Bitboard moves = attacks_g.get_king_attacks(square);
         add_moves(board, KING, color, square, moves);
 
         Square from = color == WHITE ? 4 : 60;
@@ -79,7 +71,7 @@ namespace board
         while (knights)
         {
             Square square = pop(knights);
-            Bitboard moves = attacks::get_knight_attacks(square);
+            Bitboard moves = attacks_g.get_knight_attacks(square);
 
             add_moves(board, KNIGHT, color, square, moves);
         }
@@ -130,7 +122,7 @@ namespace board
                 }
             }
 
-            Bitboard attacks = attacks::get_pawn_attacks(square, color);
+            Bitboard attacks = attacks_g.get_pawn_attacks(square, color);
 
             while (attacks)
             {
@@ -186,7 +178,7 @@ namespace board
         while (rook)
         {
             Square square = pop(rook);
-            Bitboard moves = attacks::get_rook_attacks(square, occupancy);
+            Bitboard moves = attacks_g.get_rook_attacks(square, occupancy);
 
             add_moves(board, ROOK, color, square, moves);
         }
@@ -202,7 +194,7 @@ namespace board
         while (bishop)
         {
             Square square = pop(bishop);
-            Bitboard moves = attacks::get_bishop_attacks(square, occupancy);
+            Bitboard moves = attacks_g.get_bishop_attacks(square, occupancy);
 
             add_moves(board, BISHOP, color, square, moves);
         }
@@ -218,7 +210,7 @@ namespace board
         while (queen)
         {
             Square square = pop(queen);
-            Bitboard moves = attacks::get_queen_attacks(square, occupancy);
+            Bitboard moves = attacks_g.get_queen_attacks(square, occupancy);
 
             add_moves(board, QUEEN, color, square, moves);
         }

@@ -14,8 +14,6 @@
 
 int main(int argc, char** argv)
 {
-    board::attacks::init();
-
     option_parser::Options options;
     try {
         options = option_parser::parse_options(argc, argv);
