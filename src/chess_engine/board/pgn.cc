@@ -18,8 +18,6 @@ namespace board
 
             if (!board.is_move_legal(move))
             {
-                std::cout << "MOVE: " << move.get_from() << " to " << move.get_to() << "\n";
-                print_bitboard(board.get(WHITE, ALL));
                 listener::listener_manager
                     .notify(&listener::Listener::on_player_disqualified,
                             board.current_color());
@@ -85,7 +83,8 @@ namespace board
                     .notify(&listener::Listener::on_game_finished);
                 break;
             }
-            else if (board.is_draw(board.current_color()))
+
+            if (board.is_draw(board.current_color()))
             {
                 listener::listener_manager
                     .notify(&listener::Listener::on_draw);

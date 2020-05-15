@@ -107,6 +107,11 @@ namespace board
                         board.get_piece_type(to, them),
                         MoveFlag::CAPTURE | MoveFlag::PROMOTION);
         }
+        else if (promotion_.has_value())
+        {
+            move = Move(from, to, piece_, promotion_.value(),
+                        MoveFlag::PROMOTION);
+        }
         else if (capture_)
         {
             move = Move(from, to, piece_, board.get_piece_type(to, them),
