@@ -26,7 +26,7 @@ namespace board
         , white_queen_side_castling_(true)
         , black_king_side_castling_(true)
         , black_queen_side_castling_(true)
-        , en_passant_(0)
+        , en_passant_(-1)
         , turn_(0)
         , last_fifty_turns_(0)
     {
@@ -94,7 +94,7 @@ namespace board
         Bitboard all_white = 0;
         Bitboard all_black = 0;
 
-        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        for (int i = QUEEN; i < BITBOARDS_NUMBER - 1; i++)
         {
             all_white |= get(WHITE, i);
             all_black |= get(BLACK, i);
@@ -108,7 +108,7 @@ namespace board
     {
         Bitboard piece = 1ULL << square;
 
-        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        for (int i = QUEEN; i < BITBOARDS_NUMBER - 1; i++)
         {
             if (piece & get(color, i))
                 return PieceType(i);
@@ -139,6 +139,7 @@ namespace board
 
     void Chessboard::set_from_fen(FenObject fen)
     {
+        clear();
         for (size_t i = 0; i < fen.size(); i++)
         {
             for (size_t j = 0; j < fen[i].size(); j ++)
@@ -171,6 +172,17 @@ namespace board
                 black_king_side_castling_ = true;
             else if (castling == 'q')
                 black_queen_side_castling_ = true;
+        }
+    }
+
+    void Chessboard::clear()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < BITBOARDS_NUMBER; j++)
+            {
+                bitboards_[i][j] = 0;
+            }
         }
     }
 
@@ -246,6 +258,11 @@ namespace board
     bool Chessboard::is_checkmate(Color color)
     {
         return is_check(color) && generate_legal_moves(color).empty();
+    }
+
+    bool Chessboard::is_stalemate(Color color)
+    {
+        return !is_check(color) && generate_legal_moves(color).empty();
     }
 
     bool Chessboard::is_draw(Color color)
@@ -566,7 +583,7 @@ namespace board
         else if (!(piece_board & get(WHITE, ALL)))
             return std::nullopt;
 
-        for (int i = 1; i < BITBOARDS_NUMBER; i++)
+        for (int i = QUEEN; i < BITBOARDS_NUMBER - 1; i++)
         {
             if (piece_board & get(color, i))
                 return std::make_pair(PieceType(i), color);

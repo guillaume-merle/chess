@@ -1,7 +1,11 @@
+#include "search.hh"
 #include "uci.hh"
 
 #include <fnmatch.h>
 #include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
 
 namespace ai
 {
@@ -44,4 +48,75 @@ namespace ai
         get_input("go *"); // Wait for a go from GUI
         return board;
     }
+
+    void start()
+    {
+        board::Chessboard board;
+
+        std::string input_position = get_board();
+        parse_uci_position(input_position, board);
+        board::Move move = board::search_move(board);
+        play_move(move.to_string());
+        board.do_move(move);
+
+        while (!board.is_checkmate(board.current_color())
+               && !board.is_draw(board.current_color()))
+        {
+            std::string input_position = get_board();
+            parse_uci_position(input_position, board);
+            board::Move move = board::search_move(board);
+            play_move(move.to_string());
+            board.do_move(move);
+        }
+    }
+
+    void parse_uci_position(std::string& input, board::Chessboard& board)
+    {
+        std::string token;
+        std::istringstream input_stream(input);
+
+        // remove token position
+        input_stream >> token;
+
+        input_stream >> token;
+
+        if (token == "startpos")
+        {
+            board::FenObject fen_obj = perft_parser::parse_fen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board.set_from_fen(fen_obj);
+        }
+
+        else
+        {
+            std::string fen;
+
+            while (input_stream >> token && token != "moves")
+            {
+                fen += token + " ";
+            }
+
+            board::FenObject fen_obj = perft_parser::parse_fen(fen);
+            board.set_from_fen(fen_obj);
+        }
+        while (input_stream >> token)
+        {
+            if (token == "moves")
+            {
+                continue;
+            }
+
+            std::vector<board::Move> moves = board.generate_legal_moves();
+
+            for (board::Move move : moves)
+            {
+                if (move.to_string() == token)
+                {
+                    board.do_move(move);
+                    break;
+                }
+            }
+        }
+    }
+
 } // namespace ai

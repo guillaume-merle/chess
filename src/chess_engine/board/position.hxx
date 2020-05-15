@@ -25,4 +25,9 @@ namespace board
         return rank_;
     }
 
+    inline Square Position::to_square() const
+    {
+        return rank_ * 8 + file_;
+    }
+
 } // namespace board

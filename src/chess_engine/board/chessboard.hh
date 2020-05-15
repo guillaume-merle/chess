@@ -55,6 +55,12 @@ namespace board
          */
         void set_from_fen(FenObject fen);
 
+         /**
+         * @brief clear all the bitboards
+         */
+        void clear();
+
+
         /**
          * @brief Generate all legal moves for the current color and board.
          *
@@ -125,6 +131,14 @@ namespace board
          * @return true if the color is in checkmate.
          */
         bool is_checkmate(Color color);
+
+        /**
+         * @brief verify is the color is in stalemate.
+         *
+         * @param color the color the verify the checkmate for.
+         * @return true if the color is in checkmate.
+         */
+        bool is_stalemate(Color color);
 
         /**
          * @brief verify if there is a draw.

@@ -1,6 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+#include "chessboard.hh"
+#include "perft-parser.hh"
 
 namespace ai
 {
@@ -30,4 +34,15 @@ namespace ai
      * moves f7f5
      */
     std::string get_board();
+
+    /**
+     * @brief: principal function of the uci, call start after init.
+     */
+    void start();
+
+    /**
+     * @brief: parse the return's string of get_board function, and apply
+     * the modifications to our board.
+     */
+    void parse_uci_position(std::string& input, board::Chessboard& board);
 } // namespace ai

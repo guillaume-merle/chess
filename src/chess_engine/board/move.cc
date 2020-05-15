@@ -47,6 +47,28 @@ namespace board
         // to : rank
         move_str += '1' + to_ / 8;
 
+        // case promotion
+        if (is_promotion_)
+        {
+            switch(promotion_)
+            {
+                case QUEEN:
+                    move_str += 'q';
+                    break;
+                case KNIGHT:
+                    move_str += 'n';
+                    break;
+                case BISHOP:
+                    move_str += 'b';
+                    break;
+                case ROOK:
+                    move_str = 'r';
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return move_str;
     }
 

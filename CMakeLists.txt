@@ -4,13 +4,17 @@
 # set(MYVAR "val1" "val2") creates a list
 
 set(OPT_FLAGS
-    ""
+    -Ofast
 )
 
 # END OPTIMIZATION FLAGS
 # SOURCES : FIXME
 # Put all your sources here EXCEPT YOUR MAIN.CC
 set(SRC_ENGINE
+    src/chess_engine/ai/evaluation.cc
+    src/chess_engine/ai/evaluation.hh
+    src/chess_engine/ai/search.cc
+    src/chess_engine/ai/search.hh
     src/chess_engine/ai/uci.cc
     src/chess_engine/ai/uci.hh
     src/chess_engine/board/attacks.cc
@@ -31,6 +35,8 @@ set(SRC_ENGINE
     src/chess_engine/board/pawn.hh
     src/chess_engine/board/perft.cc
     src/chess_engine/board/perft.hh
+    src/chess_engine/board/pgn.cc
+    src/chess_engine/board/pgn.hh
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
@@ -103,7 +109,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OPT_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -g3 -fsanitize=address")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3 -fsanitize=address")
 
 # LIBRARIES
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
