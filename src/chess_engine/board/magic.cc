@@ -133,6 +133,27 @@ namespace board
         0x0040201008040200ULL
     };
 
+    Bitboard bishop_indices[64] =
+    {
+        4992, 2624,  256,  896, 1280, 1664, 4800, 5120, 2560, 2656,  288,  928,
+        1312, 1696, 4832, 4928, 0,     128,  320,  960, 1344, 1728, 2304, 2432,
+        32,    160,  448, 2752, 3776, 1856, 2336, 2464, 64,    192,  576, 3264,
+        4288, 1984, 2368, 2496, 96,    224,  704, 1088, 1472, 2112, 2400, 2528,
+        2592, 2688,  832, 1216, 1600, 2240, 4864, 4960, 5056, 2720,  864, 1248,
+        1632, 2272, 4896, 5184
+    };
+
+    Bitboard rook_indices[64] =
+    {
+        86016, 73728, 36864, 43008, 47104, 51200, 77824, 94208, 69632, 32768,
+        38912, 10240, 14336, 53248, 57344, 81920, 24576, 33792,  6144, 11264,
+        15360, 18432, 58368, 61440, 26624,  4096,  7168,     0, 2048, 19456,
+        22528, 63488, 28672,  5120,  8192,  1024, 3072, 20480, 23552, 65536,
+        30720, 34816,  9216, 12288, 16384, 21504, 59392, 67584, 71680, 35840,
+        39936, 13312, 17408, 54272, 60416, 83968, 90112, 75776, 40960, 45056,
+        49152, 55296, 79872, 98304
+    };
+
     const int magic_database[64] =
     {
         63,  0, 58,  1, 59, 47, 53,  2,
@@ -160,127 +181,120 @@ namespace board
         return ret;
     }
 
-    static Bitboard init_rook_moves(const int square, const Bitboard occ)
+    static Bitboard init_rook_moves(const int square, const Bitboard occupancy)
     {
-        Bitboard ret = 0;
+        Bitboard res = 0;
+        Bitboard initial = 1ULL << square;
+        Bitboard current;
+        Bitboard rowcheck = Rank1BB << (8 * (square / 8));
 
-        Bitboard bit;
-        Bitboard base = 0xFF;
-        Bitboard rowbits = base << (8 * (square / 8));
-
-        bit = 1ULL << square;
-
-        do {
-            bit <<= 8;
-            ret |= bit;
-        } while (bit && !(bit & occ));
-
-        bit = 1ULL << square;
-        do {
-            bit >>= 8;
-            ret |= bit;
-        } while (bit && !(bit & occ));
-
-        bit= 1ULL << square;
+        current = initial;
 
         do {
-            bit <<= 1;
-            if (bit & rowbits)
-                ret |= bit;
+            current <<= 8;
+            res |= current;
+        } while (current && !(current & occupancy));
+
+        current = initial;
+        do {
+            current >>= 8;
+            res |= current;
+        } while (current && !(current & occupancy));
+
+        current= initial;
+        do {
+            current <<= 1;
+            if (current & rowcheck)
+                res |= current;
             else
                 break;
-        } while(!(bit & occ));
+        } while (!(current & occupancy));
 
-        bit = 1ULL << square;
-
+        current = initial;
         do {
-            bit >>= 1;
-            if(bit&rowbits)
-                ret |= bit;
+            current >>= 1;
+            if(current & rowcheck)
+                res |= current;
             else
                 break;
-        } while(!(bit & occ));
+        } while (!(current & occupancy));
 
-        return ret;
+        return res;
     }
 
-    static Bitboard init_bishop_moves(const int square, const Bitboard occ)
+    static Bitboard init_bishop_moves(const int square, const Bitboard occupancy)
     {
-        Bitboard ret = 0;
-        Bitboard bit;
-        Bitboard bit2;
-        Bitboard base = 0xFF;
+        Bitboard moves = 0;
+        Bitboard initial = 1ULL << square;
+        Bitboard current;
+        Bitboard current2;
 
-        Bitboard rowbits = base << (8 * (square / 8));
+        Bitboard rowcheck = Rank1BB << (8 * (square / 8));
 
-        bit = 1ULL <<square;
-        bit2 = bit;
+        current = initial;
+        current2 = current;
         do {
-            bit <<= 8 - 1;
-            bit2 >>= 1;
-            if(bit2 & rowbits)
-                ret |= bit;
+            current <<= 7;
+            current2 >>= 1;
+            if(current2 & rowcheck)
+                moves |= current;
             else
                 break;
-        } while (bit && !(bit & occ));
+        } while (current && !(current & occupancy));
 
-        bit= 1ULL << square;
-        bit2 = bit;
-
-        do {
-            bit <<= 8 + 1;
-            bit2 <<= 1;
-            if(bit2 & rowbits)
-                ret |= bit;
-            else
-                break;
-        } while (bit && !(bit & occ));
-
-        bit = 1ULL << square;
-        bit2 = bit;
+        current = initial;
+        current2 = current;
 
         do {
-            bit >>= 8 - 1;
-            bit2 <<= 1;
-
-            if(bit2 & rowbits)
-                ret |= bit;
+            current <<= 9;
+            current2 <<= 1;
+            if(current2 & rowcheck)
+                moves |= current;
             else
                 break;
-        } while (bit && !(bit & occ));
+        } while (current && !(current & occupancy));
 
-        bit= 1ULL <<square;
-        bit2 = bit;
-
+        current = initial;
+        current2 = current;
         do {
-            bit >>= 8 + 1;
-            bit2 >>= 1;
-            if(bit2 & rowbits)
-                ret |= bit;
+            current >>= 7;
+            current2 <<= 1;
+
+            if(current2 & rowcheck)
+                moves |= current;
             else
                 break;
-        } while (bit && !(bit & occ));
+        } while (current && !(current & occupancy));
 
-        return ret;
+        current = initial;
+        current2 = current;
+        do {
+            current >>= 9;
+            current2 >>= 1;
+            if(current2 & rowcheck)
+                moves |= current;
+            else
+                break;
+        } while (current && !(current & occupancy));
+
+        return moves;
     }
 
-    // static inline int get_bishop_index(int square, Bitboard occupancy)
-    // {
-        // int shift = bishop_shift[square];
-        // int magic = bishop_magics[square];
-        // int index = bishop_indices[square] + ((occupancy * magic) >> shift);
-        // return index;
-    // }
-//
-    // static inline int get_rook_index(int square, Bitboard occupancy)
-    // {
-        // int shift = rook_shift[square];
-        // int magic = rook_magics[square];
-        // int index = rook_indices[square] + ((occupancy * magic) >> shift);
-        // return index;
-    // }
-#define BmagicNOMASK2(square, occupancy) *(bishop_indices_[square]+(((occupancy)*bishop_magics[square])>>bishop_shift[square]))
-#define RmagicNOMASK2(square, occupancy) *(rook_indices_[square]+(((occupancy)*rook_magics[square])>>rook_shift[square]))
+    void Magic::set_bishop_move(int square, Bitboard occupancy, Bitboard move)
+    {
+        int shift = bishop_shift[square];
+        Bitboard magic = bishop_magics[square];
+        *(bishop_moves_ + bishop_indices[square]
+                + ((occupancy * magic) >> shift)) = move;
+    }
+
+    void Magic::set_rook_move(int square, Bitboard occupancy, Bitboard move)
+    {
+        int shift = rook_shift[square];
+        Bitboard magic = rook_magics[square];
+        *(rook_moves_ + rook_indices[square]
+                + ((occupancy * magic) >> shift)) = move;
+    }
 
     Magic::Magic()
     {
@@ -289,22 +303,28 @@ namespace board
 
     Bitboard Magic::get_bishop_moves(Square square, Bitboard occupancy) const
     {
-        return *(bishop_indices_[square] +
-                (((occupancy & bishop_mask[square])
-                  * bishop_magics[square])
-                 >> bishop_shift[square]));
+        Bitboard mask = bishop_mask[square];
+        Bitboard magic = bishop_magics[square];
+        int shift = bishop_shift[square];
+        return *(bishop_moves_ + bishop_indices[square]
+                    + (((occupancy & mask) * magic) >> shift));
     }
 
     Bitboard Magic::get_rook_moves(Square square, Bitboard occupancy) const
     {
-        return *(rook_indices_[square] +
-                (((occupancy & rook_mask[square])
-                  * rook_magics[square])
-                 >> rook_shift[square]));
+        Bitboard mask = rook_mask[square];
+        Bitboard magic = rook_magics[square];
+        int shift = rook_shift[square];
+        return *(rook_moves_ + rook_indices[square]
+                    + (((occupancy & mask) * magic) >> shift));
     }
 
     void Magic::init()
     {
+        const Bitboard bishop_special = 0x07EDD5E59A4E28C2ULL;
+        const Bitboard rook_special = 0x07EDD5E59A4E28C2ULL;
+        const int db_shift = 58;
+
         for(int i = 0; i < 64; i++)
         {
             int squares[64];
@@ -315,9 +335,10 @@ namespace board
             while (temp)
             {
                 Bitboard bit = temp & -temp;
-                squares[numsquares++] =
-                    magic_database[(bit * 0x07EDD5E59A4E28C2ULL) >> 58];
+                squares[numsquares] =
+                    magic_database[(bit * bishop_special) >> db_shift];
                 temp ^= bit;
+                numsquares += 1;
             }
 
             for (temp = 0; temp < ((Bitboard)(1) << numsquares); temp++)
@@ -325,8 +346,7 @@ namespace board
                 Bitboard tempocc =
                     init_occupancy(squares, numsquares, temp);
 
-                BmagicNOMASK2(i, tempocc) =
-                    init_bishop_moves(i, tempocc);
+                set_bishop_move(i, tempocc, init_bishop_moves(i, tempocc));
             }
         }
 
@@ -340,9 +360,10 @@ namespace board
             while (temp)
             {
                 Bitboard bit = temp & -temp;
-                squares[numsquares++] =
-                    magic_database[(bit * 0x07EDD5E59A4E28C2ULL) >> 58];
+                squares[numsquares] =
+                    magic_database[(bit * rook_special) >> db_shift];
                 temp^=bit;
+                numsquares += 1;
             }
 
             for (temp = 0; temp < ((Bitboard)(1) << numsquares); temp++)
@@ -350,8 +371,7 @@ namespace board
                 Bitboard tempocc =
                     init_occupancy(squares, numsquares, temp);
 
-                RmagicNOMASK2(i, tempocc) =
-                    init_rook_moves(i, tempocc);
+                set_rook_move(i, tempocc, init_rook_moves(i, tempocc));
             }
         }
     }
