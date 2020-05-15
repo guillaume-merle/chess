@@ -236,6 +236,21 @@ TEST (Pawn, generate_moves_with_chessboard_no_collision)
     EXPECT_EQ(24, moves.at(1).get_to());
 }
 
+TEST (Pawn, generate_impossible_moves)
+{
+    board::Chessboard board;
+    board.set(board::WHITE, board::ROOK, 1);
+    board.set(board::BLACK, board::PAWN, 1 << 9);
+
+    auto move = board::Move(0, 1, board::ROOK);
+    board.do_move(move);
+    board.update_all_boards();
+
+    std::vector<board::Move> moves = board::MoveGen(board, board::BLACK).get();
+
+    EXPECT_EQ(0, moves.size());
+}
+
 TEST (Pawn, generate_moves_with_chessboard_capture)
 {
     board::Chessboard board;

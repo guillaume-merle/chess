@@ -15,7 +15,7 @@ namespace board
         , white_queen_side_castling_(true)
         , black_king_side_castling_(true)
         , black_queen_side_castling_(true)
-        , en_passant_(0)
+        , en_passant_(-1)
         , turn_(0)
         , last_fifty_turns_(0)
     {}
@@ -186,7 +186,7 @@ namespace board
 
     bool Chessboard::would_capture_en_passant(Bitboard pos)
     {
-        return (pos & (1ULL << en_passant_));
+        return en_passant_ != -1 && (pos & (1ULL << en_passant_));
     }
 
     Bitboard Chessboard::square_attacks(Color color, Square square)
@@ -308,7 +308,7 @@ namespace board
         PieceType piece = move.get_piece();
 
         // reset en_passant_
-        en_passant_ = 0;
+        en_passant_ = -1;
 
         if (move.is_capture())
         {
@@ -532,7 +532,7 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1 << 3 | 1 << 2;
+            movement_squares = 1 << 3 | 1 << 2 | 1 << 1;
             attacked = square_attacks(color, 2) | square_attacks(color, 3);
         }
         else
@@ -549,7 +549,7 @@ namespace board
                 return false;
             }
 
-            movement_squares = 1ULL << 59 | 1ULL << 58;
+            movement_squares = 1ULL << 59 | 1ULL << 58 | 1ULL << 57;
             attacked = square_attacks(color, 59) | square_attacks(color, 58);
         }
 
