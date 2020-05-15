@@ -50,7 +50,6 @@ namespace option_parser
             //run listeners
             listener::listener_manager =
                 listener::ListenerManager(listeners_paths);
-            listener::listener_manager.close_listeners();
         }
 
         Options options;

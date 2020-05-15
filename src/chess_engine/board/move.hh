@@ -26,10 +26,8 @@ namespace board
     {
     public:
         Move() = default;
-        
-        explicit Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
 
-        Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
+        explicit Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
 
         explicit Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
              int flags = 0);
