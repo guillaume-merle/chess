@@ -40,6 +40,8 @@ namespace board
     class Position final
     {
     public:
+        Position() = default;
+
         Position(File file, Rank rank);
 
         File file_get() const;

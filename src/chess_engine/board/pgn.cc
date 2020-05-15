@@ -48,6 +48,12 @@ namespace board
                     .notify(&listener::Listener::on_piece_taken,
                             move.get_capture(), pgn_move.end_);
             }
+            if (move.is_en_passant())
+            {
+                listener::listener_manager
+                    .notify(&listener::Listener::on_piece_taken,
+                            move.get_capture(), pgn_move.end_);
+            }
             if (move.is_promotion())
             {
                 listener::listener_manager
