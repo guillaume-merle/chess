@@ -33,6 +33,8 @@ set(SRC_ENGINE
     src/chess_engine/board/pawn.hh
     src/chess_engine/board/perft.cc
     src/chess_engine/board/perft.hh
+    src/chess_engine/board/pgn.cc
+    src/chess_engine/board/pgn.hh
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx

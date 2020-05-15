@@ -11,6 +11,7 @@
 #include "pawn.hh"
 #include "attacks.hh"
 #include "perft.hh"
+#include "pgn.hh"
 
 int main(int argc, char** argv)
 {
@@ -28,7 +29,7 @@ int main(int argc, char** argv)
 
     if (options.pgn_)
     {
-        ; // run with pgn
+        board::pgn(options.pgn_vect_);
     }
     else if (options.perft_)
     {
@@ -36,6 +37,10 @@ int main(int argc, char** argv)
     }
     else
     {
-        ai::init("Jean-Charles");
+        ai::init("Chesse James");
     }
+
+    listener::listener_manager.close_listeners();
+
+    return 0;
 }

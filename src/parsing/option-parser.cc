@@ -4,10 +4,10 @@
 #include <boost/utility/in_place_factory.hpp>
 #include <iostream>
 
-#include "listener-manager.hh"
 #include "perft-parser.hh"
 #include "pgn-parser.hh"
 #include "option-parser.hh"
+#include "listener-manager.hh"
 
 namespace option_parser
 {
@@ -48,9 +48,9 @@ namespace option_parser
             }
 
             //run listeners
-            listener::ListenerManager listenerManager =
-                                     listener::ListenerManager(listeners_paths);
-            listenerManager.close_listeners();
+            listener::listener_manager =
+                listener::ListenerManager(listeners_paths);
+            listener::listener_manager.close_listeners();
         }
 
         Options options;

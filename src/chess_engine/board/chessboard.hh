@@ -127,6 +127,14 @@ namespace board
         bool is_checkmate(Color color);
 
         /**
+         * @brief verify is the color is in stalemate.
+         *
+         * @param color the color the verify the checkmate for.
+         * @return true if the color is in checkmate.
+         */
+        bool is_stalemate(Color color);
+
+        /**
          * @brief verify if there is a draw.
          *
          * @param color to check for.
