@@ -43,4 +43,4 @@ namespace board
 
         return southwest(bitboard, 1);
     }
-}
+} // namespace board

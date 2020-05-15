@@ -22,11 +22,6 @@ namespace board
 
     using opt_piecetype_t = std::optional<PieceType>;
 
-    /* Can be useful to iterate over PieceTypes */
-    constexpr std::array<PieceType, 6> piecetype_array{
-        PieceType::QUEEN,  PieceType::ROOK, PieceType::BISHOP,
-        PieceType::KNIGHT, PieceType::PAWN, PieceType::KING};
-
     inline PieceType char_to_piece(const char c)
     {
         switch (c)

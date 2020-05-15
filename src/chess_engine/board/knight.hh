@@ -48,4 +48,4 @@ namespace board
     {
         return southeast(south(bitboard, 1), 1);
     }
-}
+} // namespace board

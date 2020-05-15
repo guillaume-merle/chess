@@ -111,7 +111,7 @@ namespace board
         for (int i = 1; i < BITBOARDS_NUMBER; i++)
         {
             if (piece & get(color, i))
-                return static_cast<PieceType>(i);
+                return PieceType(i);
         }
 
         throw std::runtime_error("get_piece_type: the given square doesn't "
@@ -569,7 +569,7 @@ namespace board
         for (int i = 1; i < BITBOARDS_NUMBER; i++)
         {
             if (piece_board & get(color, i))
-                return std::make_pair(static_cast<PieceType>(i), color);
+                return std::make_pair(PieceType(i), color);
         }
 
         return std::nullopt;
