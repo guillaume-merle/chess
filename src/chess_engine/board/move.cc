@@ -4,6 +4,10 @@
 
 namespace board
 {
+    Move::Move()
+        : null_(true)
+    {}
+
     Move::Move(Bitboard from, Bitboard to, PieceType piece, int flags)
         : from_(from), to_(to), piece_(piece), promotion_(ALL)
         , capture_(ALL), is_capture_(false)

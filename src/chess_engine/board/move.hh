@@ -25,7 +25,7 @@ namespace board
     class Move
     {
     public:
-        Move() = default;
+        Move();
 
         explicit Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
 
@@ -64,18 +64,28 @@ namespace board
     private:
         // store the move
         Square from_;
+
         Square to_;
 
         PieceType piece_;
+
         PieceType promotion_;
+
         PieceType capture_;
 
         bool is_capture_;
+
         bool double_pawn_push_;
+
         bool king_castling_;
+
         bool queen_castling_;
+
         bool en_passant_;
+
         bool is_promotion_;
+
+        bool null_ = false;
 
         void parse_flags(int flags);
     };
