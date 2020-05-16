@@ -1,6 +1,6 @@
 #include "evaluation.hh"
 
-namespace board
+namespace ai
 {
     int evaluate(Chessboard& board)
     {

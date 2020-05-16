@@ -1,12 +1,14 @@
 #pragma once
 
-#include "chessboard.hh"
+#include "search.hh"
 
-namespace board
+namespace ai
 {
     /**
-     * @brief function which evaluate the board, depending the color, the
+     * @brief function which evaluate a search, depending the color, the
      * number of pieces and their position on the board.
+     *
+     * @param search the search to evaluate.
      */
     int evaluate(Chessboard& board);
 

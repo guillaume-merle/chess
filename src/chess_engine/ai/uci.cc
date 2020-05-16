@@ -51,11 +51,14 @@ namespace ai
 
     void start()
     {
-        board::Chessboard board;
+        Search search;
+        Chessboard& board = search.get_board();
 
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
-        board::Move move = board::search_move(board);
+
+        board::Move move = search.search_move();
+
         play_move(move.to_string());
         board.do_move(move);
 
@@ -64,7 +67,9 @@ namespace ai
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
-            board::Move move = board::search_move(board);
+
+            board::Move move = search.search_move();
+
             play_move(move.to_string());
             board.do_move(move);
         }

@@ -3,7 +3,7 @@
 #include "evaluation.hh"
 #include "search.hh"
 
-namespace board
+namespace ai
 {
     /*int negaMax(Chessboard& board, int depth, int color)
     {
@@ -25,14 +25,23 @@ namespace board
         return max;
     }*/
 
-    int negaMax(Chessboard& board, int depth, int color)
+    Search::Search()
+        : board_(), us_(board_.current_color()), depth_(4)
+    {}
+
+    Chessboard& Search::get_board()
+    {
+        return board_;
+    }
+
+    int Search::minimax_(Chessboard& board, int depth, bool maximize)
     {
         if (depth == 0)
             return evaluate(board);
 
         int value;
 
-        if (color == 1)
+        if (maximize)
             value = std::numeric_limits<int>::min();
         else
             value = std::numeric_limits<int>::max();
@@ -44,9 +53,9 @@ namespace board
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            int score = negaMax(new_board, depth - 1, -color);
+            int score = minimax_(new_board, depth - 1, !maximize);
 
-            if (color == 1)
+            if (maximize)
             {
                 if (score > value)
                     value = score;
@@ -60,24 +69,26 @@ namespace board
         return value;
     }
 
-    Move search_move(Chessboard& board)
+    Move Search::search_move()
     {
-        int score;
-        int depth = 4;
-        int value = std::numeric_limits<int>::max();
-        std::vector<Move> moves = board.generate_legal_moves();
+        int bestscore = std::numeric_limits<int>::max();
+
+        std::vector<Move> moves = board_.generate_legal_moves();
+
         Move best_move = moves[0];
+
+        int score;
 
         for (Move move: moves)
         {
-            Chessboard new_board = Chessboard(board);
+            Chessboard new_board = board_;
             new_board.do_move(move);
 
-            score = negaMax(new_board, depth - 1, 1);
+            score = minimax_(new_board, depth_ - 1, true);
 
-            if (score < value)
+            if (score < bestscore)
             {
-                value = score;
+                bestscore = score;
                 best_move = move;
             }
         }
