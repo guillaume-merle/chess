@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        ai::init("Chesse James \"There can only be one ai in this town\"");
+        ai::init("Chesse James");
         ai::start();
     }
 }

@@ -17,18 +17,18 @@ namespace board
         if (board.is_checkmate(opposent_color))
             score += 900;
         else if (board.is_check(opposent_color))
-            score += 450;
+            score += 20;
 
         score += (4 - popcount(board.get(opposent_color, QUEEN))) * 90;
         score += (2 - popcount(board.get(opposent_color, KNIGHT))) * 50;
         score += (2 - popcount(board.get(opposent_color, BISHOP))) * 30;
         score += (2 - popcount(board.get(opposent_color, ROOK))) * 50;
-        score += (8 - popcount(board.get(opposent_color, PAWN))) * 5;
+        score += (8 - popcount(board.get(opposent_color, PAWN))) * 10;
 
         if (board.is_checkmate(color))
             score -= 900;
         else if (board.is_check(color))
-            score -= 250;
+            score -= 100;
 
         score += (popcount(board.get(color, QUEEN))) * 90;
         score += (popcount(board.get(color, KNIGHT))) * 50;
