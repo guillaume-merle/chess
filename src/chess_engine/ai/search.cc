@@ -9,7 +9,7 @@ namespace board
     {
         if (depth == 0)
             return evaluate(board);
-        int max = -10000000;
+        int max = std::numeric_limits<int>::min();
         const std::vector<Move> moves = board.generate_legal_moves();
 
         for (Move move: moves)
@@ -30,7 +30,7 @@ namespace board
     {
         int score;
         int depth = 4;
-        int max = -1000000;
+        int max = std::numeric_limits<int>::min();
         std::vector<Move> moves = board.generate_legal_moves();
         Move best_move = moves[0];
 
