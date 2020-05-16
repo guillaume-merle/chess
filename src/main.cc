@@ -11,12 +11,11 @@
 #include "pawn.hh"
 #include "attacks.hh"
 #include "perft.hh"
+#include "pgn.hh"
 #include "search.hh"
 
 int main(int argc, char** argv)
 {
-    board::attacks::init();
-
     option_parser::Options options;
     try {
         options = option_parser::parse_options(argc, argv);
@@ -29,7 +28,7 @@ int main(int argc, char** argv)
 
     if (options.pgn_)
     {
-        ; // run with pgn
+        board::pgn(options.pgn_vect_);
     }
     else if (options.perft_)
     {
@@ -40,4 +39,8 @@ int main(int argc, char** argv)
         ai::init("Chesse James");
         ai::start();
     }
+
+    listener::listener_manager.close_listeners();
+
+    return 0;
 }

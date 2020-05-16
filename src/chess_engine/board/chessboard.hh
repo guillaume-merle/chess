@@ -27,12 +27,12 @@ namespace board
         /**
          * @brief Construct a new blank chessboard.
          */
-        Chessboard();
+        explicit Chessboard();
 
         /**
          * @brief Construct a new chessboard and set it the the given position.
          */
-        Chessboard(std::string fen);
+        explicit Chessboard(std::string fen);
 
         /**
          * @brief Construct a new chessboard from an existing board.
@@ -131,6 +131,14 @@ namespace board
          * @return true if the color is in checkmate.
          */
         bool is_checkmate(Color color);
+
+        /**
+         * @brief verify is the color is in stalemate.
+         *
+         * @param color the color the verify the checkmate for.
+         * @return true if the color is in checkmate.
+         */
+        bool is_stalemate(Color color);
 
         /**
          * @brief verify if there is a draw.

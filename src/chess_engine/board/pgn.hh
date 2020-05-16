@@ -7,4 +7,4 @@
 namespace board
 {
     void pgn(std::vector<PgnMove> moves);
-}
+} // namespace board
