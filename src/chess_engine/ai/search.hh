@@ -25,10 +25,6 @@ namespace ai
          */
         Move search_move();
 
-        Move get_bestmove() const;
-
-        void set_board(Chessboard& board);
-
         Chessboard& get_board();
 
         Color our_color();
@@ -41,8 +37,6 @@ namespace ai
         Color us_;
 
         int depth_;
-
-        Move bestmove_;
     };
 
 } // namespace board

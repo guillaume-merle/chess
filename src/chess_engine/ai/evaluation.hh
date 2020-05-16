@@ -10,6 +10,6 @@ namespace ai
      *
      * @param search the search to evaluate.
      */
-    int evaluate(Chessboard& board);
+    int evaluate(Chessboard& board, bool maximize);
 
 } // namespace board

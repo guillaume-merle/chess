@@ -5,26 +5,6 @@
 
 namespace ai
 {
-    /*int negaMax(Chessboard& board, int depth, int color)
-    {
-        if (depth == 0)
-            return evaluate(board) * color;
-        int max = std::numeric_limits<int>::min();
-        const std::vector<Move> moves = board.generate_legal_moves();
-
-        for (Move move: moves)
-        {
-            Chessboard new_board = Chessboard(board);
-            new_board.do_move(move);
-
-            int score = -negaMax(new_board, depth - 1, -color);
-
-            if (score > max)
-                max = score;
-        }
-        return max;
-    }*/
-
     Search::Search()
         : board_(), us_(board_.current_color()), depth_(4)
     {}
@@ -36,8 +16,10 @@ namespace ai
 
     int Search::minimax_(Chessboard& board, int depth, bool maximize)
     {
+        // depth 0 changed the maximize / minimize,
+        // need to evaluate for the last playing side with the right value.
         if (depth == 0)
-            return evaluate(board);
+            return evaluate(board, !maximize);
 
         int value;
 
@@ -71,7 +53,7 @@ namespace ai
 
     Move Search::search_move()
     {
-        int bestscore = std::numeric_limits<int>::max();
+        int bestscore = std::numeric_limits<int>::min();
 
         std::vector<Move> moves = board_.generate_legal_moves();
 
@@ -84,9 +66,9 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
-            score = minimax_(new_board, depth_ - 1, true);
+            score = minimax_(new_board, depth_ - 1, false);
 
-            if (score < bestscore)
+            if (score > bestscore)
             {
                 bestscore = score;
                 best_move = move;
