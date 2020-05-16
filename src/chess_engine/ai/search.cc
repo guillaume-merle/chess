@@ -1,4 +1,5 @@
 #include <limits>
+#include <algorithm>
 
 #include "evaluation.hh"
 #include "search.hh"
@@ -14,19 +15,20 @@ namespace ai
         return board_;
     }
 
-    int Search::minimax_(Chessboard& board, int depth, bool maximize)
+    int Search::minimax_(Chessboard& board, int depth, int alpha, int beta,
+                         bool maximize)
     {
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
             return evaluate(board, !maximize);
 
-        int value;
+        int bestscore;
 
         if (maximize)
-            value = std::numeric_limits<int>::min();
+            bestscore = std::numeric_limits<int>::min();
         else
-            value = std::numeric_limits<int>::max();
+            bestscore = std::numeric_limits<int>::max();
 
         const std::vector<Move> moves = board.generate_legal_moves();
 
@@ -35,29 +37,36 @@ namespace ai
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            int score = minimax_(new_board, depth - 1, !maximize);
+            int score = minimax_(new_board, depth - 1, alpha, beta, !maximize);
 
             if (maximize)
             {
-                if (score > value)
-                    value = score;
+                bestscore = std::max(score, bestscore);
+                alpha = std::max(alpha, bestscore);
             }
             else
             {
-                if (score < value)
-                    value = score;
+                bestscore = std::min(score, bestscore);
+                beta = std::min(beta, bestscore);
             }
+
+            if (alpha >= beta)
+                break;
         }
-        return value;
+
+        return bestscore;
     }
 
     Move Search::search_move()
     {
         int bestscore = std::numeric_limits<int>::min();
 
+        int alpha = std::numeric_limits<int>::min();
+        int beta = std::numeric_limits<int>::max();
+
         std::vector<Move> moves = board_.generate_legal_moves();
 
-        Move best_move = moves[0];
+        Move bestmove = moves[0];
 
         int score;
 
@@ -66,14 +75,16 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
-            score = minimax_(new_board, depth_ - 1, false);
-
+            score = minimax_(new_board, depth_ - 1, alpha, beta, false);
             if (score > bestscore)
             {
                 bestscore = score;
-                best_move = move;
+                bestmove = move;
             }
+
+            alpha = std::max(alpha, bestscore);
         }
-        return best_move;
+
+        return bestmove;
     }
 } // namespace board

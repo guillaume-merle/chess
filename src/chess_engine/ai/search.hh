@@ -29,7 +29,8 @@ namespace ai
 
         Color our_color();
 
-        int minimax_(Chessboard& board, int depth, bool maximize);
+        int minimax_(Chessboard& board, int depth, int alpha, int bet,
+                     bool maximize);
 
     private:
         Chessboard board_;
