@@ -45,6 +45,11 @@ namespace board
         grade_ = grade;
     }
 
+    int Move::get_grade()
+    {
+        return grade_;
+    }
+
     std::string Move::to_string()
     {
         std::string move_str;

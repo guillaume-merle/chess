@@ -62,6 +62,8 @@ namespace board
 
         void set_grade(int grade);
 
+        int get_grade();
+
         std::string to_string();
 
         bool operator==(const Move& rhs) const;

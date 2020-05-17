@@ -6,6 +6,12 @@ using namespace board;
 
 namespace ai
 {
+    enum Grade
+    {
+        PROMOTION = 3000,
+        CAPTURE = 4000,
+    };
+
     /**
      * @brief class representing the ordering of a list of moves.
      *

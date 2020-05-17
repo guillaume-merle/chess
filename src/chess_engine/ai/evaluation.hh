@@ -80,7 +80,7 @@ namespace ai
         {-30, -30, 0, 0, 0, 0, -30, -30},
         {-50, -30, -30, -30, -30, -30, -30, -50}
     };
-    
+
     /**
      * @brief function which return the material score for a specific piece.
      *
