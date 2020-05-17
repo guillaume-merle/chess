@@ -57,7 +57,7 @@ namespace ai
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
 
-        board::Move move = search.search_move();
+        board::Move move = search.find_move();
 
         play_move(move.to_string());
         board.do_move(move);
@@ -68,7 +68,7 @@ namespace ai
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
 
-            board::Move move = search.search_move();
+            board::Move move = search.find_move();
 
             play_move(move.to_string());
             board.do_move(move);
