@@ -62,6 +62,8 @@ set(SRC_ENGINE
     src/listener/listener-manager.hh
     src/utils/utype.hh
     src/utils/utils.hh
+    src/utils/logger.cc
+    src/utils/logger.hh
 )
 
 

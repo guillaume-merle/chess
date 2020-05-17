@@ -4,6 +4,9 @@
 
 #include "evaluation.hh"
 #include "search.hh"
+#include "logger.hh"
+
+Logger logger;
 
 namespace ai
 {
@@ -44,7 +47,7 @@ namespace ai
 
         const std::vector<Move> moves = board.generate_legal_moves();
 
-        for (Move move: moves)
+        for (Move move : moves)
         {
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
@@ -108,6 +111,8 @@ namespace ai
 
     Move Search::find_move()
     {
+        logger << "\n[SEARCH] start\n";
+
         timeout_ = false;
         start_ = std::chrono::system_clock::now();
         Move current_best;
@@ -119,6 +124,8 @@ namespace ai
 
             if (timeout_)
             {
+                logger << "[SEARCH] bestmove: " << bestmove_.to_string()
+                       << ", depth: " << depth_ + deep - 1 << "\n";
                 // if no bestmove was found, set bestmove to the move
                 // returned by the interrupted minimax
                 if (bestmove_.is_none())
