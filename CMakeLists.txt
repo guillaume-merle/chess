@@ -13,6 +13,8 @@ set(OPT_FLAGS
 set(SRC_ENGINE
     src/chess_engine/ai/evaluation.cc
     src/chess_engine/ai/evaluation.hh
+    src/chess_engine/ai/move-ordering.cc
+    src/chess_engine/ai/move-ordering.hh
     src/chess_engine/ai/search.cc
     src/chess_engine/ai/search.hh
     src/chess_engine/ai/uci.cc
