@@ -39,6 +39,8 @@ namespace ai
 
         Move minimax_start_(int depth);
 
+        int quiesce_(Chessboard& board, int alpha, int beta, bool maximize);
+
         Move find_move();
 
     private:

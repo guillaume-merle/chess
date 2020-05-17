@@ -24,6 +24,35 @@ namespace ai
         return bestmove_;
     }
 
+    int Search::quiesce_(Chessboard& board, int alpha, int beta, bool maximize)
+    {
+        int stand_pat = evaluate(board, maximize);
+
+        if (stand_pat >= beta)
+            return beta;
+
+        alpha = std::max(alpha, stand_pat);
+
+        std::vector<Move> captures = board.generate_legal_captures();
+
+        int score = 0;
+
+        for (auto& capture : captures)
+        {
+            Chessboard temp_board = board;
+            temp_board.do_move(capture);
+
+            score = -quiesce_(temp_board, -beta, -alpha, maximize);
+
+            if (score >= beta)
+                return beta;
+
+            alpha = std::max(alpha, score);
+        }
+
+        return alpha;
+    }
+
     int Search::minimax_(Chessboard& board, int depth, int alpha, int beta,
                          bool maximize)
     {
@@ -36,7 +65,7 @@ namespace ai
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
-            return evaluate(board, !maximize);
+            return evaluate(board, not maximize);
 
         int bestscore;
 
