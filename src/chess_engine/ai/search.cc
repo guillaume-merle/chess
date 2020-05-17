@@ -5,13 +5,14 @@
 #include "evaluation.hh"
 #include "search.hh"
 #include "logger.hh"
+#include "move-ordering.hh"
 
 Logger logger;
 
 namespace ai
 {
     Search::Search()
-        : board_(), us_(board_.current_color()), time_(3)
+        : board_(), us_(board_.current_color()), time_(2)
     {}
 
     Chessboard& Search::get_board()
@@ -76,7 +77,9 @@ namespace ai
 
         std::vector<Move> moves = board.generate_legal_moves();
 
-        for (auto& move : moves)
+        auto move_ordering = MoveOrdering(moves);
+
+        for (auto& move : move_ordering.get())
         {
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
@@ -113,11 +116,12 @@ namespace ai
 
         std::vector<Move> moves = board_.generate_legal_moves();
 
+        auto move_ordering = MoveOrdering(moves);
         Move bestmove = moves.at(0);
 
         int score;
 
-        for (auto& move: moves)
+        for (auto& move : move_ordering.get())
         {
             Chessboard new_board = board_;
             new_board.do_move(move);
