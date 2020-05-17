@@ -27,38 +27,44 @@ namespace ai
         Bitboard king = board.get(color, KING);
 
         Square square;
-        while ((square = pop(pawns)) != 0)
+        while (pawns)
         {
+            square = pop(pawns);
             score +=
                 get_position_score(pawns_mobility_bonus, square, color);
         }
 
-        while ((square = pop(knights)) != 0)
+        while (knights)
         {
+            square = pop(knights);
             score +=
                 get_position_score(knights_mobility_bonus, square, color);
         }
 
-        while ((square = pop(bishops)) != 0)
+        while (bishops)
         {
+            square = pop(bishops);
             score +=
                 get_position_score(bishops_mobility_bonus, square, color);
         }
 
-        while ((square = pop(rooks)) != 0)
+        while (rooks)
         {
+            square = pop(rooks);
             score +=
                 get_position_score(rooks_mobility_bonus, square, color);
         }
 
-        while ((square = pop(queen)) != 0)
+        while (queen)
         {
+            square = pop(queen);
             score +=
                 get_position_score(queen_mobility_bonus, square, color);
         }
 
-        while ((square = pop(king)) != 0)
+        while (king)
         {
+            square = pop(king);
             score +=
                 get_position_score(king_mobility_bonus, square, color);
         }
@@ -89,7 +95,7 @@ namespace ai
         if (board.is_checkmate(other_color))
             score += 20000;
         else if (board.is_check(other_color))
-            score += 300;
+            score += 60;
 
         score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
         score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
@@ -100,13 +106,13 @@ namespace ai
         if (board.is_checkmate(color))
             score -= 20000;
         else if (board.is_check(color))
-            score -= 300;
+            score -= 500;
 
-        score += (popcount(board.get(color, QUEEN))) * 900;
-        score += (popcount(board.get(color, KNIGHT))) * 320;
-        score += (popcount(board.get(color, BISHOP))) * 330;
-        score += (popcount(board.get(color, ROOK))) * 500;
-        score += (popcount(board.get(color, PAWN))) * 100;
+        score += (popcount(board.get(color, QUEEN))) * 5000;
+        score += (popcount(board.get(color, KNIGHT))) * 400;
+        score += (popcount(board.get(color, BISHOP))) * 450;
+        score += (popcount(board.get(color, ROOK))) * 700;
+        score += (popcount(board.get(color, PAWN))) * 110;
 
         score += get_position_bonus(board, color);
 
