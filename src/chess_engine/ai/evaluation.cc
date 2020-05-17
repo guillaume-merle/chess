@@ -125,39 +125,50 @@ namespace ai
             other_color = opposite_color(color);
         }
 
+        // Opposent part
         if (board.is_checkmate(other_color))
             score += 20000;
         else if (board.is_check(other_color))
             score += 60;
 
-        if (endgame)
-        {
-            score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
-            score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
-            score += (2 - popcount(board.get(other_color, BISHOP))) * 330;
-            score += (2 - popcount(board.get(other_color, ROOK))) * 500;
-            score += (8 - popcount(board.get(other_color, PAWN))) * 100;
-        }
-        else
-        {
-            score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
-            score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
-            score += (2 - popcount(board.get(other_color, BISHOP))) * 330;
-            score += (2 - popcount(board.get(other_color, ROOK))) * 500;
-            score += (8 - popcount(board.get(other_color, PAWN))) * 100;
-        }
+        score += (3 - popcount(board.get(other_color, QUEEN)))
+                 * get_material_score(QUEEN, endgame);
 
+        score += (2 - popcount(board.get(other_color, KNIGHT)))
+                 * get_material_score(KNIGHT, endgame);
+
+        score += (2 - popcount(board.get(other_color, BISHOP)))
+                 * get_material_score(BISHOP, endgame);
+
+        score += (2 - popcount(board.get(other_color, ROOK)))
+                 * get_material_score(ROOK, endgame);
+
+        score += (8 - popcount(board.get(other_color, PAWN)))
+                 * get_material_score(PAWN, endgame);
+
+        // Current color part
         if (board.is_checkmate(color))
             score -= 20000;
         else if (board.is_check(color))
             score -= 500;
 
-        score += (popcount(board.get(color, QUEEN))) * 5000;
-        score += (popcount(board.get(color, KNIGHT))) * 400;
-        score += (popcount(board.get(color, BISHOP))) * 450;
-        score += (popcount(board.get(color, ROOK))) * 700;
-        score += (popcount(board.get(color, PAWN))) * 110;
+        score += (popcount(board.get(color, QUEEN)))
+                * (get_material_score(QUEEN, endgame) + 4100);
 
+        score += (popcount(board.get(color, KNIGHT)))
+                * (get_material_score(KNIGHT, endgame) + 80);
+
+        score += (popcount(board.get(color, BISHOP)))
+                * (get_material_score(BISHOP, endgame) + 120);
+
+        score += (popcount(board.get(color, ROOK)))
+                * (get_material_score(ROOK, endgame) + 200);
+
+        score += (popcount(board.get(color, PAWN)))
+                * (get_material_score(PAWN, endgame) + 10);
+
+
+        // Bonus from position
         score += get_position_bonus(board, color, endgame);
 
         score -= get_position_bonus(board, other_color, endgame);
