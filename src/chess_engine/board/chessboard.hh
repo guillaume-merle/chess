@@ -60,7 +60,6 @@ namespace board
          */
         void clear();
 
-
         /**
          * @brief Generate all legal moves for the current color and board.
          *
@@ -76,6 +75,13 @@ namespace board
          * @return a vector of moves.
          */
         std::vector<Move> generate_legal_moves(Color color);
+
+        /**
+         * @brief Generate all legal captures for the current color and board.
+         *
+         * @return a vector of moves.
+         */
+        std::vector<Move> generate_legal_captures();
 
         /**
          * @brief apply a move to the board for the current color.

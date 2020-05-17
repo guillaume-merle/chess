@@ -45,9 +45,9 @@ namespace ai
         else
             bestscore = std::numeric_limits<int>::max();
 
-        const std::vector<Move> moves = board.generate_legal_moves();
+        std::vector<Move> moves = board.generate_legal_moves();
 
-        for (Move move : moves)
+        for (auto& move : moves)
         {
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
@@ -88,7 +88,7 @@ namespace ai
 
         int score;
 
-        for (Move move: moves)
+        for (auto& move: moves)
         {
             Chessboard new_board = board_;
             new_board.do_move(move);

@@ -459,6 +459,32 @@ namespace board
         return legal_moves;
     }
 
+    std::vector<Move> Chessboard::generate_legal_captures()
+    {
+        std::vector<Move> moves = MoveGen(*this).get();
+
+        std::vector<Move> captures;
+        captures.reserve(MoveGen::MAX_MOVES_SIZE);
+
+        for (auto& move : moves)
+        {
+            Chessboard temp_board = *this;
+            temp_board.do_move(move);
+
+            //check if the piece is in check and if it's not a bad check (king)
+            if (not temp_board.is_check(current_color()) and move.is_capture())
+            {
+                if (move.get_piece() == KING
+                    && temp_board.illegal_king_check(current_color()))
+                    continue;
+
+                captures.emplace_back(move);
+            }
+        }
+
+        return captures;
+    }
+
     bool Chessboard::is_move_legal(const Move& move)
     {
         std::vector<Move> moves = generate_legal_moves();
