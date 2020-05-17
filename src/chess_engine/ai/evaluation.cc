@@ -16,7 +16,27 @@ namespace ai
         return bonus_matrix[x][y];
     }
 
-    int get_position_bonus(Chessboard& board, Color color)
+    int get_material_score(PieceType piece, bool endgame)
+    {
+        if (piece == PAWN)
+            return endgame ? 140 : 100;
+
+        if (piece == KNIGHT)
+            return endgame ? 320 : 300;
+
+        if (piece == BISHOP)
+            return endgame ? 330 : 300;
+
+        if (piece == ROOK)
+            return endgame ? 500 : 500;
+
+        if (piece == QUEEN)
+            return endgame ? 900 : 900;
+
+        return 0;
+    }
+
+    int get_position_bonus(Chessboard& board, Color color, bool endgame)
     {
         int score = 0;
         Bitboard pawns = board.get(color, PAWN);
@@ -65,8 +85,16 @@ namespace ai
         while (king)
         {
             square = pop(king);
-            score +=
-                get_position_score(king_mobility_bonus, square, color);
+            if (endgame)
+            {
+                score += get_position_score(king_mobility_endgame_bonus,
+                                            square, color);
+            }
+            else
+            {
+                score +=
+                    get_position_score(king_mobility_bonus, square, color);
+            }
         }
 
         return score;
@@ -74,7 +102,12 @@ namespace ai
 
     int evaluate(Chessboard& board, bool maximize)
     {
-        int score = get_position_bonus(board, board.current_color());
+        int score = 0;
+
+        bool endgame = false;
+
+        if (popcount(board.get(BLACK, ALL) | board.get(WHITE, ALL)) < 10)
+            endgame = true;
 
         Color color;
         Color other_color;
@@ -97,11 +130,22 @@ namespace ai
         else if (board.is_check(other_color))
             score += 60;
 
-        score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
-        score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
-        score += (2 - popcount(board.get(other_color, BISHOP))) * 330;
-        score += (2 - popcount(board.get(other_color, ROOK))) * 500;
-        score += (8 - popcount(board.get(other_color, PAWN))) * 100;
+        if (endgame)
+        {
+            score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
+            score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
+            score += (2 - popcount(board.get(other_color, BISHOP))) * 330;
+            score += (2 - popcount(board.get(other_color, ROOK))) * 500;
+            score += (8 - popcount(board.get(other_color, PAWN))) * 100;
+        }
+        else
+        {
+            score += (3 - popcount(board.get(other_color, QUEEN))) * 900;
+            score += (2 - popcount(board.get(other_color, KNIGHT))) * 320;
+            score += (2 - popcount(board.get(other_color, BISHOP))) * 330;
+            score += (2 - popcount(board.get(other_color, ROOK))) * 500;
+            score += (8 - popcount(board.get(other_color, PAWN))) * 100;
+        }
 
         if (board.is_checkmate(color))
             score -= 20000;
@@ -114,9 +158,9 @@ namespace ai
         score += (popcount(board.get(color, ROOK))) * 700;
         score += (popcount(board.get(color, PAWN))) * 110;
 
-        score += get_position_bonus(board, color);
+        score += get_position_bonus(board, color, endgame);
 
-        score -= get_position_bonus(board, other_color);
+        score -= get_position_bonus(board, other_color, endgame);
 
         return score;
     }

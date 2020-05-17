@@ -80,6 +80,14 @@ namespace ai
         {-30, -30, 0, 0, 0, 0, -30, -30},
         {-50, -30, -30, -30, -30, -30, -30, -50}
     };
+    
+    /**
+     * @brief function which return the material score for a specific piece.
+     *
+     * @param The piece type and a bool to know if we are at the end of the
+     * game.
+     */
+    int get_material_score(PieceType piece, bool endgame = false);
 
     /**
      * @brief function which evaluate a search, depending the color, the
