@@ -40,6 +40,11 @@ namespace board
         return none_;
     }
 
+    void Move::set_grade(int grade)
+    {
+        grade_ = grade;
+    }
+
     std::string Move::to_string()
     {
         std::string move_str;

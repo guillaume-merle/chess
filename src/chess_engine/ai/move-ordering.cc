@@ -22,4 +22,9 @@ namespace ai
             }
         }
     }
+
+    std::vector<Move>& MoveOrdering::get()
+    {
+        return moves_;
+    }
 }

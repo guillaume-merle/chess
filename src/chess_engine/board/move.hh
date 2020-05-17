@@ -60,6 +60,8 @@ namespace board
 
         bool is_none();
 
+        void set_grade(int grade);
+
         std::string to_string();
 
         bool operator==(const Move& rhs) const;
@@ -89,6 +91,11 @@ namespace board
         bool is_promotion_;
 
         bool none_ = false;
+
+        /**
+         * @brief grade of the move for move-ordering.
+         */
+        int grade_ = 0;
 
         void parse_flags(int flags);
     };
