@@ -27,13 +27,14 @@ namespace board
     public:
         Move();
 
-        explicit Move(Bitboard from, Bitboard to, PieceType piece, int flags = 0);
+        explicit Move(Bitboard from, Bitboard to, PieceType piece,
+                      int flags = 0);
 
-        explicit Move(Bitboard from, Bitboard to, PieceType piece, PieceType capture,
-             int flags = 0);
+        explicit Move(Bitboard from, Bitboard to, PieceType piece,
+                      PieceType capture, int flags = 0);
 
-        explicit Move(Bitboard from, Bitboard to, PieceType piece, PieceType promotion,
-             PieceType capture, int flags = 0);
+        explicit Move(Bitboard from, Bitboard to, PieceType piece,
+                      PieceType promotion, PieceType capture, int flags = 0);
 
         PieceType get_piece();
 
@@ -56,6 +57,8 @@ namespace board
         bool is_king_side_castling();
 
         bool is_queen_side_castling();
+
+        bool is_none();
 
         std::string to_string();
 
@@ -85,7 +88,7 @@ namespace board
 
         bool is_promotion_;
 
-        bool null_ = false;
+        bool none_ = false;
 
         void parse_flags(int flags);
     };

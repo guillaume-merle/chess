@@ -5,7 +5,7 @@
 namespace board
 {
     Move::Move()
-        : null_(true)
+        : none_(true)
     {}
 
     Move::Move(Bitboard from, Bitboard to, PieceType piece, int flags)
@@ -33,6 +33,11 @@ namespace board
         , capture_(capture)
     {
         parse_flags(flags);
+    }
+
+    bool Move::is_none()
+    {
+        return none_;
     }
 
     std::string Move::to_string()
