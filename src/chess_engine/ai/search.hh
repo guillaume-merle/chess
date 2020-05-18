@@ -49,7 +49,9 @@ namespace ai
         void new_search();
 
     private:
-        const int depth_ = 2;
+        const int base_depth_ = 2;
+
+        int deep_depth_ = 0;
 
         Chessboard board_;
 

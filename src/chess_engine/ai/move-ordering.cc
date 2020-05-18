@@ -2,13 +2,15 @@
 
 #include "move-ordering.hh"
 #include "evaluation.hh"
+#include "logger.hh"
 
 namespace ai
 {
     int MoveOrdering::mvv_lva_[5][6];
 
-    MoveOrdering::MoveOrdering(std::vector<Move>& moves)
-        : moves_(moves)
+    MoveOrdering::MoveOrdering(std::vector<Move>& moves,
+                               MoveHeuristics& heuristics, int depth)
+        : moves_(moves), heuristics_(heuristics), depth_(depth)
     {
         grade_moves_();
         order_moves_();
@@ -47,7 +49,9 @@ namespace ai
             else if (move.is_promotion())
                 move.set_grade(Grade::PROMOTION
                         + get_material_score(move.get_promotion()));
-            // add history heuristic
+            else if (move == heuristics_.get_killer(depth_))
+                move.set_grade(Grade::KILLER);
+            // TODO: add history heuristic
             else
                 move.set_grade(0);
         }

@@ -37,7 +37,7 @@ namespace ai
 
         std::vector<Move> captures = board.generate_legal_captures();
 
-        auto move_ordering = MoveOrdering(captures);
+        auto move_ordering = MoveOrdering(captures, heuristics_);
 
         int score = 0;
 
@@ -95,7 +95,8 @@ namespace ai
                 return 0;
         }
 
-        auto move_ordering = MoveOrdering(moves);
+        auto move_ordering = MoveOrdering(moves, heuristics_,
+                                          deep_depth_ - depth);
 
         for (auto& move : move_ordering.get())
         {
@@ -119,7 +120,11 @@ namespace ai
             }
 
             if (alpha >= beta)
+            {
+                // get the killer moves from the real depth
+                heuristics_.set_killer(move, deep_depth_ - depth);
                 break;
+            }
         }
 
         return bestscore;
@@ -134,7 +139,8 @@ namespace ai
 
         std::vector<Move> moves = board_.generate_legal_moves();
 
-        auto move_ordering = MoveOrdering(moves);
+        auto move_ordering = MoveOrdering(moves, heuristics_,
+                                          deep_depth_ - depth);
         Move bestmove = moves.at(0);
 
         int score;
@@ -157,24 +163,27 @@ namespace ai
             alpha = std::max(alpha, bestscore);
         }
 
+        logger << "score: " << bestscore << ", depth: " << depth << "\n";
+
         return bestmove;
     }
 
     Move Search::find_move()
     {
         new_search();
-        logger << "\n[SEARCH] start\n";
+        logger << "\nstart\n";
         Move current_best;
 
         for (int deep = 0; ; deep += 1)
         {
             bestmove_ = current_best;
-            current_best = minimax_start_(depth_ + deep);
+            deep_depth_ = base_depth_ + deep;
+            current_best = minimax_start_(deep_depth_);
 
             if (timeout_)
             {
-                logger << "[SEARCH] bestmove: " << bestmove_.to_string()
-                       << ", depth: " << depth_ + deep - 1 << "\n";
+                logger << "bestmove: " << bestmove_.to_string()
+                       << ", depth: " << deep_depth_ - 1 << "\n";
                 // if no bestmove was found, set bestmove to the move
                 // returned by the interrupted minimax
                 if (bestmove_.is_none())

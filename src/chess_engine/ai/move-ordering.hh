@@ -1,6 +1,6 @@
 #pragma once
 
-#include "move.hh"
+#include "move-heuristics.hh"
 
 using namespace board;
 
@@ -8,6 +8,7 @@ namespace ai
 {
     enum Grade
     {
+        KILLER = 2000,
         PROMOTION = 3000,
         CAPTURE = 4000,
     };
@@ -24,7 +25,8 @@ namespace ai
          *
          * @param moves the list of moves.
          */
-        MoveOrdering(std::vector<Move>& moves);
+        MoveOrdering(std::vector<Move>& moves, MoveHeuristics& heuristics,
+                     int depth = 0);
 
         /**
          * @brief Get the ordered moves.
@@ -56,6 +58,16 @@ namespace ai
          * @brief Vector of moves.
          */
         std::vector<Move>& moves_;
+
+        /**
+         * @brief Move heuristics for the current search.
+         */
+        MoveHeuristics& heuristics_;
+
+        /**
+         * @brief Real current depth (or ply).
+         */
+        int depth_;
 
         /**
          * @brief Array containing the values of the MVV-LVA
