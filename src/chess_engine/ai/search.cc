@@ -90,9 +90,13 @@ namespace ai
         if (moves.empty())
         {
             if (board.is_check(board.current_color()))
-                return std::numeric_limits<int>::min();
-            else
-                return 0;
+            {
+                if (maximize)
+                    return std::numeric_limits<int>::min();
+                else
+                    return std::numeric_limits<int>::max();
+            }
+            return 0;
         }
 
         auto move_ordering = MoveOrdering(moves, heuristics_,
