@@ -244,7 +244,7 @@ TEST (Chessboard, is_draw)
     board.set(board::BLACK, board::PAWN, pawn);
     board.set(board::BLACK, board::ALL, king | pawn);
 
-    EXPECT_TRUE(board.is_draw(board::BLACK));
+    EXPECT_TRUE(board.is_draw() || board.is_stalemate(board::BLACK));
 }
 
 TEST (Chessboard, only_two_bare_king)
@@ -260,7 +260,7 @@ TEST (Chessboard, only_two_bare_king)
     board.set(board::BLACK, board::KING, king);
     board.set(board::BLACK, board::ALL, king);
 
-    EXPECT_TRUE(board.is_draw(board::BLACK));
+    EXPECT_TRUE(board.is_draw() || board.is_stalemate(board::BLACK));
 }
 
 TEST (Chessboard, only_two_bare_king_and_one_knight)
@@ -278,7 +278,7 @@ TEST (Chessboard, only_two_bare_king_and_one_knight)
     board.set(board::BLACK, board::KING, king);
     board.set(board::BLACK, board::ALL, king);
 
-    EXPECT_TRUE(board.is_draw(board::BLACK));
+    EXPECT_TRUE(board.is_draw() || board.is_stalemate(board::BLACK));
 }
 
 TEST (Chessboard, only_two_bare_king_and_one_bishop)
@@ -296,5 +296,5 @@ TEST (Chessboard, only_two_bare_king_and_one_bishop)
     board.set(board::BLACK, board::BISHOP, bishop);
     board.set(board::BLACK, board::ALL, king | bishop);
 
-    EXPECT_TRUE(board.is_draw(board::BLACK));
+    EXPECT_TRUE(board.is_draw() || board.is_stalemate(board::BLACK));
 }

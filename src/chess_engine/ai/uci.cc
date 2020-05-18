@@ -1,5 +1,6 @@
 #include "search.hh"
 #include "uci.hh"
+#include "move-ordering.hh"
 
 #include <fnmatch.h>
 #include <iostream>
@@ -28,6 +29,9 @@ namespace ai
 
     void init(const std::string& name)
     {
+        // initialize MoveOrdering
+        MoveOrdering::init();
+
         get_input("uci");
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';
@@ -51,20 +55,26 @@ namespace ai
 
     void start()
     {
-        board::Chessboard board;
+        Search search;
+        Chessboard& board = search.get_board();
 
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
-        board::Move move = board::search_move(board);
+
+        board::Move move = search.find_move();
+
         play_move(move.to_string());
         board.do_move(move);
 
         while (!board.is_checkmate(board.current_color())
-               && !board.is_draw(board.current_color()))
+               && !board.is_draw()
+               && !board.is_stalemate(board.current_color()))
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
-            board::Move move = board::search_move(board);
+
+            board::Move move = search.find_move();
+
             play_move(move.to_string());
             board.do_move(move);
         }
@@ -82,8 +92,7 @@ namespace ai
 
         if (token == "startpos")
         {
-            board::FenObject fen_obj = perft_parser::parse_fen(
-                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board::FenObject fen_obj = perft_parser::parse_fen(START_POS);
             board.set_from_fen(fen_obj);
         }
 

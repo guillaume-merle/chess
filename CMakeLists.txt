@@ -13,6 +13,10 @@ set(OPT_FLAGS
 set(SRC_ENGINE
     src/chess_engine/ai/evaluation.cc
     src/chess_engine/ai/evaluation.hh
+    src/chess_engine/ai/move-heuristics.cc
+    src/chess_engine/ai/move-heuristics.hh
+    src/chess_engine/ai/move-ordering.cc
+    src/chess_engine/ai/move-ordering.hh
     src/chess_engine/ai/search.cc
     src/chess_engine/ai/search.hh
     src/chess_engine/ai/uci.cc
@@ -40,13 +44,9 @@ set(SRC_ENGINE
     src/chess_engine/board/piece-type.hh
     src/chess_engine/board/position.hh
     src/chess_engine/board/position.hxx
-    src/parsing/report-type.hh
-    src/parsing/pgn-exception.cc
-    src/parsing/pgn-exception.hh
-    src/parsing/pgn-move.cc
-    src/parsing/pgn-move.hh
-    src/parsing/pgn-parser.cc
-    src/parsing/pgn-parser.hh
+    src/listener/listener-manager.cc
+    src/listener/listener-manager.hh
+    src/listener/listener.hh
     src/parsing/fen-object.cc
     src/parsing/fen-object.hh
     src/parsing/fen-rank.cc
@@ -57,11 +57,17 @@ set(SRC_ENGINE
     src/parsing/perft-object.hh
     src/parsing/perft-parser.cc
     src/parsing/perft-parser.hh
-    src/listener/listener.hh
-    src/listener/listener-manager.cc
-    src/listener/listener-manager.hh
-    src/utils/utype.hh
+    src/parsing/pgn-exception.cc
+    src/parsing/pgn-exception.hh
+    src/parsing/pgn-move.cc
+    src/parsing/pgn-move.hh
+    src/parsing/pgn-parser.cc
+    src/parsing/pgn-parser.hh
+    src/parsing/report-type.hh
+    src/utils/logger.cc
+    src/utils/logger.hh
     src/utils/utils.hh
+    src/utils/utype.hh
 )
 
 
@@ -89,6 +95,7 @@ set(SRC_GTEST
     tests/test_bitboard.hh
     tests/test_queen.hh
     tests/test_chessboard.hh
+    tests/test_move_ordering.hh
 )
 
 # END SOURCES
