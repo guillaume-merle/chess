@@ -12,7 +12,7 @@ Logger logger;
 namespace ai
 {
     Search::Search()
-        : board_(), us_(board_.current_color()), time_(2)
+        : board_(), us_(board_.current_color()), time_(5)
     {}
 
     Chessboard& Search::get_board()
@@ -27,7 +27,7 @@ namespace ai
 
     int Search::quiesce_(Chessboard& board, int alpha, int beta, bool maximize)
     {
-        int stand_pat = evaluate(board, maximize);
+        int stand_pat = evaluate(board);
 
         if (stand_pat >= beta)
             return beta;
@@ -70,7 +70,13 @@ namespace ai
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
-            return quiesce_(board, alpha, beta, not maximize);
+        {
+            //return quiesce_(board, alpha, beta, not maximize);
+            if (maximize)
+                return -evaluate(board);
+            else
+                return evaluate(board);
+        }
 
         int bestscore;
 

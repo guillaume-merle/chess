@@ -100,7 +100,7 @@ namespace ai
         return score;
     }
 
-    int evaluate(Chessboard& board, bool maximize)
+    int evaluate(Chessboard& board)
     {
         int score = 0;
 
@@ -113,17 +113,17 @@ namespace ai
         Color other_color;
 
         // maximize last color to play
-        if (maximize)
-        {
-            other_color = board.current_color();
-            color = opposite_color(other_color);
-        }
+        //if (maximize)
+        //{
+        other_color = board.current_color();
+        color = opposite_color(other_color);
+        //}
         // minimize last color to play
-        else
+        /*else
         {
             color = board.current_color();
             other_color = opposite_color(color);
-        }
+        }*/
 
         // Opposent part
         if (board.is_checkmate(other_color))
@@ -153,19 +153,19 @@ namespace ai
             score -= 100;
 
         score += (popcount(board.get(color, QUEEN)))
-                * (get_material_score(QUEEN, endgame) + 4100);
+                * (get_material_score(QUEEN, endgame));
 
         score += (popcount(board.get(color, KNIGHT)))
-                * (get_material_score(KNIGHT, endgame) + 80);
+                * (get_material_score(KNIGHT, endgame));
 
         score += (popcount(board.get(color, BISHOP)))
-                * (get_material_score(BISHOP, endgame) + 120);
+                * (get_material_score(BISHOP, endgame));
 
         score += (popcount(board.get(color, ROOK)))
-                * (get_material_score(ROOK, endgame) + 200);
+                * (get_material_score(ROOK, endgame));
 
         score += (popcount(board.get(color, PAWN)))
-                * (get_material_score(PAWN, endgame) + 10);
+                * (get_material_score(PAWN, endgame));
 
 
         // Bonus from position

@@ -95,6 +95,6 @@ namespace ai
      *
      * @param search the search to evaluate.
      */
-    int evaluate(Chessboard& board, bool maximize);
+    int evaluate(Chessboard& board);
 
 } // namespace board
