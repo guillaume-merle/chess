@@ -32,13 +32,16 @@ namespace ai
         if (stand_pat >= beta)
             return beta;
 
-        alpha = std::max(alpha, stand_pat);
+        if (alpha < stand_pat)
+            alpha = stand_pat;
 
         std::vector<Move> captures = board.generate_legal_captures();
 
+        auto move_ordering = MoveOrdering(captures);
+
         int score = 0;
 
-        for (auto& capture : captures)
+        for (auto& capture : move_ordering.get())
         {
             Chessboard temp_board = board;
             temp_board.do_move(capture);
@@ -48,7 +51,8 @@ namespace ai
             if (score >= beta)
                 return beta;
 
-            alpha = std::max(alpha, score);
+            if (score > alpha)
+                alpha = score;
         }
 
         return alpha;
@@ -66,7 +70,7 @@ namespace ai
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
-            return evaluate(board, not maximize);
+            return quiesce_(board, alpha, beta, not maximize);
 
         int bestscore;
 
