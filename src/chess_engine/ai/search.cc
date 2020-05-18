@@ -87,6 +87,14 @@ namespace ai
 
         std::vector<Move> moves = board.generate_legal_moves();
 
+        if (moves.empty())
+        {
+            if (board.is_check(board.current_color()))
+                return std::numeric_limits<int>::min();
+            else
+                return 0;
+        }
+
         auto move_ordering = MoveOrdering(moves);
 
         for (auto& move : move_ordering.get())
