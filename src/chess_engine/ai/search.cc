@@ -162,10 +162,8 @@ namespace ai
 
     Move Search::find_move()
     {
+        new_search();
         logger << "\n[SEARCH] start\n";
-
-        timeout_ = false;
-        start_ = std::chrono::system_clock::now();
         Move current_best;
 
         for (int deep = 0; ; deep += 1)
@@ -187,6 +185,13 @@ namespace ai
         }
 
         return bestmove_;
+    }
+
+    void Search::new_search()
+    {
+        timeout_ = false;
+        start_ = std::chrono::system_clock::now();
+        heuristics_ = MoveHeuristics();
     }
 
 } // namespace board

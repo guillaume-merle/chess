@@ -3,7 +3,7 @@
 #include <chrono>
 
 #include "chessboard.hh"
-#include "move.hh"
+#include "move-heuristics.hh"
 
 using namespace board;
 
@@ -43,6 +43,11 @@ namespace ai
 
         Move find_move();
 
+        /**
+         * @brief Initialize a new search by reseting some attributes.
+         */
+        void new_search();
+
     private:
         const int depth_ = 2;
 
@@ -57,6 +62,8 @@ namespace ai
         time_point start_;
 
         std::chrono::seconds time_;
+
+        MoveHeuristics heuristics_;
     };
 
 } // namespace board
