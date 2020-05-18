@@ -127,30 +127,30 @@ namespace ai
 
         // Opposent part
         if (board.is_checkmate(other_color))
-            score += 20000;
+            score += 32767;
         else if (board.is_check(other_color))
             score += 60;
 
-        score += (3 - popcount(board.get(other_color, QUEEN)))
+        score -= popcount(board.get(other_color, QUEEN))
                  * get_material_score(QUEEN, endgame);
 
-        score += (2 - popcount(board.get(other_color, KNIGHT)))
+        score -= popcount(board.get(other_color, KNIGHT))
                  * get_material_score(KNIGHT, endgame);
 
-        score += (2 - popcount(board.get(other_color, BISHOP)))
+        score -= popcount(board.get(other_color, BISHOP))
                  * get_material_score(BISHOP, endgame);
 
-        score += (2 - popcount(board.get(other_color, ROOK)))
+        score -= popcount(board.get(other_color, ROOK))
                  * get_material_score(ROOK, endgame);
 
-        score += (8 - popcount(board.get(other_color, PAWN)))
+        score -= popcount(board.get(other_color, PAWN))
                  * get_material_score(PAWN, endgame);
 
         // Current color part
         if (board.is_checkmate(color))
-            score -= 20000;
+            score -= 32767;
         else if (board.is_check(color))
-            score -= 500;
+            score -= 100;
 
         score += (popcount(board.get(color, QUEEN)))
                 * (get_material_score(QUEEN, endgame) + 4100);
