@@ -93,6 +93,7 @@ set(SRC_GTEST
     tests/test_bitboard.hh
     tests/test_queen.hh
     tests/test_chessboard.hh
+    tests/test_move_ordering.hh
 )
 
 # END SOURCES

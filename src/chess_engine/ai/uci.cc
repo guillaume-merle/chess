@@ -1,5 +1,6 @@
 #include "search.hh"
 #include "uci.hh"
+#include "move-ordering.hh"
 
 #include <fnmatch.h>
 #include <iostream>
@@ -28,6 +29,9 @@ namespace ai
 
     void init(const std::string& name)
     {
+        // initialize MoveOrdering
+        MoveOrdering::init();
+
         get_input("uci");
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';

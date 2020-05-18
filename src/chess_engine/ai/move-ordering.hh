@@ -36,7 +36,8 @@ namespace ai
         /**
          * @brief Grade the moves on various criterias:
          * * MVV-LVA
-         * * ...
+         * * Promotion and promoted piece value
+         * *...
          */
         void grade_moves_();
 
