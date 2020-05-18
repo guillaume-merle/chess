@@ -21,6 +21,8 @@ set(SRC_ENGINE
     src/chess_engine/ai/search.hh
     src/chess_engine/ai/uci.cc
     src/chess_engine/ai/uci.hh
+    src/chess_engine/ai/zobrist.cc
+    src/chess_engine/ai/zobrist.hh
     src/chess_engine/board/attacks.cc
     src/chess_engine/board/attacks.hh
     src/chess_engine/board/bitboard.cc
