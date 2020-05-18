@@ -19,6 +19,11 @@ namespace ai
          */
         Zobrist(Chessboard& board);
 
+        /**
+         * @brief Initialize the different arrays with random key values.
+         */
+        static void init();
+
     private:
         /**
          * @brief Key representing a whole Chessboard.
