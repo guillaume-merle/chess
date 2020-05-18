@@ -265,7 +265,7 @@ namespace board
         return !is_check(color) && generate_legal_moves(color).empty();
     }
 
-    bool Chessboard::is_draw(Color color)
+    bool Chessboard::is_draw()
     {
         Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);
         Bitboard all_bishop = get(WHITE, BISHOP) | get(BLACK, BISHOP);
@@ -298,11 +298,7 @@ namespace board
         if (last_fifty_turns_ > 50)
             return true;
 
-        //first verify that my king is not in check
-        if (is_check(color))
-            return false;
-
-        return true;
+        return false;
     }
 
     void Chessboard::do_move(Move& move)

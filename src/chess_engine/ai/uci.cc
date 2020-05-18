@@ -67,7 +67,7 @@ namespace ai
         board.do_move(move);
 
         while (!board.is_checkmate(board.current_color())
-               && !board.is_draw(board.current_color())
+               && !board.is_draw()
                && !board.is_stalemate(board.current_color()))
         {
             std::string input_position = get_board();

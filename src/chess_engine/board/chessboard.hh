@@ -149,10 +149,9 @@ namespace board
         /**
          * @brief verify if there is a draw.
          *
-         * @param color to check for.
          * @return true if there is a draw.
          */
-        bool is_draw(Color color);
+        bool is_draw();
 
         /**
          * @brief get a specifig bitboard.
