@@ -302,11 +302,6 @@ namespace board
         if (is_check(color))
             return false;
 
-        std::vector<Move> legal_moves = generate_legal_moves(color);
-        //verify if legal_moves are available.
-        if (!legal_moves.empty())
-            return false;
-
         return true;
     }
 
