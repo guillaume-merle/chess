@@ -4,6 +4,10 @@
 
 namespace board
 {
+    Move::Move()
+        : none_(true)
+    {}
+
     Move::Move(Bitboard from, Bitboard to, PieceType piece, int flags)
         : from_(from), to_(to), piece_(piece), promotion_(ALL)
         , capture_(ALL), is_capture_(false)
@@ -29,6 +33,21 @@ namespace board
         , capture_(capture)
     {
         parse_flags(flags);
+    }
+
+    bool Move::is_none()
+    {
+        return none_;
+    }
+
+    void Move::set_grade(int grade)
+    {
+        grade_ = grade;
+    }
+
+    int Move::get_grade()
+    {
+        return grade_;
     }
 
     std::string Move::to_string()

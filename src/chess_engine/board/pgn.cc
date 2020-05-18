@@ -90,7 +90,7 @@ namespace board
                 break;
             }
 
-            if (board.is_draw(board.current_color()))
+            if (board.is_draw() || board.is_stalemate(board.current_color()))
             {
                 listener::listener_manager
                     .notify(&listener::Listener::on_draw);

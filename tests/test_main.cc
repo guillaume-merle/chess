@@ -8,10 +8,14 @@
 #include "test_chessboard.hh"
 #include "test_attacks.hh"
 #include "test_move.hh"
+#include "test_move_ordering.hh"
+
+#include "move-ordering.hh"
 
 #include "gtest/gtest.h"
 
 int main(int argc, char **argv) {
+    ai::MoveOrdering::init();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

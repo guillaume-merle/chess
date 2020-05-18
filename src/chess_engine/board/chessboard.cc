@@ -265,7 +265,7 @@ namespace board
         return !is_check(color) && generate_legal_moves(color).empty();
     }
 
-    bool Chessboard::is_draw(Color color)
+    bool Chessboard::is_draw()
     {
         Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);
         Bitboard all_bishop = get(WHITE, BISHOP) | get(BLACK, BISHOP);
@@ -298,16 +298,7 @@ namespace board
         if (last_fifty_turns_ > 50)
             return true;
 
-        //first verify that my king is not in check
-        if (is_check(color))
-            return false;
-
-        std::vector<Move> legal_moves = generate_legal_moves(color);
-        //verify if legal_moves are available.
-        if (!legal_moves.empty())
-            return false;
-
-        return true;
+        return false;
     }
 
     void Chessboard::do_move(Move& move)
@@ -457,6 +448,32 @@ namespace board
         }
 
         return legal_moves;
+    }
+
+    std::vector<Move> Chessboard::generate_legal_captures()
+    {
+        std::vector<Move> moves = MoveGen(*this).get();
+
+        std::vector<Move> captures;
+        captures.reserve(MoveGen::MAX_MOVES_SIZE);
+
+        for (auto& move : moves)
+        {
+            Chessboard temp_board = *this;
+            temp_board.do_move(move);
+
+            //check if the piece is in check and if it's not a bad check (king)
+            if (not temp_board.is_check(current_color()) and move.is_capture())
+            {
+                if (move.get_piece() == KING
+                    && temp_board.illegal_king_check(current_color()))
+                    continue;
+
+                captures.emplace_back(move);
+            }
+        }
+
+        return captures;
     }
 
     bool Chessboard::is_move_legal(const Move& move)
