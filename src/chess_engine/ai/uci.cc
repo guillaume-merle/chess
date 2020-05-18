@@ -91,8 +91,7 @@ namespace ai
 
         if (token == "startpos")
         {
-            board::FenObject fen_obj = perft_parser::parse_fen(
-                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board::FenObject fen_obj = perft_parser::parse_fen(START_POS);
             board.set_from_fen(fen_obj);
         }
 

@@ -12,7 +12,7 @@ Logger logger;
 namespace ai
 {
     Search::Search()
-        : board_(), us_(board_.current_color()), time_(5)
+        : board_(), us_(board_.current_color()), time_(4)
     {}
 
     Chessboard& Search::get_board()
