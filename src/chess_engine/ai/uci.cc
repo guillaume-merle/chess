@@ -1,6 +1,7 @@
 #include "search.hh"
 #include "uci.hh"
 #include "move-ordering.hh"
+#include "zobrist.hh"
 
 #include <fnmatch.h>
 #include <iostream>
@@ -31,6 +32,7 @@ namespace ai
     {
         // initialize MoveOrdering
         MoveOrdering::init();
+        Zobrist::init();
 
         get_input("uci");
         std::cout << "id name " << name << '\n';

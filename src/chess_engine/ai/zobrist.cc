@@ -51,4 +51,60 @@ namespace ai
             en_passant_[file] = distribution(prng);
         }
     }
+
+    Zobrist::Zobrist(Chessboard& board)
+        : key_(0)
+    {
+        for (auto piece : { QUEEN, ROOK, BISHOP, KNIGHT, PAWN, KING })
+        {
+            for (auto color : { WHITE, BLACK })
+            {
+                Bitboard pieces = board.get(color, piece);
+
+                while (pieces)
+                {
+                    Square square = pop(pieces);
+                    key_ ^= pieces_[color][piece][square];
+                }
+            }
+        }
+
+        if (board.is_white_turn())
+            key_ ^= white_turn_;
+
+        for (auto color : { WHITE, BLACK })
+        {
+            if (board.get_castling(color, QUEEN))
+                key_ ^= queen_side_castling_[color];
+
+            if (board.get_castling(color, KING))
+                key_ ^= king_side_castling_[color];
+        }
+
+        Square en_passant_square = board.get_en_passant();
+        if (en_passant_square != -1)
+        {
+            // the en_passant_square % 8 is to get the File of the square
+            key_ ^= en_passant_[en_passant_square % 8];
+        }
+    }
+
+    void Zobrist::update_key(Color color, Move& move)
+    {
+        key_ ^= pieces_[color][move.get_piece()][move.get_from()];
+
+        if (move.is_capture())
+            key_ ^= pieces_[color][move.get_capture()][move.get_to()];
+
+        // promotion
+        // en_passant
+        // double pawn push
+        // king castling
+        // queen castling
+
+        key_ ^= pieces_[color][move.get_piece()][move.get_to()];
+
+        // update turn
+        key_ ^= white_turn_;
+    }
 }

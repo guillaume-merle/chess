@@ -7,8 +7,8 @@ using namespace board;
 namespace ai
 {
     /**
-     * @brief Class representing a Zobrist hashing to produce 64 bits keys
-     * from a Chessboard.
+     * @brief Class representing a Zobrist hashing algorithm
+     * to produce 64 bits keys from a Chessboard.
      *
      */
     class Zobrist
@@ -23,6 +23,14 @@ namespace ai
          * @brief Initialize the different arrays with random key values.
          */
         static void init();
+
+        /**
+         * @brief update the key for the given move.
+         *
+         * @param color the color of the piece.
+         * @param the move to apply.
+         */
+        void update_key(Color color, Move& move);
 
     private:
         /**
