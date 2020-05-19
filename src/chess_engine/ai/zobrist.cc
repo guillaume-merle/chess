@@ -90,6 +90,11 @@ namespace board
         }
     }
 
+    uint64_t Zobrist::get()
+    {
+        return key_;
+    }
+
     void Zobrist::update_piece(Color color, PieceType piece, Square pos)
     {
         // update piece at the given position
