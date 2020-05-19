@@ -1,11 +1,10 @@
 #pragma once
 
-#include "chessboard.hh"
+#include "move.hh"
 
-using namespace board;
-
-namespace ai
+namespace board
 {
+    class Chessboard;
     /**
      * @brief Class representing a Zobrist hashing algorithm
      * to produce 64 bits keys from a Chessboard.
@@ -14,6 +13,10 @@ namespace ai
     class Zobrist
     {
     public:
+        /**
+         * @brief Default constructor, setting a null key.
+         */
+        Zobrist() = default;
         /**
          * @brief Construct a Zobrist object from a board, and hashes a key.
          */
@@ -32,11 +35,32 @@ namespace ai
          */
         void update_key(Color color, Move& move);
 
+        /**
+         * @brief update the key for the given piece.
+         *
+         * @param color the color of the piece.
+         * @param piece the type of the piece.
+         * @param pos the position to update.
+         */
+        void update_piece(Color color, PieceType piece, Square pos);
+
+        /**
+         * @brief Get the Zobrist key.
+         *
+         * @return the key.
+         */
+        uint64_t get();
+
     private:
         /**
          * @brief Key representing a whole Chessboard.
          */
-        uint64_t key_;
+        uint64_t key_ = 0;
+
+        /**
+         * @brief Last en_passant value of the board.
+         */
+        Square en_passant_square_ = -1;
 
         /**
          * @brief Keys for all the pieces of each color at each position,
@@ -64,4 +88,5 @@ namespace ai
          */
         static uint64_t en_passant_[8];
     };
-}
+
+} // namespace board

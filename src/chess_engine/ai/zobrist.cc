@@ -1,8 +1,9 @@
 #include <random>
 
 #include "zobrist.hh"
+#include "chessboard.hh"
 
-namespace ai
+namespace board
 {
     uint64_t Zobrist::pieces_[2][6][64];
     uint64_t Zobrist::white_turn_;
@@ -81,30 +82,68 @@ namespace ai
                 key_ ^= king_side_castling_[color];
         }
 
-        Square en_passant_square = board.get_en_passant();
-        if (en_passant_square != -1)
+        en_passant_square_ = board.get_en_passant();
+        if (en_passant_square_ != -1)
         {
             // the en_passant_square % 8 is to get the File of the square
-            key_ ^= en_passant_[en_passant_square % 8];
+            key_ ^= en_passant_[en_passant_square_ % 8];
         }
     }
 
-    void Zobrist::update_key(Color color, Move& move)
+    void Zobrist::update_piece(Color color, PieceType piece, Square pos)
     {
-        key_ ^= pieces_[color][move.get_piece()][move.get_from()];
-
-        if (move.is_capture())
-            key_ ^= pieces_[color][move.get_capture()][move.get_to()];
-
-        // promotion
-        // en_passant
-        // double pawn push
-        // king castling
-        // queen castling
-
-        key_ ^= pieces_[color][move.get_piece()][move.get_to()];
-
-        // update turn
-        key_ ^= white_turn_;
+        // update piece at the given position
+        key_ ^= pieces_[color][piece][pos];
     }
-}
+
+    // void Zobrist::update_key(Color color, Move& move)
+    // {
+    //     if (move.is_capture())
+    //         key_ ^= pieces_[color][move.get_capture()][move.get_to()];
+    //
+    //     // double pawn push
+    //     else if (move.is_double_pawn_push())
+    //     {
+    //         // unset last en_passant
+    //         if (en_passant_square_ != -1)
+    //             key_ ^= en_passant_[en_passant_square_ % 8];
+    //
+    //         en_passant_square_ = move.get_from() + (color == WHITE ? 8 : -8);
+    //
+    //         // set new en_passant
+    //         key_ ^= en_passant_[en_passant_square_ % 8];
+    //     }
+    //     // en_passant
+    //     else if (move.is_en_passant())
+    //     {
+    //         // remove piece captured en_passant
+    //         Square capture = move.get_to() + (color == WHITE ? -8 : 8);
+    //         key_ ^= pieces_[color][move.get_capture()][capture];
+    //     }
+    //     // queen castling
+    //     if (move.is_queen_side_castling())
+    //     {
+    //         Square rook_from = color == WHITE ? 7 : 63;
+    //         key_ ^= pieces_[color][ROOK][rook_from];
+    //     }
+    //     // king castling
+    //
+    //     // remove piece at the from position
+    //     key_ ^= pieces_[color][move.get_piece()][move.get_from()];
+    //     // add piece at the to position
+    //     key_ ^= pieces_[color][move.get_piece()][move.get_to()];
+    //
+    //     // promotion
+    //     if (move.is_promotion())
+    //     {
+    //         // remove promoted piece
+    //         key_ ^= pieces_[color][move.get_piece()][move.get_to()];
+    //         // add new piece
+    //         key_ ^= pieces_[color][move.get_promotion()][move.get_to()];
+    //     }
+    //
+    //     // update turn
+    //     key_ ^= white_turn_;
+    // }
+
+} // namespace board

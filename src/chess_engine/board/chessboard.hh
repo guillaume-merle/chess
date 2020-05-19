@@ -6,6 +6,7 @@
 #include "bitboard.hh"
 #include "move.hh"
 #include "fen-object.hh"
+#include "zobrist.hh"
 
 namespace board
 {
@@ -333,6 +334,11 @@ namespace board
          * @brief Number of turns whitout a capture or a pawn move.
          */
         int last_fifty_turns_ = 0;
+
+        /**
+         * @brief Zobrist key representing the current board in a 64 bits int.
+         */
+        Zobrist zobrist_key_;
 
         /**
          * @brief Update the castling abilities after a move.

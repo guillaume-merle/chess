@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "chessboard.hh"
+#include "zobrist.hh"
 #include "utils.hh"
 #include "move.hh"
 #include "attacks.hh"
@@ -18,7 +19,9 @@ namespace board
         , en_passant_(-1)
         , turn_(0)
         , last_fifty_turns_(0)
-    {}
+    {
+        zobrist_key_ = Zobrist(*this);
+    }
 
     Chessboard::Chessboard(std::string fen)
         : bitboards_{{0}}, white_turn_(true)
@@ -31,6 +34,7 @@ namespace board
         , last_fifty_turns_(0)
     {
         set_from_fen(perft_parser::parse_fen(fen));
+        zobrist_key_ = Zobrist(*this);
     }
 
     Chessboard::Chessboard(const Chessboard& board)
@@ -50,6 +54,8 @@ namespace board
                 bitboards_[i][j] = board.bitboards_[i][j];
             }
         }
+
+        zobrist_key_ = board.zobrist_key_;
     }
 
     Chessboard& Chessboard::operator=(const Chessboard& board)
@@ -70,6 +76,8 @@ namespace board
                 bitboards_[i][j] = board.bitboards_[i][j];
             }
         }
+
+        zobrist_key_ = board.zobrist_key_;
 
         return *this;
     }
