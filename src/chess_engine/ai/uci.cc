@@ -30,10 +30,6 @@ namespace ai
 
     void init(const std::string& name)
     {
-        // initialize MoveOrdering
-        MoveOrdering::init();
-        Zobrist::init();
-
         get_input("uci");
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';

@@ -14,7 +14,9 @@ namespace ai
 {
     Search::Search()
         : board_(), us_(board_.current_color()), time_(2)
-    {}
+    {
+        board_.register_dispositions_history(&board_dispositions_);
+    }
 
     Chessboard& Search::get_board()
     {

@@ -46,6 +46,7 @@ namespace board
         , en_passant_(board.en_passant_)
         , turn_(board.turn_)
         , last_fifty_turns_(board.last_fifty_turns_)
+        , dispositions_(board.dispositions_)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -78,6 +79,7 @@ namespace board
         }
 
         zobrist_key_ = board.zobrist_key_;
+        dispositions_ = board.dispositions_;
 
         return *this;
     }
@@ -275,6 +277,14 @@ namespace board
 
     bool Chessboard::is_draw()
     {
+        // Threefold repetition
+        if (dispositions_ != nullptr)
+        {
+            auto it = dispositions_->find(zobrist_key_.get());
+            if (it != dispositions_->end() and it->second > 2)
+                return true;
+        }
+
         Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);
         Bitboard all_bishop = get(WHITE, BISHOP) | get(BLACK, BISHOP);
         //check if there is only two bare king
@@ -673,5 +683,11 @@ namespace board
     Zobrist Chessboard::get_zobrist_key()
     {
         return zobrist_key_;
+    }
+
+    void
+    Chessboard::register_dispositions_history(std::map<uint64_t, int>* disps)
+    {
+        dispositions_ = disps;
     }
 }

@@ -10,7 +10,6 @@ namespace board
 {
     void pgn(std::vector<PgnMove> moves)
     {
-        Zobrist::init();
         ai::Search search;
         Chessboard board(START_POS);
         listener::listener_manager.register_board(board);

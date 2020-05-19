@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "chessboard-interface.hh"
 #include "bitboard.hh"
@@ -296,6 +297,13 @@ namespace board
          */
         Zobrist get_zobrist_key();
 
+        /**
+         * @brief Regiseter a pointer to a dispositions history map.
+         *
+         * @param disps the pointer to the dispositions history map.
+         */
+        void register_dispositions_history(std::map<uint64_t, int>* disps);
+
     private:
         /**
          * @brief Array of Bitboards, arranged by Color and PieceType.
@@ -346,6 +354,11 @@ namespace board
          * @brief Zobrist key representing the current board in a 64 bits int.
          */
         Zobrist zobrist_key_;
+
+        /**
+         * @brief History of the game dispositions.
+         */
+        std::map<uint64_t, int>* dispositions_ = nullptr;
 
         /**
          * @brief Update the castling abilities after a move.
