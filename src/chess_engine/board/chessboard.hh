@@ -272,6 +272,22 @@ namespace board
          */
         void set_turn(Color color);
 
+        /**
+         * @brief Get the castling right for the given color and side.
+         *
+         * @param color the color of the castling right.
+         * @param side the side of the caslting, either KING or QUEEN.
+         * @return true if the corresponding right is set.
+         */
+        bool get_castling(Color color, PieceType side);
+
+        /**
+         * @brief Get the current en_passant square.
+         *
+         * @return the current en_passant Square or -1 if there is none.
+         */
+        Square get_en_passant();
+
     private:
         /**
          * @brief Array of Bitboards, arranged by Color and PieceType.

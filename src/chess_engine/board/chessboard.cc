@@ -613,4 +613,28 @@ namespace board
     {
         white_turn_ = color == WHITE;
     }
+
+
+    bool Chessboard::get_castling(Color color, PieceType side)
+    {
+        if (side != QUEEN and side != KING)
+            throw std::runtime_error("Chessboard: get_castling: unknown"
+                                     "castling side");
+
+        if (color == WHITE)
+        {
+            return side == QUEEN ? white_queen_side_castling_
+                                   : white_king_side_castling_;
+        }
+        else
+        {
+            return side == QUEEN ? black_queen_side_castling_
+                                   : black_king_side_castling_;
+        }
+    }
+
+    Square Chessboard::get_en_passant()
+    {
+        return en_passant_;
+    }
 }
