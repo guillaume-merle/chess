@@ -645,4 +645,9 @@ namespace board
     {
         return en_passant_;
     }
+
+    Zobrist Chessboard::get_zobrist_key()
+    {
+        return zobrist_key_;
+    }
 }

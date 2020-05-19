@@ -289,6 +289,13 @@ namespace board
          */
         Square get_en_passant();
 
+        /**
+         * @brief Get the current zobrist key of the board
+         *
+         * @return the zobrist key representation of the board
+         */
+        Zobrist get_zobrist_key();
+
     private:
         /**
          * @brief Array of Bitboards, arranged by Color and PieceType.
