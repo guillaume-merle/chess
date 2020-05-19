@@ -13,7 +13,7 @@ Logger logger;
 namespace ai
 {
     Search::Search()
-        : board_(), us_(board_.current_color()), time_(4)
+        : board_(), us_(board_.current_color()), time_(2)
     {}
 
     Chessboard& Search::get_board()
@@ -29,17 +29,21 @@ namespace ai
     std::map<uint64_t, int>::iterator
     Search::add_board_disposition(uint64_t zobrist_key)
     {
+        logger << "Add board disposition\nKey: " << zobrist_key << '\n';
         auto it =
             board_dispositions_.find(zobrist_key);
 
         if (it == board_dispositions_.end())
         {
+            logger << "New board disposition\n";
             it = board_dispositions_.insert(it,
                                      std::pair<uint64_t, int>(zobrist_key, 1));
         }
         else
         {
+            logger << "Already view ";
             it->second += 1;
+            logger << "Value: " << it->second << '\n';
         }
 
         return it;
@@ -92,7 +96,10 @@ namespace ai
         if (it != board_dispositions_.end())
         {
             if (it->second > 2)
+            {
+                logger << "\n\nDRAW position three times\n\n";
                 return 0;
+            }
         }
 
         // depth 0 changed the maximize / minimize,
@@ -124,6 +131,7 @@ namespace ai
                 else
                     return std::numeric_limits<int>::max();
             }
+            logger << "\n\nDRAW stalemate\n\n";
             return 0;
         }
 
@@ -135,11 +143,11 @@ namespace ai
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            auto it = add_board_disposition(new_board.get_zobrist_key().get());
+            //auto it = add_board_disposition(new_board.get_zobrist_key().get());
 
             int score = minimax_(new_board, depth - 1, alpha, beta, !maximize);
 
-            it->second -= 1;
+            //it->second -= 1;
 
             if (timeout_)
                 break;
@@ -186,11 +194,11 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
-            auto it = add_board_disposition(new_board.get_zobrist_key().get());
+            //auto it = add_board_disposition(new_board.get_zobrist_key().get());
 
             score = minimax_(new_board, depth, alpha, beta, false);
 
-            it->second -= 1;
+            //it->second -= 1;
 
             if (timeout_)
                 break;
