@@ -362,8 +362,12 @@ namespace board
             add_piece(color, move.get_promotion(), move.get_to());
         }
 
+        zobrist_key_.update_en_passant(en_passant_);
+        update_castling_abilities(color, piece, move.get_from());
+
         // set next turn
-        white_turn_ = !white_turn_;
+        white_turn_ = not white_turn_;
+        zobrist_key_.switch_turn();
         turn_ += 1;
     }
 
@@ -373,6 +377,8 @@ namespace board
 
         bitboards_[color][piece] |= mask;
         bitboards_[color][ALL] |= mask;
+
+        zobrist_key_.update_piece(color, piece, pos);
     }
 
     void Chessboard::update_castling_abilities(Color color, PieceType piece,
@@ -384,23 +390,37 @@ namespace board
             {
                 white_king_side_castling_ = false;
                 white_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, ALL);
             }
             else
             {
                 black_king_side_castling_ = false;
                 black_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, ALL);
             }
         }
         else if (piece == ROOK)
         {
             if (from == 0)
+            {
                 white_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, QUEEN);
+            }
             if (from == 7)
+            {
                 white_king_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, KING);
+            }
             if (from == 56)
+            {
                 black_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, QUEEN);
+            }
             if (from == 63)
+            {
                 black_king_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, KING);
+            }
         }
     }
 
@@ -414,8 +434,10 @@ namespace board
         // update the all bitboard as well
         bitboards_[color][ALL] ^= from_to;
 
-        update_castling_abilities(color, piece, from);
-
+        // remove piece at the from position
+        zobrist_key_.update_piece(color, piece, from);
+        // add the piece at the to position
+        zobrist_key_.update_piece(color, piece, to);
     }
 
     void Chessboard::remove_piece(Color color, PieceType piece, Square pos)
@@ -425,6 +447,8 @@ namespace board
         // xor the square bit of the piece to remove it from the board
         bitboards_[color][piece] ^= mask;
         bitboards_[color][ALL] ^= mask;
+
+        zobrist_key_.update_piece(color, piece, pos);
     }
 
     std::vector<Move> Chessboard::generate_legal_moves()

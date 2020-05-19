@@ -54,7 +54,7 @@ namespace board
     }
 
     Zobrist::Zobrist(Chessboard& board)
-        : key_(0)
+        : key_(0), en_passant_square_(-1)
     {
         for (auto piece : { QUEEN, ROOK, BISHOP, KNIGHT, PAWN, KING })
         {
@@ -101,54 +101,34 @@ namespace board
         key_ ^= pieces_[color][piece][pos];
     }
 
-    // void Zobrist::update_key(Color color, Move& move)
-    // {
-    //     if (move.is_capture())
-    //         key_ ^= pieces_[color][move.get_capture()][move.get_to()];
-    //
-    //     // double pawn push
-    //     else if (move.is_double_pawn_push())
-    //     {
-    //         // unset last en_passant
-    //         if (en_passant_square_ != -1)
-    //             key_ ^= en_passant_[en_passant_square_ % 8];
-    //
-    //         en_passant_square_ = move.get_from() + (color == WHITE ? 8 : -8);
-    //
-    //         // set new en_passant
-    //         key_ ^= en_passant_[en_passant_square_ % 8];
-    //     }
-    //     // en_passant
-    //     else if (move.is_en_passant())
-    //     {
-    //         // remove piece captured en_passant
-    //         Square capture = move.get_to() + (color == WHITE ? -8 : 8);
-    //         key_ ^= pieces_[color][move.get_capture()][capture];
-    //     }
-    //     // queen castling
-    //     if (move.is_queen_side_castling())
-    //     {
-    //         Square rook_from = color == WHITE ? 7 : 63;
-    //         key_ ^= pieces_[color][ROOK][rook_from];
-    //     }
-    //     // king castling
-    //
-    //     // remove piece at the from position
-    //     key_ ^= pieces_[color][move.get_piece()][move.get_from()];
-    //     // add piece at the to position
-    //     key_ ^= pieces_[color][move.get_piece()][move.get_to()];
-    //
-    //     // promotion
-    //     if (move.is_promotion())
-    //     {
-    //         // remove promoted piece
-    //         key_ ^= pieces_[color][move.get_piece()][move.get_to()];
-    //         // add new piece
-    //         key_ ^= pieces_[color][move.get_promotion()][move.get_to()];
-    //     }
-    //
-    //     // update turn
-    //     key_ ^= white_turn_;
-    // }
+    void Zobrist::update_en_passant(Square pos)
+    {
+        // unset last en_passant
+        if (en_passant_square_ != -1)
+            key_ ^= en_passant_[en_passant_square_ % 8];
+
+        en_passant_square_ = pos;
+
+        // set new en_passant
+        if (en_passant_square_ != -1)
+            key_ ^= en_passant_[en_passant_square_ % 8];
+    }
+
+    void Zobrist::switch_turn()
+    {
+        key_ ^= white_turn_;
+    }
+
+    void Zobrist::unset_castling(Color color, PieceType side)
+    {
+        if (side != QUEEN and side != KING and side != ALL)
+            throw std::runtime_error("Zobrist: unset_castling: invalid side");
+
+        if (side == QUEEN or side == ALL)
+            key_ ^= queen_side_castling_[color];
+
+        if (side == KING or side == ALL)
+            key_ ^= king_side_castling_[color];
+    }
 
 } // namespace board

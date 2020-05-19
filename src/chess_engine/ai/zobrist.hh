@@ -28,14 +28,6 @@ namespace board
         static void init();
 
         /**
-         * @brief update the key for the given move.
-         *
-         * @param color the color of the piece.
-         * @param the move to apply.
-         */
-        void update_key(Color color, Move& move);
-
-        /**
          * @brief update the key for the given piece.
          *
          * @param color the color of the piece.
@@ -43,6 +35,26 @@ namespace board
          * @param pos the position to update.
          */
         void update_piece(Color color, PieceType piece, Square pos);
+
+        /**
+         * @brief update the key with the en_passant value.
+         *
+         * @param pos the position of the en_passant.
+         */
+        void update_en_passant(Square from);
+
+        /**
+         * @brief Switch the turn color.
+         */
+        void switch_turn();
+
+        /**
+         * @brief Unset a certain castling right.
+         *
+         * @param color of the side.
+         * @param side the type of castling.
+         */
+        void unset_castling(Color color, PieceType side);
 
         /**
          * @brief Get the Zobrist key.
