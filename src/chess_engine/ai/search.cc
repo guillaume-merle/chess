@@ -252,4 +252,14 @@ namespace ai
         heuristics_ = MoveHeuristics();
     }
 
+    bool Search::threefold_repetition(Chessboard& board)
+    {
+        auto it = board_dispositions_.find(board.get_zobrist_key().get());
+
+        if (it != board_dispositions_.end() and it->second > 2)
+            return true;
+
+        return false;
+    }
+
 } // namespace board

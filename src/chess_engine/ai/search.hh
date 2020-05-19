@@ -57,6 +57,14 @@ namespace ai
         std::map<uint64_t, int>::iterator
         add_board_disposition(uint64_t zobrist_key);
 
+        /**
+         * @brief Check for a threefold repetition for a chessboard.
+         *
+         * @param board the chessboard to check for.
+         * @return true if there is a repetition.
+         */
+        bool threefold_repetition(Chessboard& board);
+
     private:
         const int base_depth_ = 2;
 

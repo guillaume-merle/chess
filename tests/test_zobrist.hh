@@ -13,6 +13,13 @@ TEST (Zobrist, non_null_key)
     EXPECT_NE(0, key.get());
 }
 
+TEST (Zobrist, non_null_key_in_board)
+{
+    Chessboard board(START_POS);
+
+    EXPECT_NE(0, board.get_zobrist_key().get());
+}
+
 TEST (Zobrist, same_board_same_key)
 {
     Chessboard board(START_POS);
