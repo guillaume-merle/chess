@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <map>
 
 #include "chessboard.hh"
 #include "move-heuristics.hh"
@@ -66,6 +67,8 @@ namespace ai
         std::chrono::seconds time_;
 
         MoveHeuristics heuristics_;
+
+        std::map<uint64_t, int> board_dispositions_;
     };
 
 } // namespace board

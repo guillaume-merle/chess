@@ -79,6 +79,8 @@ namespace ai
 
             play_move(move.to_string());
             board.do_move(move);
+
+            // TODO: Add board to the map
         }
     }
 

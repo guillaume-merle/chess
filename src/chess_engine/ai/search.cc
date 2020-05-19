@@ -67,6 +67,8 @@ namespace ai
             return maximize ? alpha : beta;
         }
 
+        // TODO: If board key has already existed 2 times then return 0
+
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
@@ -107,7 +109,9 @@ namespace ai
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
+            // TODO: Add board to the map
             int score = minimax_(new_board, depth - 1, alpha, beta, !maximize);
+            // TODO: remove the board from the map
 
             if (timeout_)
                 break;
