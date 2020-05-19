@@ -2,6 +2,8 @@
 
 #include <chrono>
 #include <map>
+#include <cstdint>
+#include <iterator>
 
 #include "chessboard.hh"
 #include "move-heuristics.hh"
@@ -48,6 +50,12 @@ namespace ai
          * @brief Initialize a new search by reseting some attributes.
          */
         void new_search();
+
+        /**
+         * @brief add the board disposition to the map board_dispositions_
+         */
+        std::map<uint64_t, int>::iterator
+        add_board_disposition(uint64_t zobrist_key);
 
     private:
         const int base_depth_ = 2;

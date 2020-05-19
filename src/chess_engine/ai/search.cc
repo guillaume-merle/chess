@@ -6,6 +6,7 @@
 #include "search.hh"
 #include "logger.hh"
 #include "move-ordering.hh"
+#include "zobrist.hh"
 
 Logger logger;
 
@@ -23,6 +24,25 @@ namespace ai
     Move& Search::get_bestmove()
     {
         return bestmove_;
+    }
+
+    std::map<uint64_t, int>::iterator
+    Search::add_board_disposition(uint64_t zobrist_key)
+    {
+        auto it =
+            board_dispositions_.find(zobrist_key);
+
+        if (it == board_dispositions_.end())
+        {
+            it = board_dispositions_.insert(it,
+                                     std::pair<uint64_t, int>(zobrist_key, 1));
+        }
+        else
+        {
+            it->second += 1;
+        }
+
+        return it;
     }
 
     int Search::quiesce_(Chessboard& board, int alpha, int beta, bool maximize)
@@ -67,7 +87,13 @@ namespace ai
             return maximize ? alpha : beta;
         }
 
-        // TODO: If board key has already existed 2 times then return 0
+        auto it = board_dispositions_.find(board.get_zobrist_key().get());
+
+        if (it != board_dispositions_.end())
+        {
+            if (it->second > 2)
+                return 0;
+        }
 
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
@@ -109,9 +135,11 @@ namespace ai
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            // TODO: Add board to the map
+            auto it = add_board_disposition(new_board.get_zobrist_key().get());
+
             int score = minimax_(new_board, depth - 1, alpha, beta, !maximize);
-            // TODO: remove the board from the map
+
+            it->second -= 1;
 
             if (timeout_)
                 break;
@@ -158,7 +186,12 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
+            auto it = add_board_disposition(new_board.get_zobrist_key().get());
+
             score = minimax_(new_board, depth, alpha, beta, false);
+
+            it->second -= 1;
+
             if (timeout_)
                 break;
 

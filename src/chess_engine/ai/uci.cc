@@ -63,10 +63,14 @@ namespace ai
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
 
+        search.add_board_disposition(board.get_zobrist_key().get());
+
         board::Move move = search.find_move();
 
         play_move(move.to_string());
         board.do_move(move);
+
+        search.add_board_disposition(board.get_zobrist_key().get());
 
         while (!board.is_checkmate(board.current_color())
                && !board.is_draw()
@@ -75,12 +79,14 @@ namespace ai
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
 
+            search.add_board_disposition(board.get_zobrist_key().get());
+
             board::Move move = search.find_move();
 
             play_move(move.to_string());
             board.do_move(move);
 
-            // TODO: Add board to the map
+            search.add_board_disposition(board.get_zobrist_key().get());
         }
     }
 
