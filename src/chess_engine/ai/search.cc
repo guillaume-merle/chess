@@ -14,7 +14,9 @@ namespace ai
 {
     Search::Search()
         : board_(), us_(board_.current_color()), time_(2)
-    {}
+    {
+        board_.register_dispositions_history(&board_dispositions_);
+    }
 
     Chessboard& Search::get_board()
     {
@@ -44,7 +46,7 @@ namespace ai
         return it;
     }
 
-    int Search::quiesce_(Chessboard& board, int alpha, int beta, bool maximize)
+    int Search::quiesce_(Chessboard& board, int alpha, int beta)
     {
         int stand_pat = evaluate(board);
 
@@ -56,6 +58,9 @@ namespace ai
 
         std::vector<Move> captures = board.generate_legal_captures();
 
+        if (captures.empty())
+            return stand_pat;
+
         auto move_ordering = MoveOrdering(captures, heuristics_);
 
         int score = 0;
@@ -65,7 +70,7 @@ namespace ai
             Chessboard temp_board = board;
             temp_board.do_move(capture);
 
-            score = -quiesce_(temp_board, -beta, -alpha, maximize);
+            score = -quiesce_(temp_board, -beta, -alpha);
 
             if (score >= beta)
                 return beta;
@@ -88,14 +93,8 @@ namespace ai
 
         // threefold repetition, 50 turns, and special dispositions
         if (board.is_draw())
-            return 0;
-
-        // depth 0 changed the maximize / minimize,
-        // need to evaluate for the last playing side with the right value.
-        if (depth == 0)
         {
-            //return quiesce_(board, alpha, beta, not maximize);
-            return evaluate(board);
+            return 0;
         }
 
         std::vector<Move> moves = board.generate_legal_moves();
@@ -107,6 +106,12 @@ namespace ai
                 return -INF;
             }
             return 0;
+        }
+
+        if (depth == 0)
+        {
+            return quiesce_(board, alpha, beta);
+            //return evaluate(board);
         }
 
         auto move_ordering = MoveOrdering(moves, heuristics_,
@@ -157,7 +162,7 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
-            score = -negamax_(new_board, depth - 1, alpha, beta);
+            score = -negamax_(new_board, depth - 1, -beta, -alpha);
 
             if (timeout_)
                 break;

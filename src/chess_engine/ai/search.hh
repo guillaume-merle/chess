@@ -43,7 +43,7 @@ namespace ai
 
         Move negamax_start_(int depth);
 
-        int quiesce_(Chessboard& board, int alpha, int beta, bool maximize);
+        int quiesce_(Chessboard& board, int alpha, int beta);
 
         Move find_move();
 
