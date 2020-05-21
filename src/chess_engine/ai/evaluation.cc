@@ -112,18 +112,8 @@ namespace ai
         Color color;
         Color other_color;
 
-        // maximize last color to play
-        //if (maximize)
-        //{
-        other_color = board.current_color();
-        color = opposite_color(other_color);
-        //}
-        // minimize last color to play
-        /*else
-        {
-            color = board.current_color();
-            other_color = opposite_color(color);
-        }*/
+        color = board.current_color();
+        other_color = opposite_color(color);
 
         // Opposent part
         if (board.is_checkmate(other_color))

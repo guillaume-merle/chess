@@ -7,6 +7,7 @@
 #include "attacks.hh"
 #include "movegen.hh"
 #include "perft-parser.hh"
+#include "logger.hh"
 
 namespace board
 {
@@ -286,8 +287,13 @@ namespace board
         if (dispositions_ != nullptr)
         {
             auto it = dispositions_->find(zobrist_key_.get());
-            if (it != dispositions_->end() and it->second >= 2)
-                return true;
+            if (it != dispositions_->end())
+            {
+                if (it->second >= 2)
+                {
+                    return true;
+                }
+            }
         }
 
         Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);

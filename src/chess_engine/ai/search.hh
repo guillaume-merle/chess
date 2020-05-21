@@ -12,6 +12,8 @@ using namespace board;
 
 namespace ai
 {
+    const int INF = std::numeric_limits<int>::max();
+
     using time_point = std::chrono::time_point<std::chrono::system_clock>;
     /**
      * @brief class representing the search of moves.
@@ -37,12 +39,11 @@ namespace ai
 
         Color our_color();
 
-        int minimax_(Chessboard& board, int depth, int alpha, int bet,
-                     bool maximize);
+        int negamax_(Chessboard& board, int depth, int alpha, int beta);
 
-        Move minimax_start_(int depth);
+        Move negamax_start_(int depth);
 
-        int quiesce_(Chessboard& board, int alpha, int beta, bool maximize);
+        int quiesce_(Chessboard& board, int alpha, int beta);
 
         Move find_move();
 

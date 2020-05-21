@@ -69,7 +69,7 @@ namespace board
         // case promotion
         if (is_promotion_)
         {
-            switch(promotion_)
+            switch (promotion_)
             {
                 case QUEEN:
                     move_str += 'q';
