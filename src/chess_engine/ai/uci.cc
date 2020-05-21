@@ -1,13 +1,14 @@
-#include "search.hh"
-#include "uci.hh"
-#include "move-ordering.hh"
-#include "zobrist.hh"
-
 #include <fnmatch.h>
 #include <iostream>
 #include <iterator>
 #include <sstream>
 #include <string>
+
+#include "search.hh"
+#include "uci.hh"
+#include "move-ordering.hh"
+#include "zobrist.hh"
+#include "logger.hh"
 
 namespace ai
 {
@@ -123,7 +124,7 @@ namespace ai
 
             std::vector<board::Move> moves = board.generate_legal_moves();
 
-            for (board::Move move : moves)
+            for (auto& move : moves)
             {
                 if (move.to_string() == token)
                 {

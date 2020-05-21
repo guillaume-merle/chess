@@ -58,7 +58,8 @@ namespace ai
         add_board_disposition(uint64_t zobrist_key);
 
         /**
-         * @brief Check for a threefold repetition for a chessboard.
+         * @brief Check if there is ALREADY a threefold repetition
+         * for the given Chessboard.
          *
          * @param board the chessboard to check for.
          * @return true if there is a repetition.

@@ -166,6 +166,8 @@ namespace board
         white_turn_ = fen.side_to_move_get() == WHITE;
         Position en_passant_pos = fen.en_passant_target_get();
         en_passant_ = en_passant_pos.rank_get() * 8 + en_passant_pos.file_get();
+        if (en_passant_ == 0)
+            en_passant_ = -1;
 
         white_king_side_castling_ = false;
         white_queen_side_castling_ = false;
@@ -183,6 +185,8 @@ namespace board
             else if (castling == 'q')
                 black_queen_side_castling_ = true;
         }
+
+        zobrist_key_ = Zobrist(*this);
     }
 
     void Chessboard::clear()
@@ -277,11 +281,12 @@ namespace board
 
     bool Chessboard::is_draw()
     {
-        // Threefold repetition
+        // check if there WOULD be a threefold repetition
+        // with the current Chessboard
         if (dispositions_ != nullptr)
         {
             auto it = dispositions_->find(zobrist_key_.get());
-            if (it != dispositions_->end() and it->second > 2)
+            if (it != dispositions_->end() and it->second >= 2)
                 return true;
         }
 

@@ -102,7 +102,7 @@ namespace board
                 break;
             }
 
-            if (board.is_draw() || board.is_stalemate(board.current_color()))
+            if (board.is_draw())
             {
                 listener::listener_manager
                     .notify(&listener::Listener::on_draw);
