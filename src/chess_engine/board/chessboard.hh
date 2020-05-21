@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "chessboard-interface.hh"
 #include "bitboard.hh"
 #include "move.hh"
 #include "fen-object.hh"
+#include "zobrist.hh"
 
 namespace board
 {
@@ -272,6 +274,36 @@ namespace board
          */
         void set_turn(Color color);
 
+        /**
+         * @brief Get the castling right for the given color and side.
+         *
+         * @param color the color of the castling right.
+         * @param side the side of the caslting, either KING or QUEEN.
+         * @return true if the corresponding right is set.
+         */
+        bool get_castling(Color color, PieceType side);
+
+        /**
+         * @brief Get the current en_passant square.
+         *
+         * @return the current en_passant Square or -1 if there is none.
+         */
+        Square get_en_passant();
+
+        /**
+         * @brief Get the current zobrist key of the board
+         *
+         * @return the zobrist key representation of the board
+         */
+        Zobrist get_zobrist_key();
+
+        /**
+         * @brief Regiseter a pointer to a dispositions history map.
+         *
+         * @param disps the pointer to the dispositions history map.
+         */
+        void register_dispositions_history(std::map<uint64_t, int>* disps);
+
     private:
         /**
          * @brief Array of Bitboards, arranged by Color and PieceType.
@@ -317,6 +349,16 @@ namespace board
          * @brief Number of turns whitout a capture or a pawn move.
          */
         int last_fifty_turns_ = 0;
+
+        /**
+         * @brief Zobrist key representing the current board in a 64 bits int.
+         */
+        Zobrist zobrist_key_;
+
+        /**
+         * @brief History of the game dispositions.
+         */
+        std::map<uint64_t, int>* dispositions_ = nullptr;
 
         /**
          * @brief Update the castling abilities after a move.

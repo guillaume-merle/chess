@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "chessboard.hh"
+#include "zobrist.hh"
 #include "utils.hh"
 #include "move.hh"
 #include "attacks.hh"
@@ -18,7 +19,9 @@ namespace board
         , en_passant_(-1)
         , turn_(0)
         , last_fifty_turns_(0)
-    {}
+    {
+        zobrist_key_ = Zobrist(*this);
+    }
 
     Chessboard::Chessboard(std::string fen)
         : bitboards_{{0}}, white_turn_(true)
@@ -31,6 +34,7 @@ namespace board
         , last_fifty_turns_(0)
     {
         set_from_fen(perft_parser::parse_fen(fen));
+        zobrist_key_ = Zobrist(*this);
     }
 
     Chessboard::Chessboard(const Chessboard& board)
@@ -42,6 +46,7 @@ namespace board
         , en_passant_(board.en_passant_)
         , turn_(board.turn_)
         , last_fifty_turns_(board.last_fifty_turns_)
+        , dispositions_(board.dispositions_)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -50,6 +55,8 @@ namespace board
                 bitboards_[i][j] = board.bitboards_[i][j];
             }
         }
+
+        zobrist_key_ = board.zobrist_key_;
     }
 
     Chessboard& Chessboard::operator=(const Chessboard& board)
@@ -70,6 +77,9 @@ namespace board
                 bitboards_[i][j] = board.bitboards_[i][j];
             }
         }
+
+        zobrist_key_ = board.zobrist_key_;
+        dispositions_ = board.dispositions_;
 
         return *this;
     }
@@ -156,6 +166,8 @@ namespace board
         white_turn_ = fen.side_to_move_get() == WHITE;
         Position en_passant_pos = fen.en_passant_target_get();
         en_passant_ = en_passant_pos.rank_get() * 8 + en_passant_pos.file_get();
+        if (en_passant_ == 0)
+            en_passant_ = -1;
 
         white_king_side_castling_ = false;
         white_queen_side_castling_ = false;
@@ -173,6 +185,8 @@ namespace board
             else if (castling == 'q')
                 black_queen_side_castling_ = true;
         }
+
+        zobrist_key_ = Zobrist(*this);
     }
 
     void Chessboard::clear()
@@ -267,6 +281,15 @@ namespace board
 
     bool Chessboard::is_draw()
     {
+        // check if there WOULD be a threefold repetition
+        // with the current Chessboard
+        if (dispositions_ != nullptr)
+        {
+            auto it = dispositions_->find(zobrist_key_.get());
+            if (it != dispositions_->end() and it->second >= 2)
+                return true;
+        }
+
         Bitboard all_knight = get(WHITE, KNIGHT) | get(BLACK, BLACK);
         Bitboard all_bishop = get(WHITE, BISHOP) | get(BLACK, BISHOP);
         //check if there is only two bare king
@@ -354,8 +377,12 @@ namespace board
             add_piece(color, move.get_promotion(), move.get_to());
         }
 
+        zobrist_key_.update_en_passant(en_passant_);
+        update_castling_abilities(color, piece, move.get_from());
+
         // set next turn
-        white_turn_ = !white_turn_;
+        white_turn_ = not white_turn_;
+        zobrist_key_.switch_turn();
         turn_ += 1;
     }
 
@@ -365,6 +392,8 @@ namespace board
 
         bitboards_[color][piece] |= mask;
         bitboards_[color][ALL] |= mask;
+
+        zobrist_key_.update_piece(color, piece, pos);
     }
 
     void Chessboard::update_castling_abilities(Color color, PieceType piece,
@@ -376,23 +405,37 @@ namespace board
             {
                 white_king_side_castling_ = false;
                 white_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, ALL);
             }
             else
             {
                 black_king_side_castling_ = false;
                 black_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, ALL);
             }
         }
         else if (piece == ROOK)
         {
             if (from == 0)
+            {
                 white_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, QUEEN);
+            }
             if (from == 7)
+            {
                 white_king_side_castling_ = false;
+                zobrist_key_.unset_castling(WHITE, KING);
+            }
             if (from == 56)
+            {
                 black_queen_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, QUEEN);
+            }
             if (from == 63)
+            {
                 black_king_side_castling_ = false;
+                zobrist_key_.unset_castling(BLACK, KING);
+            }
         }
     }
 
@@ -406,8 +449,10 @@ namespace board
         // update the all bitboard as well
         bitboards_[color][ALL] ^= from_to;
 
-        update_castling_abilities(color, piece, from);
-
+        // remove piece at the from position
+        zobrist_key_.update_piece(color, piece, from);
+        // add the piece at the to position
+        zobrist_key_.update_piece(color, piece, to);
     }
 
     void Chessboard::remove_piece(Color color, PieceType piece, Square pos)
@@ -417,6 +462,8 @@ namespace board
         // xor the square bit of the piece to remove it from the board
         bitboards_[color][piece] ^= mask;
         bitboards_[color][ALL] ^= mask;
+
+        zobrist_key_.update_piece(color, piece, pos);
     }
 
     std::vector<Move> Chessboard::generate_legal_moves()
@@ -612,5 +659,40 @@ namespace board
     void Chessboard::set_turn(Color color)
     {
         white_turn_ = color == WHITE;
+    }
+
+
+    bool Chessboard::get_castling(Color color, PieceType side)
+    {
+        if (side != QUEEN and side != KING)
+            throw std::runtime_error("Chessboard: get_castling: unknown"
+                                     "castling side");
+
+        if (color == WHITE)
+        {
+            return side == QUEEN ? white_queen_side_castling_
+                                   : white_king_side_castling_;
+        }
+        else
+        {
+            return side == QUEEN ? black_queen_side_castling_
+                                   : black_king_side_castling_;
+        }
+    }
+
+    Square Chessboard::get_en_passant()
+    {
+        return en_passant_;
+    }
+
+    Zobrist Chessboard::get_zobrist_key()
+    {
+        return zobrist_key_;
+    }
+
+    void
+    Chessboard::register_dispositions_history(std::map<uint64_t, int>* disps)
+    {
+        dispositions_ = disps;
     }
 }
