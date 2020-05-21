@@ -97,7 +97,7 @@ namespace ai
 
         if (it != board_dispositions_.end())
         {
-            if (it->second > 2)
+            if (it->second >= 2)
             {
                 logger << "\n\nDRAW position three times\n\n";
                 return 0;
