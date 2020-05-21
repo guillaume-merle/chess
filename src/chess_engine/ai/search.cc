@@ -103,7 +103,7 @@ namespace ai
         {
             if (board.is_check(board.current_color()))
             {
-                return -INF + 100 - depth;
+                return -INF + (deep_depth_ - depth);
             }
             return 0;
         }

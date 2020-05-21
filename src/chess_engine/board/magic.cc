@@ -213,16 +213,17 @@ namespace board
         current = initial;
         do {
             current >>= 1;
-            if(current & rowcheck)
+            if (current & rowcheck)
                 res |= current;
             else
                 break;
-        } while (!(current & occupancy));
+        } while (not (current & occupancy));
 
         return res;
     }
 
-    static Bitboard init_bishop_moves(const int square, const Bitboard occupancy)
+    static Bitboard init_bishop_moves(const int square,
+                                      const Bitboard occupancy)
     {
         Bitboard moves = 0;
         Bitboard initial = 1ULL << square;
@@ -236,11 +237,11 @@ namespace board
         do {
             current <<= 7;
             current2 >>= 1;
-            if(current2 & rowcheck)
+            if (current2 & rowcheck)
                 moves |= current;
             else
                 break;
-        } while (current && !(current & occupancy));
+        } while (current && not (current & occupancy));
 
         current = initial;
         current2 = current;
@@ -248,11 +249,11 @@ namespace board
         do {
             current <<= 9;
             current2 <<= 1;
-            if(current2 & rowcheck)
+            if (current2 & rowcheck)
                 moves |= current;
             else
                 break;
-        } while (current && !(current & occupancy));
+        } while (current && not (current & occupancy));
 
         current = initial;
         current2 = current;
@@ -260,22 +261,22 @@ namespace board
             current >>= 7;
             current2 <<= 1;
 
-            if(current2 & rowcheck)
+            if (current2 & rowcheck)
                 moves |= current;
             else
                 break;
-        } while (current && !(current & occupancy));
+        } while (current && not (current & occupancy));
 
         current = initial;
         current2 = current;
         do {
             current >>= 9;
             current2 >>= 1;
-            if(current2 & rowcheck)
+            if (current2 & rowcheck)
                 moves |= current;
             else
                 break;
-        } while (current && !(current & occupancy));
+        } while (current && not (current & occupancy));
 
         return moves;
     }
@@ -325,7 +326,7 @@ namespace board
         const Bitboard rook_special = 0x07EDD5E59A4E28C2ULL;
         const int db_shift = 58;
 
-        for(int i = 0; i < 64; i++)
+        for (int i = 0; i < 64; i++)
         {
             int squares[64];
             int numsquares = 0;

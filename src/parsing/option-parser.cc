@@ -44,7 +44,8 @@ namespace option_parser
             }
             else
             {
-                listeners_paths = vm["listeners"].as<std::vector<std::string>>();
+                listeners_paths =
+                    vm["listeners"].as<std::vector<std::string>>();
             }
 
             //run listeners
