@@ -91,7 +91,8 @@ namespace perft_parser
         }
         board::Position en_passant_target = board::Position(file, rank);
 
-        return board::FenObject(ranks, side_to_move, castling, en_passant_target);
+        return board::FenObject(ranks, side_to_move, castling,
+                                en_passant_target);
     }
 
     board::FenObject parse_fen(std::string fen)
@@ -110,14 +111,17 @@ namespace perft_parser
         std::vector<std::string> splited_input;
 
         std::ifstream file(input);
+
         if (!file.is_open())
         {
             throw std::invalid_argument("Failed to open perft file.");
         }
-        for(std::string line; getline(file, line, ' ');)
+
+        for (std::string line; getline(file, line, ' ');)
         {
             splited_input.push_back(line);
         }
+
         return board::PerftObject(parse_fen(splited_input),
                                             std::stoi(splited_input.back()));
     }
