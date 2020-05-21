@@ -69,9 +69,7 @@ namespace ai
 
         search.add_board_disposition(board.get_zobrist_key().get());
 
-        while (!board.is_checkmate(board.current_color())
-               && !board.is_draw()
-               && !board.is_stalemate(board.current_color()))
+        while (true)
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
