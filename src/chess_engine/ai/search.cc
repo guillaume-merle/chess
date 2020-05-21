@@ -73,7 +73,7 @@ namespace ai
             score = -quiesce_(temp_board, -beta, -alpha);
 
             if (score >= beta)
-                return beta;
+                return score;
 
             if (score > alpha)
                 alpha = score;
@@ -103,7 +103,7 @@ namespace ai
         {
             if (board.is_check(board.current_color()))
             {
-                return -INF;
+                return -INF + 100 - depth;
             }
             return 0;
         }
