@@ -77,13 +77,13 @@ namespace ai
         return alpha;
     }
 
-    int Search::minimax_(Chessboard& board, int depth, int alpha, int beta,
-                         bool maximize)
+    int Search::negamax_(Chessboard& board, int depth, int alpha, int beta)
     {
         if (std::chrono::system_clock::now() - start_ > time_)
         {
             timeout_ = true;
-            return maximize ? alpha : beta;
+            // return value not use because of timeout
+            return alpha;
         }
 
         // threefold repetition, 50 turns, and special dispositions
@@ -95,15 +95,8 @@ namespace ai
         if (depth == 0)
         {
             //return quiesce_(board, alpha, beta, not maximize);
-            return maximize ? -evaluate(board) : evaluate(board);
+            return evaluate(board);
         }
-
-        int bestscore;
-
-        if (maximize)
-            bestscore = std::numeric_limits<int>::min();
-        else
-            bestscore = std::numeric_limits<int>::max();
 
         std::vector<Move> moves = board.generate_legal_moves();
 
@@ -111,10 +104,7 @@ namespace ai
         {
             if (board.is_check(board.current_color()))
             {
-                if (maximize)
-                    return std::numeric_limits<int>::min();
-                else
-                    return std::numeric_limits<int>::max();
+                return -INF;
             }
             return 0;
         }
@@ -127,41 +117,34 @@ namespace ai
             Chessboard new_board = Chessboard(board);
             new_board.do_move(move);
 
-            int score = minimax_(new_board, depth - 1, alpha, beta, !maximize);
+            int score = -negamax_(new_board, depth - 1, -beta, -alpha);
 
             if (timeout_)
                 break;
 
-            if (maximize)
-            {
-                bestscore = std::max(score, bestscore);
-                alpha = std::max(alpha, bestscore);
-            }
-            else
-            {
-                bestscore = std::min(score, bestscore);
-                beta = std::min(beta, bestscore);
-            }
-
-            if (alpha >= beta)
+            if (score >= beta)
             {
                 // set the killer moves for the real depth
                 heuristics_.set_killer(move, deep_depth_ - depth);
-                break;
+                return beta;
             }
+
+            if (score > alpha)
+                alpha = score;
         }
 
-        return bestscore;
+        return alpha;
     }
 
-    Move Search::minimax_start_(int depth)
+    Move Search::negamax_start_(int depth)
     {
-        int bestscore = std::numeric_limits<int>::min();
-
-        int alpha = std::numeric_limits<int>::min();
-        int beta = std::numeric_limits<int>::max();
+        int alpha = -INF;
+        int beta = INF;
 
         std::vector<Move> moves = board_.generate_legal_moves();
+
+        if (moves.empty())
+            return Move();
 
         auto move_ordering = MoveOrdering(moves, heuristics_,
                                           deep_depth_ - depth);
@@ -174,21 +157,21 @@ namespace ai
             Chessboard new_board = board_;
             new_board.do_move(move);
 
-            score = minimax_(new_board, depth, alpha, beta, false);
+            score = -negamax_(new_board, depth - 1, alpha, beta);
 
             if (timeout_)
                 break;
 
-            if (score > bestscore)
+            if (score > alpha)
             {
-                bestscore = score;
+                alpha = score;
                 bestmove = move;
+                if (score == INF)
+                    break;
             }
-
-            alpha = std::max(alpha, bestscore);
         }
 
-        logger << "score: " << bestscore << ", depth: " << depth << "\n";
+        logger << "score: " << alpha << ", depth: " << depth << "\n";
 
         return bestmove;
     }
@@ -203,7 +186,7 @@ namespace ai
         {
             bestmove_ = current_best;
             deep_depth_ = base_depth_ + deep;
-            current_best = minimax_start_(deep_depth_);
+            current_best = negamax_start_(deep_depth_);
 
             if (timeout_)
             {

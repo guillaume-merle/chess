@@ -115,8 +115,8 @@ namespace ai
         // maximize last color to play
         //if (maximize)
         //{
-        other_color = board.current_color();
-        color = opposite_color(other_color);
+        color = board.current_color();
+        other_color = opposite_color(color);
         //}
         // minimize last color to play
         /*else
