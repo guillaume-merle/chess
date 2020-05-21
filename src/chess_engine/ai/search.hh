@@ -1,6 +1,9 @@
 #pragma once
 
 #include <chrono>
+#include <map>
+#include <cstdint>
+#include <iterator>
 
 #include "chessboard.hh"
 #include "move-heuristics.hh"
@@ -48,6 +51,21 @@ namespace ai
          */
         void new_search();
 
+        /**
+         * @brief add the board disposition to the map board_dispositions_
+         */
+        std::map<uint64_t, int>::iterator
+        add_board_disposition(uint64_t zobrist_key);
+
+        /**
+         * @brief Check if there is ALREADY a threefold repetition
+         * for the given Chessboard.
+         *
+         * @param board the chessboard to check for.
+         * @return true if there is a repetition.
+         */
+        bool threefold_repetition(Chessboard& board);
+
     private:
         const int base_depth_ = 2;
 
@@ -66,6 +84,8 @@ namespace ai
         std::chrono::seconds time_;
 
         MoveHeuristics heuristics_;
+
+        std::map<uint64_t, int> board_dispositions_;
     };
 
 } // namespace board

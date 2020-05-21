@@ -13,6 +13,8 @@
 #include "perft.hh"
 #include "pgn.hh"
 #include "search.hh"
+#include "zobrist.hh"
+#include "move-ordering.hh"
 
 int main(int argc, char** argv)
 {
@@ -25,6 +27,9 @@ int main(int argc, char** argv)
         std::cerr << e.what() << std::endl;
         return 1;
     }
+
+    board::Zobrist::init();
+    ai::MoveOrdering::init();
 
     if (options.pgn_)
     {

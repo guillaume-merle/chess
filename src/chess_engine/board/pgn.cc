@@ -4,11 +4,13 @@
 #include "chessboard.hh"
 #include "listener.hh"
 #include "listener-manager.hh"
+#include "search.hh"
 
 namespace board
 {
     void pgn(std::vector<PgnMove> moves)
     {
+        ai::Search search;
         Chessboard board(START_POS);
         listener::listener_manager.register_board(board);
 
@@ -62,6 +64,7 @@ namespace board
             }
 
             board.do_move(move);
+            search.add_board_disposition(board.get_zobrist_key().get());
 
             if (board.is_checkmate(board.current_color()))
             {
@@ -90,7 +93,16 @@ namespace board
                 break;
             }
 
-            if (board.is_draw() || board.is_stalemate(board.current_color()))
+            if (search.threefold_repetition(board))
+            {
+                listener::listener_manager
+                    .notify(&listener::Listener::on_draw);
+                listener::listener_manager
+                    .notify(&listener::Listener::on_game_finished);
+                break;
+            }
+
+            if (board.is_draw())
             {
                 listener::listener_manager
                     .notify(&listener::Listener::on_draw);

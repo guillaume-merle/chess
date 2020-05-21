@@ -6,6 +6,7 @@
 #include "search.hh"
 #include "logger.hh"
 #include "move-ordering.hh"
+#include "zobrist.hh"
 
 Logger logger;
 
@@ -23,6 +24,24 @@ namespace ai
     Move& Search::get_bestmove()
     {
         return bestmove_;
+    }
+
+    std::map<uint64_t, int>::iterator
+    Search::add_board_disposition(uint64_t zobrist_key)
+    {
+        auto it = board_dispositions_.find(zobrist_key);
+
+        if (it == board_dispositions_.end())
+        {
+            it = board_dispositions_.insert(it,
+                                     std::pair<uint64_t, int>(zobrist_key, 1));
+        }
+        else
+        {
+            it->second += 1;
+        }
+
+        return it;
     }
 
     int Search::quiesce_(Chessboard& board, int alpha, int beta, bool maximize)
@@ -67,15 +86,16 @@ namespace ai
             return maximize ? alpha : beta;
         }
 
+        // threefold repetition, 50 turns, and special dispositions
+        if (board.is_draw())
+            return 0;
+
         // depth 0 changed the maximize / minimize,
         // need to evaluate for the last playing side with the right value.
         if (depth == 0)
         {
             //return quiesce_(board, alpha, beta, not maximize);
-            if (maximize)
-                return -evaluate(board);
-            else
-                return evaluate(board);
+            return maximize ? -evaluate(board) : evaluate(board);
         }
 
         int bestscore;
@@ -125,7 +145,7 @@ namespace ai
 
             if (alpha >= beta)
             {
-                // get the killer moves from the real depth
+                // set the killer moves for the real depth
                 heuristics_.set_killer(move, deep_depth_ - depth);
                 break;
             }
@@ -155,6 +175,7 @@ namespace ai
             new_board.do_move(move);
 
             score = minimax_(new_board, depth, alpha, beta, false);
+
             if (timeout_)
                 break;
 
@@ -205,6 +226,16 @@ namespace ai
         timeout_ = false;
         start_ = std::chrono::system_clock::now();
         heuristics_ = MoveHeuristics();
+    }
+
+    bool Search::threefold_repetition(Chessboard& board)
+    {
+        auto it = board_dispositions_.find(board.get_zobrist_key().get());
+
+        if (it != board_dispositions_.end() and it->second >= 3)
+            return true;
+
+        return false;
     }
 
 } // namespace board

@@ -1,12 +1,14 @@
-#include "search.hh"
-#include "uci.hh"
-#include "move-ordering.hh"
-
 #include <fnmatch.h>
 #include <iostream>
 #include <iterator>
 #include <sstream>
 #include <string>
+
+#include "search.hh"
+#include "uci.hh"
+#include "move-ordering.hh"
+#include "zobrist.hh"
+#include "logger.hh"
 
 namespace ai
 {
@@ -29,9 +31,6 @@ namespace ai
 
     void init(const std::string& name)
     {
-        // initialize MoveOrdering
-        MoveOrdering::init();
-
         get_input("uci");
         std::cout << "id name " << name << '\n';
         std::cout << "id author " << name << '\n';
@@ -61,22 +60,28 @@ namespace ai
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
 
+        search.add_board_disposition(board.get_zobrist_key().get());
+
         board::Move move = search.find_move();
 
         play_move(move.to_string());
         board.do_move(move);
 
-        while (!board.is_checkmate(board.current_color())
-               && !board.is_draw()
-               && !board.is_stalemate(board.current_color()))
+        search.add_board_disposition(board.get_zobrist_key().get());
+
+        while (true)
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
+
+            search.add_board_disposition(board.get_zobrist_key().get());
 
             board::Move move = search.find_move();
 
             play_move(move.to_string());
             board.do_move(move);
+
+            search.add_board_disposition(board.get_zobrist_key().get());
         }
     }
 
@@ -117,7 +122,7 @@ namespace ai
 
             std::vector<board::Move> moves = board.generate_legal_moves();
 
-            for (board::Move move : moves)
+            for (auto& move : moves)
             {
                 if (move.to_string() == token)
                 {
