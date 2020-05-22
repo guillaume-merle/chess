@@ -38,7 +38,7 @@ namespace ai
          * @param depth the minimum depth that the entry has to match.
          * @return an optional to a TTableEntry.
          */
-        std::optional<TTableEntry&> at(uint64_t key, int depth);
+        std::optional<TTableEntry*> at(uint64_t key, int depth);
 
     private:
         /**

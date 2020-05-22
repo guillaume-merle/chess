@@ -2,7 +2,6 @@
 
 namespace ai
 {
-
     bool TTable::insert(uint64_t key, int depth, int score,
                         TTableEntryFlag flag, Move& bestmove)
     {
@@ -46,4 +45,25 @@ namespace ai
         return true;
     }
 
+    std::optional<TTableEntry*> TTable::at(uint64_t key, int depth)
+    {
+        int hashkey = key % TTable::max_size_;
+        auto it = map_.find(hashkey);
+
+        if (it == map_.end())
+            return {};
+
+        int bucket_index = 0;
+        while (bucket_index < bucket_max_size_ and it->second.key_ != key)
+        {
+            bucket_index += 1;
+            ++it;
+        }
+
+        // get the entry only if the depth corresponds to the requirement
+        if (it->second.key_ == key and depth >= it->second.depth_)
+            return &it->second;
+
+        return {};
+    }
 } // namespace ai
