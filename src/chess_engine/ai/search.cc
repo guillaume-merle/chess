@@ -7,6 +7,7 @@
 #include "logger.hh"
 #include "move-ordering.hh"
 #include "zobrist.hh"
+#include "ttable-entry.hh"
 
 Logger logger;
 
@@ -14,6 +15,7 @@ namespace ai
 {
     Search::Search()
         : board_(), us_(board_.current_color()), time_(2)
+          , heuristics_(&ttable_)
     {
         board_.register_dispositions_history(&board_dispositions_);
     }
@@ -61,7 +63,7 @@ namespace ai
         if (captures.empty())
             return stand_pat;
 
-        auto move_ordering = MoveOrdering(captures, heuristics_);
+        auto move_ordering = MoveOrdering(captures, heuristics_, board);
 
         int score = 0;
 
@@ -97,6 +99,18 @@ namespace ai
             return 0;
         }
 
+        int alpha_base = alpha;
+
+        std::optional<TTableEntry*> entry =
+            ttable_.at(board.get_zobrist_key().get(), depth);
+
+        if (entry)
+        {
+            auto entry_score = entry.value()->get_bounded_score(alpha, beta);
+            if (entry_score)
+                return entry_score.value();
+        }
+
         std::vector<Move> moves = board.generate_legal_moves();
 
         if (moves.empty())
@@ -114,8 +128,10 @@ namespace ai
             //return evaluate(board);
         }
 
-        auto move_ordering = MoveOrdering(moves, heuristics_,
+        auto move_ordering = MoveOrdering(moves, heuristics_, board,
                                           deep_depth_ - depth);
+
+        Move bestmove = move_ordering.get().at(0);
 
         for (auto& move : move_ordering.get())
         {
@@ -127,16 +143,29 @@ namespace ai
             if (timeout_)
                 break;
 
+            // beta cut-off
             if (score >= beta)
             {
                 // set the killer moves for the real depth
                 heuristics_.set_killer(move, deep_depth_ - depth);
+                ttable_.insert(board.get_zobrist_key().get(), depth, score,
+                               ALPHA, move);
                 return beta;
             }
 
             if (score > alpha)
+            {
                 alpha = score;
+                bestmove = move;
+            }
         }
+
+        if (alpha <= alpha_base)
+            ttable_.insert(board.get_zobrist_key().get(), depth,
+                           alpha, BETA, bestmove);
+        else
+            ttable_.insert(board.get_zobrist_key().get(), depth,
+                           alpha, EXACT, bestmove);
 
         return alpha;
     }
@@ -151,7 +180,7 @@ namespace ai
         if (moves.empty())
             return Move();
 
-        auto move_ordering = MoveOrdering(moves, heuristics_,
+        auto move_ordering = MoveOrdering(moves, heuristics_, board_,
                                           deep_depth_ - depth);
         Move bestmove = moves.at(0);
 
@@ -164,8 +193,9 @@ namespace ai
 
             score = -negamax_(new_board, depth - 1, -beta, -alpha);
 
+            // the search is null
             if (timeout_)
-                break;
+                return bestmove;
 
             if (score > alpha)
             {
@@ -177,6 +207,10 @@ namespace ai
         }
 
         logger << "score: " << alpha << ", depth: " << depth << "\n";
+
+        // insert the move inside the transposition table
+        ttable_.insert(board_.get_zobrist_key().get(), depth, alpha, EXACT,
+                       bestmove);
 
         return bestmove;
     }
@@ -213,7 +247,8 @@ namespace ai
     {
         timeout_ = false;
         start_ = std::chrono::system_clock::now();
-        heuristics_ = MoveHeuristics();
+        heuristics_ = MoveHeuristics(&ttable_);
+        ttable_.clear();
     }
 
     bool Search::threefold_repetition(Chessboard& board)

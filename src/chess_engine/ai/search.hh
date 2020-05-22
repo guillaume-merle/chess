@@ -7,6 +7,7 @@
 
 #include "chessboard.hh"
 #include "move-heuristics.hh"
+#include "ttable.hh"
 
 using namespace board;
 
@@ -83,6 +84,11 @@ namespace ai
         time_point start_;
 
         std::chrono::seconds time_;
+
+        /**
+         * @brief Transposition Table.
+         */
+        TTable ttable_;
 
         MoveHeuristics heuristics_;
 
