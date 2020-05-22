@@ -40,6 +40,11 @@ namespace ai
          */
         std::optional<TTableEntry*> at(uint64_t key, int depth = -1);
 
+        /**
+         * @brief Clear the transposition table.
+         */
+        void clear();
+
     private:
         /**
          * @brief Hashmap representing the transposition table.

@@ -66,4 +66,10 @@ namespace ai
 
         return {};
     }
+
+    void TTable::clear()
+    {
+        map_.clear();
+    }
+
 } // namespace ai

@@ -57,7 +57,6 @@ namespace ai
             else if (move.is_capture())
                 move.set_grade(Grade::CAPTURE
                         + mvv_lva_[move.get_capture()][move.get_piece()]);
-            // TODO: use material value of the piece
             else if (move.is_promotion())
                 move.set_grade(Grade::PROMOTION
                         + get_material_score(move.get_promotion()));
