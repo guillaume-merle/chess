@@ -2,10 +2,9 @@
 
 namespace ai
 {
-    MoveHeuristics::MoveHeuristics()
-        : history_{{{0}}}, killer_{}
+    MoveHeuristics::MoveHeuristics(TTable* ttable)
+        : history_{{{0}}}, killer_{}, ttable_(ttable)
     {}
-
 
     Move MoveHeuristics::get_killer(int depth) const
     {
@@ -22,4 +21,10 @@ namespace ai
 
         killer_[depth] = move;
     }
+
+    TTable* MoveHeuristics::get_transposition_table()
+    {
+        return ttable_;
+    }
+
 } // namespace ai

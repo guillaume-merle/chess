@@ -85,14 +85,14 @@ namespace ai
 
         std::chrono::seconds time_;
 
-        MoveHeuristics heuristics_;
-
-        std::map<uint64_t, int> board_dispositions_;
-
         /**
          * @brief Transposition Table.
          */
         TTable ttable_;
+
+        MoveHeuristics heuristics_;
+
+        std::map<uint64_t, int> board_dispositions_;
     };
 
 } // namespace board

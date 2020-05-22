@@ -1,6 +1,7 @@
 #pragma once
 
 #include "move.hh"
+#include "ttable.hh"
 
 using namespace board;
 
@@ -16,9 +17,16 @@ namespace ai
     {
     public:
         /**
-         * @brief Construct a new MoveHeuristics object.
+         * @brief Default constructor.
          */
-        MoveHeuristics();
+        MoveHeuristics() = default;
+
+        /**
+         * @brief Construct a new MoveHeuristics object.
+         *
+         * @param ttable the transposition table.
+         */
+        explicit MoveHeuristics(TTable* ttable);
 
         /**
          * @brief Get the killer move for the given depth.
@@ -35,6 +43,11 @@ namespace ai
          * @param depth the corresponding depth.
          */
         void set_killer(Move move, int depth);
+
+        /**
+         * @brief Get the transposition table pointer.
+         */
+        TTable* get_transposition_table();
 
     private:
         /**
@@ -54,6 +67,10 @@ namespace ai
          */
         Move killer_[killers_depth_];
 
+        /**
+         * @brief Reference to the transposition table.
+         */
+        TTable* ttable_ = nullptr;
     };
 
 } // namespace ai

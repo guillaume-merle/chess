@@ -22,4 +22,9 @@ namespace ai
 
         return {};
     }
+
+    Move& TTableEntry::get_bestmove()
+    {
+        return bestmove_;
+    }
 }

@@ -41,6 +41,13 @@ namespace ai
          */
         std::optional<int> get_bounded_score(int& alpha, int& beta);
 
+        /**
+         * @brief Get the bestmove.
+         *
+         * @return bestmove.
+         */
+        Move& get_bestmove();
+
     private:
         /**
          * @brief The zobrist key representing a position of a Chessboard.

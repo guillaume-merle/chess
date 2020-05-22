@@ -1,6 +1,7 @@
 #pragma once
 
 #include "move-heuristics.hh"
+#include "chessboard.hh"
 
 using namespace board;
 
@@ -26,7 +27,7 @@ namespace ai
          * @param moves the list of moves.
          */
         MoveOrdering(std::vector<Move>& moves, MoveHeuristics& heuristics,
-                     int depth = 0);
+                     Chessboard& board, int depth = 0);
 
         /**
          * @brief Get the ordered moves.
@@ -68,6 +69,11 @@ namespace ai
          * @brief Real current depth (or ply).
          */
         int depth_;
+
+        /**
+         * @brief The current Chessboard.
+         */
+        Chessboard& board_;
 
         /**
          * @brief Array containing the values of the MVV-LVA

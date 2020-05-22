@@ -38,7 +38,7 @@ namespace ai
          * @param depth the minimum depth that the entry has to match.
          * @return an optional to a TTableEntry.
          */
-        std::optional<TTableEntry*> at(uint64_t key, int depth);
+        std::optional<TTableEntry*> at(uint64_t key, int depth = -1);
 
     private:
         /**
@@ -51,7 +51,7 @@ namespace ai
         /**
          * @brief Maximum size of the table, used to compute hashkeys.
          */
-        const int max_size_ = 1000000;
+        const int max_size_ = 10000;
 
         /**
          * @brief Maximum size of a bucket of collisions.

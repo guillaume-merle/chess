@@ -15,6 +15,7 @@ namespace ai
 {
     Search::Search()
         : board_(), us_(board_.current_color()), time_(2)
+          , heuristics_(&ttable_)
     {
         board_.register_dispositions_history(&board_dispositions_);
     }
@@ -62,7 +63,7 @@ namespace ai
         if (captures.empty())
             return stand_pat;
 
-        auto move_ordering = MoveOrdering(captures, heuristics_);
+        auto move_ordering = MoveOrdering(captures, heuristics_, board_);
 
         int score = 0;
 
@@ -127,7 +128,7 @@ namespace ai
             //return evaluate(board);
         }
 
-        auto move_ordering = MoveOrdering(moves, heuristics_,
+        auto move_ordering = MoveOrdering(moves, heuristics_, board_,
                                           deep_depth_ - depth);
 
         Move bestmove = move_ordering.get().at(0);
@@ -179,7 +180,7 @@ namespace ai
         if (moves.empty())
             return Move();
 
-        auto move_ordering = MoveOrdering(moves, heuristics_,
+        auto move_ordering = MoveOrdering(moves, heuristics_, board_,
                                           deep_depth_ - depth);
         Move bestmove = moves.at(0);
 
@@ -246,7 +247,7 @@ namespace ai
     {
         timeout_ = false;
         start_ = std::chrono::system_clock::now();
-        heuristics_ = MoveHeuristics();
+        heuristics_ = MoveHeuristics(&ttable_);
     }
 
     bool Search::threefold_repetition(Chessboard& board)
