@@ -102,7 +102,8 @@ namespace board
             && this->double_pawn_push_ == rhs.double_pawn_push_
             && this->king_castling_ == rhs.king_castling_
             && this->queen_castling_ == rhs.queen_castling_
-            && this->en_passant_ == rhs.en_passant_;
+            && this->en_passant_ == rhs.en_passant_
+            && this->none_ == rhs.none_;
     }
 
     void Move::parse_flags(int flags)
