@@ -1,6 +1,7 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
+#include <memory>
 
 #include "ttable-entry.hh"
 
@@ -28,7 +29,7 @@ namespace ai
          * @param bestmove the bestmove of the search if there is one.
          * @return true if the entry was inserted.
          */
-        bool insert(uint64_t key, int depth, int score,
+        void insert(uint64_t key, int depth, int score,
                     TTableEntryFlag flag, Move& bestmove);
 
         /**
@@ -38,7 +39,7 @@ namespace ai
          * @param depth the minimum depth that the entry has to match.
          * @return an optional to a TTableEntry.
          */
-        std::optional<TTableEntry*> at(uint64_t key, int depth = -1);
+        std::shared_ptr<TTableEntry> at(uint64_t key, int depth = -1);
 
         /**
          * @brief Clear the transposition table.
@@ -51,17 +52,7 @@ namespace ai
          * It contains pairs of hashkey and TTableEntry.
          * (hashkey = zobrist_key % table size)
          */
-        std::map<int, TTableEntry> map_;
-
-        /**
-         * @brief Maximum size of the table, used to compute hashkeys.
-         */
-        const int max_size_ = 10000;
-
-        /**
-         * @brief Maximum size of a bucket of collisions.
-         */
-        const int bucket_max_size_ = 4;
+        std::unordered_map<uint64_t, std::shared_ptr<TTableEntry>> map_;
     };
 
 } // namespace ai

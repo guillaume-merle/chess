@@ -101,12 +101,11 @@ namespace ai
 
         int alpha_base = alpha;
 
-        std::optional<TTableEntry*> entry =
-            ttable_.at(board.get_zobrist_key().get(), depth);
+        auto entry = ttable_.at(board.get_zobrist_key().get(), depth);
 
         if (entry)
         {
-            auto entry_score = entry.value()->get_bounded_score(alpha, beta);
+            auto entry_score = entry->get_bounded_score(alpha, beta);
             if (entry_score)
                 return entry_score.value();
         }
