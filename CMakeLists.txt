@@ -19,6 +19,8 @@ set(SRC_ENGINE
     src/chess_engine/ai/move-ordering.hh
     src/chess_engine/ai/search.cc
     src/chess_engine/ai/search.hh
+    src/chess_engine/ai/ttable-entry.cc
+    src/chess_engine/ai/ttable-entry.hh
     src/chess_engine/ai/uci.cc
     src/chess_engine/ai/uci.hh
     src/chess_engine/ai/zobrist.cc
