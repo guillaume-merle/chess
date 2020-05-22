@@ -31,6 +31,16 @@ namespace ai
         TTableEntry(uint64_t key, int depth, int score, TTableEntryFlag flag,
                     Move& bestmove);
 
+        /**
+         * @brief Get the score depending on the falg and
+         * the bounds alpha and beta.
+         *
+         * @param alpha.
+         * @param beta.
+         * @return the score.
+         */
+        std::optional<int> get_bounded_score(int& alpha, int& beta);
+
     private:
         /**
          * @brief The zobrist key representing a position of a Chessboard.

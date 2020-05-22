@@ -61,7 +61,7 @@ namespace ai
         }
 
         // get the entry only if the depth corresponds to the requirement
-        if (it->second.key_ == key and depth >= it->second.depth_)
+        if (it->second.key_ == key and it->second.depth_ >= depth)
             return &it->second;
 
         return {};

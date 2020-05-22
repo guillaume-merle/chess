@@ -7,6 +7,7 @@
 
 #include "chessboard.hh"
 #include "move-heuristics.hh"
+#include "ttable.hh"
 
 using namespace board;
 
@@ -87,6 +88,11 @@ namespace ai
         MoveHeuristics heuristics_;
 
         std::map<uint64_t, int> board_dispositions_;
+
+        /**
+         * @brief Transposition Table.
+         */
+        TTable ttable_;
     };
 
 } // namespace board

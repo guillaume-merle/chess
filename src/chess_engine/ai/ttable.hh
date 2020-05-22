@@ -51,8 +51,11 @@ namespace ai
         /**
          * @brief Maximum size of the table, used to compute hashkeys.
          */
-        const int max_size_ = 1000;
+        const int max_size_ = 1000000;
 
+        /**
+         * @brief Maximum size of a bucket of collisions.
+         */
         const int bucket_max_size_ = 4;
     };
 
