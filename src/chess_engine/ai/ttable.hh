@@ -26,8 +26,9 @@ namespace ai
          * @param score of the search.
          * @param flag the type of the search.
          * @param bestmove the bestmove of the search if there is one.
+         * @return true if the entry was inserted.
          */
-        void insert(uint64_t key, int depth, int score,
+        bool insert(uint64_t key, int depth, int score,
                     TTableEntryFlag flag, Move& bestmove);
 
         /**
@@ -50,7 +51,9 @@ namespace ai
         /**
          * @brief Maximum size of the table, used to compute hashkeys.
          */
-        const int max_size = 1000;
+        const int max_size_ = 1000;
+
+        const int bucket_max_size_ = 4;
     };
 
 } // namespace ai

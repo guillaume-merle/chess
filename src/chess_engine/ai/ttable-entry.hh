@@ -6,6 +6,8 @@ using namespace board;
 
 namespace ai
 {
+    class TTable;
+
     /**
      * @brief Enum representing the state of an entry.
      */
@@ -54,6 +56,14 @@ namespace ai
          * @brief Best move of the search.
          */
         Move bestmove_;
+
+        /**
+         * @brief Representing the current bucket size of collisions
+         * inside the transposition table.
+         */
+        int bucket_size_ = 1;
+
+        friend TTable;
     };
 
 } // namespace ai
