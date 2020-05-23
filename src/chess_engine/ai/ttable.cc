@@ -29,6 +29,7 @@ namespace ai
     std::vector<Move> TTable::principal_variation(Chessboard board, int depth)
     {
         std::vector<Move> variations;
+        variations.reserve(depth);
 
         for (int i = 0; i < depth; i += 1)
         {

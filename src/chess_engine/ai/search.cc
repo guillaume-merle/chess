@@ -15,7 +15,7 @@ Logger logger;
 namespace ai
 {
     Search::Search()
-        : board_(), us_(board_.current_color()), time_(2)
+        : board_(), us_(board_.current_color()), time_(2000)
           , heuristics_(&ttable_)
     {
         board_.register_dispositions_history(&board_dispositions_);
@@ -206,7 +206,9 @@ namespace ai
             {
                 alpha = score;
                 bestmove = move;
-                if (score == INF)
+
+                // Checkmate found
+                if (score > INF - 100)
                     break;
             }
         }
@@ -217,6 +219,8 @@ namespace ai
 
         log_search(deep_depth_, alpha,
                    ttable_.principal_variation(board_, depth));
+
+        bestscore_ = alpha;
 
         return bestmove;
     }
@@ -231,6 +235,9 @@ namespace ai
             bestmove_ = current_best;
             deep_depth_ = base_depth_ + deep;
             current_best = negamax_start_(deep_depth_);
+
+            if (bestscore_ > INF - 100)
+                return current_best;
 
             if (timeout_)
             {
@@ -252,6 +259,7 @@ namespace ai
         start_ = std::chrono::system_clock::now();
         heuristics_ = MoveHeuristics(&ttable_);
         ttable_.clear();
+        compute_time();
     }
 
     bool Search::threefold_repetition(Chessboard& board)
@@ -262,6 +270,42 @@ namespace ai
             return true;
 
         return false;
+    }
+
+    void Search::compute_time()
+    {
+        int turn = board_.get_turn();
+
+        float computed_time = 0.0;
+
+        if (total_elapsed_time_ <= std::chrono::seconds(15))
+        {
+            computed_time = 0.5;
+        }
+        else if (total_elapsed_time_ <= std::chrono::seconds(30))
+        {
+            computed_time = 1.0;
+        }
+        else if (total_elapsed_time_ <= std::chrono::seconds(45))
+        {
+            computed_time = 1.5;
+        }
+        else
+        {
+            if (turn < 15)
+                computed_time = 2.0 + turn / 7.0;
+            else if (turn >= 15 and turn <= 25)
+                computed_time = 8.0 - (std::abs(turn - 20.0) / 3.0);
+            else if (turn > 25 and turn <= 55)
+                computed_time = 5.0 - ((turn - 25.0) / 10.0);
+            else if (turn > 55)
+                computed_time = 2.0;
+        }
+
+        int computed_milliseconds = computed_time * 1000.0;
+        time_ = std::chrono::milliseconds{computed_milliseconds};
+
+        total_elapsed_time_ -= time_;
     }
 
 } // namespace board
