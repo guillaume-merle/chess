@@ -11,7 +11,7 @@
   * Negamax
   * Iterative Deepening
   * Alpha Beta
-  * Quiscence search
+  * Quiescence search
   * Draw and Checkmate detection
 * Move Ordering
   * MVV-LVA
@@ -21,8 +21,8 @@
 * Evaluation
   * Material evaluation
   * Bishop pairs
-  * Rooks on open file
-  * Position evaluation
+  * Rooks on open files
+  * Positions evaluation
 * Transposition Table using Zobrist hashing
 * Custom time management
 
