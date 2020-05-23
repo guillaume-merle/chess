@@ -60,28 +60,28 @@ namespace ai
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
 
-        search.add_board_disposition(board.get_zobrist_key().get());
+        search.add_board_disposition(board.get_zobrist_key());
 
         board::Move move = search.find_move();
 
         play_move(move.to_string());
         board.do_move(move);
 
-        search.add_board_disposition(board.get_zobrist_key().get());
+        search.add_board_disposition(board.get_zobrist_key());
 
         while (true)
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
 
-            search.add_board_disposition(board.get_zobrist_key().get());
+            search.add_board_disposition(board.get_zobrist_key());
 
             board::Move move = search.find_move();
 
             play_move(move.to_string());
             board.do_move(move);
 
-            search.add_board_disposition(board.get_zobrist_key().get());
+            search.add_board_disposition(board.get_zobrist_key());
         }
     }
 
@@ -131,6 +131,17 @@ namespace ai
                 }
             }
         }
+    }
+
+    void log_search(int depth, int score, std::vector<board::Move> variations)
+    {
+        std::ostringstream oss_pv;
+        for (auto& move : variations)
+            oss_pv << move.to_string() << " ";
+
+        std::cout << "info depth " << depth << " "
+                  << "score cp " << score << " "
+                  << "pv " << oss_pv.str() << "\n";
     }
 
 } // namespace ai

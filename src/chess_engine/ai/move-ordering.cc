@@ -43,7 +43,7 @@ namespace ai
         auto ttable = heuristics_.get_transposition_table();
         if (ttable)
         {
-            auto entry = ttable->at(board_.get_zobrist_key().get());
+            auto entry = ttable->at(board_.get_zobrist_key());
             if (entry)
                 pv = entry->get_bestmove();
         }
@@ -62,9 +62,15 @@ namespace ai
                         + get_material_score(move.get_promotion()));
             else if (move == heuristics_.get_killer(depth_))
                 move.set_grade(Grade::KILLER);
-            // TODO: add history heuristic
+            else if (move == heuristics_.get_killer(depth_, 1))
+                move.set_grade(Grade::SECOND_KILLER);
+            // history heuristic value
             else
-                move.set_grade(0);
+            {
+                int history = heuristics_
+                                .get_history(board_.current_color(), move);
+                move.set_grade(history);
+            }
         }
     }
 

@@ -13,14 +13,35 @@ namespace ai
     std::shared_ptr<TTableEntry> TTable::at(uint64_t key, int depth)
     {
         auto it = map_.find(key);
+
         if (it != map_.end() && it->second->depth_ >= depth)
             return it->second;
+
         return nullptr;
     }
 
     void TTable::clear()
     {
         map_.clear();
+    }
+
+
+    std::vector<Move> TTable::principal_variation(Chessboard board, int depth)
+    {
+        std::vector<Move> variations;
+
+        for (int i = 0; i < depth; i += 1)
+        {
+            auto ttentry = this->at(board.get_zobrist_key());
+            if (not ttentry)
+                break;
+
+            Move& move = ttentry->get_bestmove();
+            variations.emplace_back(move);
+            board.do_move(move);
+        }
+
+        return variations;
     }
 
 } // namespace ai

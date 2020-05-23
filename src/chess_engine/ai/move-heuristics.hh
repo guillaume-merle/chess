@@ -34,7 +34,7 @@ namespace ai
          * @param depth.
          * @return The killer move.
          */
-        Move get_killer(int depth) const;
+        Move get_killer(int depth, unsigned number = 0) const;
 
         /**
          * @brief Set the killer move for the given depth.
@@ -45,6 +45,24 @@ namespace ai
         void set_killer(Move move, int depth);
 
         /**
+         * @brief Update the history with the given move.
+         *
+         * @param color the color to move.
+         * @param move.
+         * @param depth the depth of the move.
+         */
+        void set_history(Color color, Move& move, int depth);
+
+        /**
+         * @brief Get the history value for the move.
+         *
+         * @param color the color to play the move.
+         * @param move the move to get the value for.
+         * @return the stored history value, 0 by default.
+         */
+        int get_history(Color color, Move& move) const;
+
+        /**
          * @brief Get the transposition table pointer.
          */
         TTable* get_transposition_table();
@@ -53,7 +71,7 @@ namespace ai
         /**
          * @brief Maximum killer move depth.
          */
-        static const int killers_depth_ = 30;
+        static const int killers_depth_ = 50;
 
         /**
          * @brief History heuristic stocking score for [Color][from][to],
@@ -64,8 +82,9 @@ namespace ai
         /**
          * @brief A dynamic, path-dependent move ordering technique.
          * Stores the best move for a depth.
+         * It keeps the two best moves.
          */
-        Move killer_[killers_depth_];
+        Move killer_[killers_depth_][2];
 
         /**
          * @brief Reference to the transposition table.
