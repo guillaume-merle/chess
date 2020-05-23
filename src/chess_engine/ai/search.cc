@@ -298,7 +298,7 @@ namespace ai
                 computed_time = 8.0 - (std::abs(turn - 20.0) / 3.0);
             else if (turn > 25 and turn <= 55)
                 computed_time = 5.0 - ((turn - 25.0) / 10.0);
-            else if (computed_time > 55)
+            else if (turn > 55)
                 computed_time = 2.0;
         }
 
