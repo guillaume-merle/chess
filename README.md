@@ -1,6 +1,6 @@
 # Chesse James
 
-> A chess engine written in C++
+> A Chess engine written in C++, made to play Blitz games.
 
 
 
