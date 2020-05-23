@@ -28,7 +28,7 @@ namespace ai
         /**
          * @brief Construc a new Transposition Table Entry.
          */
-        TTableEntry(uint64_t key, int depth, int score, TTableEntryFlag flag,
+        TTableEntry(int depth, int score, TTableEntryFlag flag,
                     Move& bestmove);
 
         /**
@@ -49,11 +49,6 @@ namespace ai
         Move& get_bestmove();
 
     private:
-        /**
-         * @brief The zobrist key representing a position of a Chessboard.
-         */
-        uint64_t key_;
-
         /**
          * @brief Depth of the search of the entry.
          */

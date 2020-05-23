@@ -45,7 +45,7 @@ namespace ai
         {
             auto entry = ttable->at(board_.get_zobrist_key().get());
             if (entry)
-                pv = entry.value()->get_bestmove();
+                pv = entry->get_bestmove();
         }
 
         for (auto& move : moves_)
