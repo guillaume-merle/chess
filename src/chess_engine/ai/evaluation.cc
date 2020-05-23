@@ -22,10 +22,10 @@ namespace ai
             return endgame ? 140 : 100;
 
         if (piece == KNIGHT)
-            return endgame ? 320 : 300;
+            return endgame ? 300 : 320;
 
         if (piece == BISHOP)
-            return endgame ? 330 : 300;
+            return endgame ? 300 : 330;
 
         if (piece == ROOK)
             return endgame ? 500 : 500;
