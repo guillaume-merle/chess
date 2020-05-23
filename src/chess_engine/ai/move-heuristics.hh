@@ -34,7 +34,7 @@ namespace ai
          * @param depth.
          * @return The killer move.
          */
-        Move get_killer(int depth) const;
+        Move get_killer(int depth, unsigned number = 0) const;
 
         /**
          * @brief Set the killer move for the given depth.
@@ -71,7 +71,7 @@ namespace ai
         /**
          * @brief Maximum killer move depth.
          */
-        static const int killers_depth_ = 30;
+        static const int killers_depth_ = 50;
 
         /**
          * @brief History heuristic stocking score for [Color][from][to],
@@ -82,8 +82,9 @@ namespace ai
         /**
          * @brief A dynamic, path-dependent move ordering technique.
          * Stores the best move for a depth.
+         * It keeps the two best moves.
          */
-        Move killer_[killers_depth_];
+        Move killer_[killers_depth_][2];
 
         /**
          * @brief Reference to the transposition table.

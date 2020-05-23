@@ -10,6 +10,7 @@ namespace ai
     enum Grade
     {
         KILLER = 2000,
+        SECOND_KILLER = 1000,
         PROMOTION = 3000,
         CAPTURE = 4000,
     };

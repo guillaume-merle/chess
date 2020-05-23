@@ -62,6 +62,8 @@ namespace ai
                         + get_material_score(move.get_promotion()));
             else if (move == heuristics_.get_killer(depth_))
                 move.set_grade(Grade::KILLER);
+            else if (move == heuristics_.get_killer(depth_, 1))
+                move.set_grade(Grade::SECOND_KILLER);
             // history heuristic value
             else
             {
