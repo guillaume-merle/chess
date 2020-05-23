@@ -68,6 +68,15 @@ namespace ai
          */
         bool threefold_repetition(Chessboard& board);
 
+        /**
+         * @brief Compute the time needed for the next search
+         * based on the current turn and other variables.
+         * It sets the attribute time_.
+         *
+         * @param turn the current turn of the game.
+         */
+        void compute_time();
+
     private:
         const int base_depth_ = 2;
 
@@ -83,17 +92,37 @@ namespace ai
 
         bool timeout_;
 
+        /**
+         * @brief Time point representing the start of the current search.
+         */
         time_point start_;
 
-        std::chrono::seconds time_;
+        /**
+         * @brief The time allocated for the current search.
+         */
+        std::chrono::milliseconds time_;
+
+        /**
+         * @brief Represent the total used time since the begining of the game
+         * (Made for a Blitz of 5 minutes = 300 seconds)
+         */
+        std::chrono::milliseconds total_elapsed_time_{300000};
 
         /**
          * @brief Transposition Table.
          */
         TTable ttable_;
 
+        /**
+         * @brief Move heuristics for the current search.
+         * Used in Move Ordering.
+         */
         MoveHeuristics heuristics_;
 
+        /**
+         * @brief map of previous board dispositions in the game.
+         * Used to detect threefold repetition draws.
+         */
         std::map<uint64_t, int> board_dispositions_;
     };
 

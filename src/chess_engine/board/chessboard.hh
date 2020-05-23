@@ -298,6 +298,20 @@ namespace board
         uint64_t get_zobrist_key();
 
         /**
+         * @brief Get the current turn.
+         *
+         * @return the current turn.
+         */
+        int get_turn();
+
+        /**
+         * @brief Set the current turn.
+         *
+         * @param turn.
+         */
+        void set_turn(int turn);
+
+        /**
          * @brief Regiseter a pointer to a dispositions history map.
          *
          * @param disps the pointer to the dispositions history map.
