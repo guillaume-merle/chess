@@ -113,6 +113,9 @@ namespace ai
             board::FenObject fen_obj = perft_parser::parse_fen(fen);
             board.set_from_fen(fen_obj);
         }
+
+        int turn = board.get_turn();
+
         while (input_stream >> token)
         {
             if (token == "moves")
@@ -131,6 +134,8 @@ namespace ai
                 }
             }
         }
+
+        board.set_turn(turn + 1);
     }
 
     void log_search(int depth, int score, std::vector<board::Move> variations)

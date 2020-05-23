@@ -701,4 +701,14 @@ namespace board
     {
         dispositions_ = disps;
     }
+
+    int Chessboard::get_turn()
+    {
+        return turn_;
+    }
+
+    void Chessboard::set_turn(int turn)
+    {
+        turn_ = turn;
+    }
 }

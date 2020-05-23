@@ -85,8 +85,16 @@ namespace ai
         while (pawns)
         {
             square = pop(pawns);
-            score +=
-                get_position_score(pawns_mobility_bonus, square, color);
+            if (endgame)
+            {
+                score += get_position_score(pawns_mobility_endgame_bonus,
+                                            square, color);
+            }
+            else
+            {
+                score +=
+                    get_position_score(pawns_mobility_bonus, square, color);
+            }
         }
 
         while (knights)
@@ -106,8 +114,16 @@ namespace ai
         while (rooks)
         {
             square = pop(rooks);
-            score +=
-                get_position_score(rooks_mobility_bonus, square, color);
+            if (endgame)
+            {
+                score += get_position_score(rooks_mobility_endgame_bonus,
+                                            square, color);
+            }
+            else
+            {
+                score +=
+                    get_position_score(rooks_mobility_bonus, square, color);
+            }
         }
 
         while (queen)
