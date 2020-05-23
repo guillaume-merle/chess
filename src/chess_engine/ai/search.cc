@@ -220,6 +220,8 @@ namespace ai
         log_search(deep_depth_, alpha,
                    ttable_.principal_variation(board_, depth));
 
+        bestscore_ = alpha;
+
         return bestmove;
     }
 
@@ -233,6 +235,9 @@ namespace ai
             bestmove_ = current_best;
             deep_depth_ = base_depth_ + deep;
             current_best = negamax_start_(deep_depth_);
+
+            if (bestscore_ > INF - 100)
+                return current_best;
 
             if (timeout_)
             {

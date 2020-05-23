@@ -79,6 +79,8 @@ namespace ai
 
         Move bestmove_;
 
+        int bestscore_;
+
         bool timeout_;
 
         time_point start_;
