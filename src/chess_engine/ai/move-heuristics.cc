@@ -22,6 +22,16 @@ namespace ai
         killer_[depth] = move;
     }
 
+    void MoveHeuristics::set_history(Color color, Move& move, int depth)
+    {
+        history_[color][move.get_from()][move.get_to()] += depth * depth;
+    }
+
+    int MoveHeuristics::get_history(Color color, Move& move) const
+    {
+        return history_[color][move.get_from()][move.get_to()];
+    }
+
     TTable* MoveHeuristics::get_transposition_table()
     {
         return ttable_;

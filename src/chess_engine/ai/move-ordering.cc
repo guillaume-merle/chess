@@ -62,9 +62,13 @@ namespace ai
                         + get_material_score(move.get_promotion()));
             else if (move == heuristics_.get_killer(depth_))
                 move.set_grade(Grade::KILLER);
-            // TODO: add history heuristic
+            // history heuristic value
             else
-                move.set_grade(0);
+            {
+                int history = heuristics_
+                                .get_history(board_.current_color(), move);
+                move.set_grade(history);
+            }
         }
     }
 

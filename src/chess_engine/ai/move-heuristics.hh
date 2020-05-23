@@ -45,6 +45,24 @@ namespace ai
         void set_killer(Move move, int depth);
 
         /**
+         * @brief Update the history with the given move.
+         *
+         * @param color the color to move.
+         * @param move.
+         * @param depth the depth of the move.
+         */
+        void set_history(Color color, Move& move, int depth);
+
+        /**
+         * @brief Get the history value for the move.
+         *
+         * @param color the color to play the move.
+         * @param move the move to get the value for.
+         * @return the stored history value, 0 by default.
+         */
+        int get_history(Color color, Move& move) const;
+
+        /**
          * @brief Get the transposition table pointer.
          */
         TTable* get_transposition_table();

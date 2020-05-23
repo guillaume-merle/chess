@@ -147,6 +147,11 @@ namespace ai
             {
                 // set the killer moves for the real depth
                 heuristics_.set_killer(move, deep_depth_ - depth);
+
+                // history heuristics on non capture moves
+                if (not move.is_capture())
+                    heuristics_.set_history(board.current_color(), move, depth);
+
                 ttable_.insert(board.get_zobrist_key().get(), depth, score,
                                ALPHA, move);
                 return beta;
