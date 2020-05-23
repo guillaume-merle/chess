@@ -45,4 +45,9 @@ namespace ai
      * the modifications to our board.
      */
     void parse_uci_position(std::string& input, board::Chessboard& board);
+
+    /**
+     * @brief
+     */
+    void log_search(int depth, int score, std::vector<board::Move> variations);
 } // namespace ai

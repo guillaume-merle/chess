@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "ttable-entry.hh"
+#include "chessboard.hh"
 
 namespace ai
 {
@@ -45,6 +46,16 @@ namespace ai
          * @brief Clear the transposition table.
          */
         void clear();
+
+        /**
+         * @brief Get the principal variation of the current search
+         * using the transposition table.
+         *
+         * @param board the initial board of the search.
+         * @param depth of the search.
+         * @return the vector of principal variation moves.
+         */
+        std::vector<Move> principal_variation(Chessboard board, int depth);
 
     private:
         /**

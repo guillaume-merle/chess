@@ -8,6 +8,7 @@
 #include "move-ordering.hh"
 #include "zobrist.hh"
 #include "ttable-entry.hh"
+#include "uci.hh"
 
 Logger logger;
 
@@ -101,7 +102,7 @@ namespace ai
 
         int alpha_base = alpha;
 
-        auto entry = ttable_.at(board.get_zobrist_key().get(), depth);
+        auto entry = ttable_.at(board.get_zobrist_key(), depth);
 
         if (entry)
         {
@@ -147,7 +148,12 @@ namespace ai
             {
                 // set the killer moves for the real depth
                 heuristics_.set_killer(move, deep_depth_ - depth);
-                ttable_.insert(board.get_zobrist_key().get(), depth, score,
+
+                // history heuristics on non capture moves
+                if (not move.is_capture())
+                    heuristics_.set_history(board.current_color(), move, depth);
+
+                ttable_.insert(board.get_zobrist_key(), depth, score,
                                ALPHA, move);
                 return beta;
             }
@@ -160,10 +166,10 @@ namespace ai
         }
 
         if (alpha <= alpha_base)
-            ttable_.insert(board.get_zobrist_key().get(), depth,
+            ttable_.insert(board.get_zobrist_key(), depth,
                            alpha, BETA, bestmove);
         else
-            ttable_.insert(board.get_zobrist_key().get(), depth,
+            ttable_.insert(board.get_zobrist_key(), depth,
                            alpha, EXACT, bestmove);
 
         return alpha;
@@ -205,11 +211,12 @@ namespace ai
             }
         }
 
-        logger << "score: " << alpha << ", depth: " << depth << "\n";
-
         // insert the move inside the transposition table
-        ttable_.insert(board_.get_zobrist_key().get(), depth, alpha, EXACT,
+        ttable_.insert(board_.get_zobrist_key(), depth, alpha, EXACT,
                        bestmove);
+
+        log_search(deep_depth_, alpha,
+                   ttable_.principal_variation(board_, depth));
 
         return bestmove;
     }
@@ -217,7 +224,6 @@ namespace ai
     Move Search::find_move()
     {
         new_search();
-        logger << "\nstart\n";
         Move current_best;
 
         for (int deep = 0; ; deep += 1)
@@ -228,8 +234,6 @@ namespace ai
 
             if (timeout_)
             {
-                logger << "bestmove: " << bestmove_.to_string()
-                       << ", depth: " << deep_depth_ - 1 << "\n";
                 // if no bestmove was found, set bestmove to the move
                 // returned by the interrupted minimax
                 if (bestmove_.is_none())
@@ -252,7 +256,7 @@ namespace ai
 
     bool Search::threefold_repetition(Chessboard& board)
     {
-        auto it = board_dispositions_.find(board.get_zobrist_key().get());
+        auto it = board_dispositions_.find(board.get_zobrist_key());
 
         if (it != board_dispositions_.end() and it->second >= 3)
             return true;

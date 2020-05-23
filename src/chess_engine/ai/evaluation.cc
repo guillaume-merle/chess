@@ -36,6 +36,41 @@ namespace ai
         return 0;
     }
 
+    int bishop_pair_bonus(Chessboard& board, Color color, bool endgame)
+    {
+        if (popcount(board.get(color, BISHOP)) >= 2)
+            return endgame ? 55 : 45;
+
+        return 0;
+    }
+
+    int rooks_on_open_files(Chessboard& board, Color color, bool endgame)
+    {
+        int bonus = 0;
+        Bitboard file = FileABB;
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (board.get(color, ROOK) & file)
+            {
+                if ((file & board.get(color, ROOK)) == (file
+                & (board.get(BLACK, ALL) | board.get(WHITE, ALL))))
+                {
+                    bonus += endgame ? 40 : 20;
+                }
+
+                else if ((file & board.get(color, ROOK)) == (file
+                & (board.get(color, ALL))))
+                {
+                    bonus += endgame ? 20 : 10;
+                }
+            }
+            file = file << 1;
+        }
+
+        return bonus;
+    }
+
     int get_position_bonus(Chessboard& board, Color color, bool endgame)
     {
         int score = 0;
@@ -162,6 +197,16 @@ namespace ai
         score += get_position_bonus(board, color, endgame);
 
         score -= get_position_bonus(board, other_color, endgame);
+
+        // Bishop pair bonus
+        score += bishop_pair_bonus(board, color, endgame);
+
+        score -= bishop_pair_bonus(board, other_color, endgame);
+
+        // Rooks on open file
+        score += rooks_on_open_files(board, color, endgame);
+
+        score -= rooks_on_open_files(board, other_color, endgame);
 
         return score;
     }
