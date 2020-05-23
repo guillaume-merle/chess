@@ -293,9 +293,9 @@ namespace board
         /**
          * @brief Get the current zobrist key of the board
          *
-         * @return the zobrist key representation of the board
+         * @return the value of the zobrist key.
          */
-        Zobrist get_zobrist_key();
+        uint64_t get_zobrist_key();
 
         /**
          * @brief Regiseter a pointer to a dispositions history map.

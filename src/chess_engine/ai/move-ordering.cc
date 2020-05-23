@@ -43,7 +43,7 @@ namespace ai
         auto ttable = heuristics_.get_transposition_table();
         if (ttable)
         {
-            auto entry = ttable->at(board_.get_zobrist_key().get());
+            auto entry = ttable->at(board_.get_zobrist_key());
             if (entry)
                 pv = entry->get_bestmove();
         }

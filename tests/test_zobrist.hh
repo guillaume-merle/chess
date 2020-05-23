@@ -17,7 +17,7 @@ TEST (Zobrist, non_null_key_in_board)
 {
     Chessboard board(START_POS);
 
-    EXPECT_NE(0, board.get_zobrist_key().get());
+    EXPECT_NE(0, board.get_zobrist_key());
 }
 
 TEST (Zobrist, same_board_same_key)

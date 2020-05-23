@@ -60,28 +60,28 @@ namespace ai
         std::string input_position = get_board();
         parse_uci_position(input_position, board);
 
-        search.add_board_disposition(board.get_zobrist_key().get());
+        search.add_board_disposition(board.get_zobrist_key());
 
         board::Move move = search.find_move();
 
         play_move(move.to_string());
         board.do_move(move);
 
-        search.add_board_disposition(board.get_zobrist_key().get());
+        search.add_board_disposition(board.get_zobrist_key());
 
         while (true)
         {
             std::string input_position = get_board();
             parse_uci_position(input_position, board);
 
-            search.add_board_disposition(board.get_zobrist_key().get());
+            search.add_board_disposition(board.get_zobrist_key());
 
             board::Move move = search.find_move();
 
             play_move(move.to_string());
             board.do_move(move);
 
-            search.add_board_disposition(board.get_zobrist_key().get());
+            search.add_board_disposition(board.get_zobrist_key());
         }
     }
 

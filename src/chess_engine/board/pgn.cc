@@ -64,7 +64,7 @@ namespace board
             }
 
             board.do_move(move);
-            search.add_board_disposition(board.get_zobrist_key().get());
+            search.add_board_disposition(board.get_zobrist_key());
 
             if (board.is_checkmate(board.current_color()))
             {
