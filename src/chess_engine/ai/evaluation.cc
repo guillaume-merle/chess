@@ -36,6 +36,14 @@ namespace ai
         return 0;
     }
 
+    int bishop_pair_bonus(Chessboard& board, Color color, bool endgame)
+    {
+        if (popcount(board.get(color, BISHOP)) >= 2)
+            return endgame ? 55 : 45;
+
+        return 0;
+    }
+
     int get_position_bonus(Chessboard& board, Color color, bool endgame)
     {
         int score = 0;
@@ -162,6 +170,11 @@ namespace ai
         score += get_position_bonus(board, color, endgame);
 
         score -= get_position_bonus(board, other_color, endgame);
+
+        // Bishop pair bonus
+        score += bishop_pair_bonus(board, color, endgame);
+
+        score -= bishop_pair_bonus(board, other_color, endgame);
 
         return score;
     }
