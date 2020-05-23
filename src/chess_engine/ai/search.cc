@@ -206,7 +206,9 @@ namespace ai
             {
                 alpha = score;
                 bestmove = move;
-                if (score == INF)
+
+                // Checkmate found
+                if (score > INF - 100)
                     break;
             }
         }
