@@ -133,4 +133,15 @@ namespace ai
         }
     }
 
+    void log_search(int depth, int score, std::vector<board::Move> variations)
+    {
+        std::ostringstream oss_pv;
+        for (auto& move : variations)
+            oss_pv << move.to_string() << " ";
+
+        std::cout << "info depth " << depth << " "
+                  << "score cp " << score << " "
+                  << "pv " << oss_pv.str() << "\n";
+    }
+
 } // namespace ai

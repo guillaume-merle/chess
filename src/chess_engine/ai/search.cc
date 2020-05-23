@@ -8,6 +8,7 @@
 #include "move-ordering.hh"
 #include "zobrist.hh"
 #include "ttable-entry.hh"
+#include "uci.hh"
 
 Logger logger;
 
@@ -210,11 +211,12 @@ namespace ai
             }
         }
 
-        logger << "score: " << alpha << ", depth: " << depth << "\n";
-
         // insert the move inside the transposition table
         ttable_.insert(board_.get_zobrist_key(), depth, alpha, EXACT,
                        bestmove);
+
+        log_search(deep_depth_, alpha,
+                   ttable_.principal_variation(board_, depth));
 
         return bestmove;
     }
@@ -222,7 +224,6 @@ namespace ai
     Move Search::find_move()
     {
         new_search();
-        logger << "\nstart\n";
         Move current_best;
 
         for (int deep = 0; ; deep += 1)
@@ -233,8 +234,6 @@ namespace ai
 
             if (timeout_)
             {
-                logger << "bestmove: " << bestmove_.to_string()
-                       << ", depth: " << deep_depth_ - 1 << "\n";
                 // if no bestmove was found, set bestmove to the move
                 // returned by the interrupted minimax
                 if (bestmove_.is_none())
